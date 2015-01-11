@@ -2,13 +2,16 @@
 using System.Collections;
 
 public class PlayerCharacter : MonoBehaviour {
+	public Camera camera;
 	private Animator _animator;
 	private Rigidbody2D _charController;
 	private Vector3 wp;
 	Vector2 touchPos;
 	private const float _deadzone = 0.2f;
 	private bool moving = false;
-	
+	Vector3 screenPos2;
+	Vector3 goPos;
+
 	private float _horizontalInput, _verticalInput;
 	
 	public float _speed = 5f;
@@ -17,6 +20,7 @@ public class PlayerCharacter : MonoBehaviour {
 	private Vector3 endPoint;
 	private float duration = 50.0f;
 	private float yAxis;
+	private Transform trans;
 
 	public static float Round(float value, int digits)
 	{
@@ -26,18 +30,21 @@ public class PlayerCharacter : MonoBehaviour {
 
 	void Start () 
 	{
+		print("Camera is " + camera.pixelHeight + " pixels high");
+		print("Camera is " + camera.pixelWidth + " pixels wide");
 		_animator = GetComponent<Animator>();
 		_charController = GetComponent<Rigidbody2D>();
 		Physics2D.gravity = Vector2.zero;
 		yAxis = gameObject.transform.position.y;
-	
+		screenPos2 = camera.WorldToScreenPoint(gameObject.transform.position);
+
+		print("target is " + screenPos2.x + " pixels from the left transform");
 
 
 	}
 	
 	void Update () 
 	{
-	
 
 
 			if (Application.platform == RuntimePlatform.Android)
@@ -60,13 +67,17 @@ public class PlayerCharacter : MonoBehaviour {
 				if (Input.GetMouseButtonDown(0))
 				{
 					wp = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+				Vector3 screenPos = camera.WorldToScreenPoint(Input.mousePosition);
+				print("Camera is " + wp.x + " pixels high");
+				print("target is " + screenPos.x + " pixels from the left");
 					flag = true;
 				}
 			}
 				touchPos = new Vector2(wp.x, wp.y);
-				
+				screenPos2 = Camera.main.WorldToScreenPoint(wp);
+				goPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 				endPoint = touchPos;
-		Debug.Log (touchPos.y);
+//		Debug.Log (touchPos.y);
 		if (!flag) {
 
 
@@ -142,7 +153,7 @@ public class PlayerCharacter : MonoBehaviour {
 //		else if(flag && Mathf.Approximately((int)gameObject.transform.position.y, (int)endPoint.y)) {
 		else if(flag && (Round(gameObject.transform.position.y,2) == Round(endPoint.y,2)) && !(Round(gameObject.transform.position.x,2) == Round(endPoint.x,2))) {
 			flag = false;
-			Debug.Log("I am here");
+//			Debug.Log("I am here");
 			moving = false;
 			touchPos.y = gameObject.transform.position.y; 
 
