@@ -21,6 +21,46 @@ public class QuestionManager : MonoBehaviour {
 	private EnemyHealthBar enemyHealthBarScript;
 
 
+	public class MonsterBean{
+		int id;
+		public int ID {
+			get;
+			set;
+		}
+		string name;
+		public string Name {
+			get;
+			set;
+		}
+		int level;
+		public int Level {
+			get;
+			set;
+		}
+		int hp;
+		public int Hp {
+			get;
+			set;
+		}
+		int atk;
+		public int Atk {
+			get;
+			set;
+		}
+		int def;
+		public int Def {
+			get;
+			set;
+		}
+		string image;
+		public string Image {
+			get;
+			set;
+		}
+
+
+	}
+
 	public class KanjiBean{
 		int id;
 		public int ID {
@@ -60,6 +100,7 @@ public class QuestionManager : MonoBehaviour {
 	}
 
 	public List<KanjiBean> kanjiList;
+	public List<MonsterBean> monsterList;
 	public List<QuestionBean> textToRead = new List<QuestionBean>();
 
 
@@ -88,16 +129,36 @@ public class QuestionManager : MonoBehaviour {
 
 		}
 		else{
+
 			file = new System.IO.StreamReader ("Assets/Resources/data.txt");
 			TextAsset jsonFile = Resources.Load("data2") as TextAsset;
-			Debug.Log(jsonFile);
+			TextAsset jsonMonsterFile = Resources.Load("monster") as TextAsset;
 			JsonData jsonKanjis = JsonMapper.ToObject(jsonFile.text);
-			Debug.Log(jsonKanjis["kanjis"].Count);
+			JsonData jsonMonster = JsonMapper.ToObject(jsonMonsterFile.text);
 			KanjiBean kanji;
+			MonsterBean monster;
 			kanjiList = new List<KanjiBean>();
-			
+			monsterList = new List<MonsterBean>();
+
+			for(int i = 0; i < jsonMonster["monsters"].Count; i++){
+				monster = new MonsterBean();
+				monster.ID = System.Convert.ToInt16(jsonMonster["monsters"][i]["id"].ToString());
+				monster.Name = jsonMonster["monsters"][i]["name"].ToString();
+				monster.Level = System.Convert.ToInt16(jsonMonster["monsters"][i]["level"].ToString());
+				monster.Hp = System.Convert.ToInt16(jsonMonster["monsters"][i]["hp"].ToString());
+				monster.Atk = System.Convert.ToInt16(jsonMonster["monsters"][i]["atk"].ToString());
+				monster.Def = System.Convert.ToInt16(jsonMonster["monsters"][i]["def"].ToString());
+				monster.Image = jsonMonster["monsters"][i]["image"].ToString();
+
+				monsterList.Add(monster);
+			}
+			for(int i = 0; i < monsterList.Count; i++){
+				Debug.Log(monsterList[i].ID);
+			}
+
 			for(int i = 0; i<jsonKanjis["kanjis"].Count; i++)
 			{
+
 				kanji = new KanjiBean();
 				kanji.ID = System.Convert.ToInt16(jsonKanjis["kanjis"][i]["id"].ToString());
 				kanji.Writing = jsonKanjis["kanjis"][i]["writing"].ToString();
@@ -109,7 +170,8 @@ public class QuestionManager : MonoBehaviour {
 				
 				kanjiList.Add(kanji);
 			}
-			Debug.Log(kanjiList[9].Writing);
+
+
 			for(int i = 0; i < kanjiList.Count; i++){
 				QuestionBean qb = new QuestionBean();
 				qb.question = kanjiList[i].Writing;
@@ -133,7 +195,7 @@ public class QuestionManager : MonoBehaviour {
 				qb.answerD = kanjiWord.Meaning;
 				textToRead.Add(qb);
 			}
-			Debug.Log(textToRead[9].answerA);
+
 //			while((curline = file.ReadLine()) != null)
 //			{
 //				string[] ans = curline.Split(";"[0]);
