@@ -13,12 +13,15 @@ public class QuestionManager : MonoBehaviour {
 	public Text answerC;
 	public Text answerD;
 	private QuestionBean qb ;
+	public GameObject monsterGameObject;
+	private Image monsterImage;
 	public GameObject playerHealthBar;
 	private PlayerHealthBar playerHealthBarScript;
 	public GameObject timeBar;
 	private TimeBar timeBarScript;
 	public GameObject enemyHealthBar;
 	private EnemyHealthBar enemyHealthBarScript;
+	int monsterID = 0;
 
 
 	public class MonsterBean{
@@ -240,6 +243,13 @@ public class QuestionManager : MonoBehaviour {
 		}
 	}
 
+	public void SetMonster(){
+		MonsterBean monster = monsterList [monsterID];
+		enemyHealthBarScript.maxHealth = monster.Hp;
+		monsterImage.sprite = Resources.Load<Sprite> (monster.Image);
+		monsterID++;
+	}
+
 	public void SetQuestion(){
 		qb = GetRandomQuestion ();
 		question.text = qb.question;
@@ -317,10 +327,12 @@ public class QuestionManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Screen.orientation = ScreenOrientation.Portrait;
+		monsterImage = monsterGameObject.GetComponent<Image> ();
 		playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
 		enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
 		timeBarScript = timeBar.GetComponent<TimeBar> ();
 		Read ();
+		SetMonster ();
 //		timeBarScript.ResetTimeBar ();
 		SetQuestion ();
 //		Debug.Log (textToRead.Count);

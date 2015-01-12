@@ -7,7 +7,7 @@
 			"hp":100,
 			"atk":5,
 			"def":2,
-			"image":"Assets/Images/monster1.png"
+			"image":"monster1"
 		},
 		{
 			"id":2,
@@ -16,7 +16,7 @@
 			"hp":150,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster2"
 		},
 		{
 			"id":3,
@@ -25,7 +25,7 @@
 			"hp":60,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster3"
 		},
 		{
 			"id":4,
@@ -34,7 +34,7 @@
 			"hp":200,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster4"
 		},
 		{
 			"id":5,
@@ -43,7 +43,7 @@
 			"hp":250,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster5"
 		},
 		{
 			"id":6,
@@ -52,7 +52,7 @@
 			"hp":300,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster6"
 		},
 		{
 			"id":7,
@@ -61,7 +61,7 @@
 			"hp":170,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster7"
 		},
 		{
 			"id":8,
@@ -70,7 +70,7 @@
 			"hp":80,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster8"
 		},
 		{
 			"id":9,
@@ -79,7 +79,7 @@
 			"hp":90,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster9"
 		},
 		{
 			"id":10,
@@ -88,7 +88,7 @@
 			"hp":110,
 			"atk":5,
 			"def":2,
-			"image":""
+			"image":"monster10"
 		}
 	]
 }

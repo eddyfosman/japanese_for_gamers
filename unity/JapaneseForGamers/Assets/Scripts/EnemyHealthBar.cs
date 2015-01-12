@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class EnemyHealthBar : MonoBehaviour {
 
 	public RectTransform enemyHealthTranform;
 	public int maxHealth;
 	private int currentHealth;
-	private int CurrentHealth{
+	public int CurrentHealth{
 		get{return currentHealth;}
 		set{
 			currentHealth = value;
@@ -18,6 +19,9 @@ public class EnemyHealthBar : MonoBehaviour {
 	private float maxXValue;
 	private bool onCD;
 	public float coolDown;
+	public Text healthText;
+	public GameObject questionManager ;
+	private QuestionManager questionManagerScript;
 
 
 
@@ -39,13 +43,14 @@ public class EnemyHealthBar : MonoBehaviour {
 
 	public void Damage(){
 		if(currentHealth > 0){
-			CurrentHealth -= 5;
+			CurrentHealth -= 30;
 		}
 
 	}
 
 	// Use this for initialization
 	void Start () {
+		questionManagerScript = questionManager.GetComponent<QuestionManager>();
 		cachedY = enemyHealthTranform.position.y;
 		maxXValue = enemyHealthTranform.position.x;
 		minXValue = enemyHealthTranform.position.x - enemyHealthTranform.rect.width;
@@ -58,8 +63,10 @@ public class EnemyHealthBar : MonoBehaviour {
 //			StartCoroutine(CoolDownHealth());
 //			CurrentHealth -= 1;
 //		}
-		if(currentHealth == 0){
-			currentHealth = maxHealth;
+		healthText.text = currentHealth.ToString();
+		if(currentHealth <= 0){
+			questionManagerScript.SetMonster();
+			CurrentHealth = maxHealth;
 		}
 	}
 }
