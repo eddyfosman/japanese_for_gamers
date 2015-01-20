@@ -1,0 +1,12 @@
+{
+	"player":[
+		{
+			"level":1,
+			"hp":100,
+			"atk":5,
+			"def":0,
+			"exp":0,
+			"nextLevelExp":100
+		}
+	]
+}

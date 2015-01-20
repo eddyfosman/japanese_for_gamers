@@ -3,11 +3,22 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class TimeBar : MonoBehaviour {
+
+	public GameObject questionPanel;
+	private QuestionFadeScript questionFadeScript;
+
+	public GameObject monsterPanel;
+	private MonsterFadeScript monsterFadeScript;
+
 	public GameObject playerHealthBar;
 	private PlayerHealthBar playerHealthBarScript;
 
 	public GameObject quesManager;
 	private QuestionManager questionManagerScript;
+
+	public GameObject statusDialog;
+	private StatusDialogScript statusDialogScript;
+
 	public float speed;
 	public Image visualTime;
 	public RectTransform timeBarTransform;
@@ -53,8 +64,11 @@ public class TimeBar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		questionFadeScript = questionPanel.GetComponent<QuestionFadeScript>();
+		monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript>();
 		playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
 		questionManagerScript = quesManager.GetComponent<QuestionManager>();
+		statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
 		cachedY = timeBarTransform.position.y;
 		maxXValue = timeBarTransform.position.x;
 		minXValue = timeBarTransform.position.x - timeBarTransform.rect.width;
@@ -66,7 +80,7 @@ public class TimeBar : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(!onCD && currentTime > 0){
+		if(!onCD && currentTime > 0 && !questionFadeScript.onCD && !monsterFadeScript.onCD && !statusDialogScript.onCD){
 			StartCoroutine(CoolDownTime());
 			CurrentTime -= 1;
 			if(currentTime == 0){

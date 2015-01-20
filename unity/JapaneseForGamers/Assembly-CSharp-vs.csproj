@@ -48,10 +48,13 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\EnemyHealthBar.cs" />
+     <Compile Include="Assets\Scripts\MonsterFadeScript.cs" />
      <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
      <Compile Include="Assets\Scripts\PlayerCharacter1.cs" />
      <Compile Include="Assets\Scripts\PlayerHealthBar.cs" />
+     <Compile Include="Assets\Scripts\QuestionFadeScript.cs" />
      <Compile Include="Assets\Scripts\QuestionManager.cs" />
+     <Compile Include="Assets\Scripts\StatusDialogScript.cs" />
      <Compile Include="Assets\Scripts\TimeBar.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />

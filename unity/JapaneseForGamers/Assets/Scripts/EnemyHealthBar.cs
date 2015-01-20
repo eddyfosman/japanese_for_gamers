@@ -59,12 +59,10 @@ public class EnemyHealthBar : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		if(!onCD && currentHealth > 0){
-//			StartCoroutine(CoolDownHealth());
-//			CurrentHealth -= 1;
-//		}
+
 		healthText.text = currentHealth.ToString();
 		if(currentHealth <= 0){
+			questionManagerScript.GainExp();
 			questionManagerScript.SetMonster();
 			CurrentHealth = maxHealth;
 		}
