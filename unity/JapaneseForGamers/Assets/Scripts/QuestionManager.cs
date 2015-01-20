@@ -37,7 +37,11 @@ public class PlayerData{
 		set;
 		get;
 	}
-	
+	int bonusPoint;
+	public int BonusPoint {
+				set;
+				get;
+	}
 }
 
 	
@@ -189,7 +193,7 @@ public class QuestionManager : MonoBehaviour {
 
 			while(!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")){
 				Debug.Log("File khong ton tai!");
-				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":5,\n\t\t\t\"def\":0,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100\n\t\t}\n\t]\n}";
+				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":5,\n\t\t\t\"def\":0,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
 				Debug.Log(str);
 
 				File.WriteAllText(Application.persistentDataPath + "/" + "PlayerData.json", str);
@@ -294,6 +298,7 @@ public class QuestionManager : MonoBehaviour {
 			player.Def = System.Convert.ToInt16(jsonPlayerData["player"][0]["def"].ToString());
 			player.CurrentExp = System.Convert.ToInt16(jsonPlayerData["player"][0]["exp"].ToString());
 			player.NextLevelExp = System.Convert.ToInt16(jsonPlayerData["player"][0]["nextLevelExp"].ToString());
+			player.BonusPoint = System.Convert.ToInt16(jsonPlayerData["player"][0]["bonusPoint"].ToString());
 
 			kanjiList = new List<KanjiBean>();
 			monsterList = new List<MonsterBean>();
@@ -387,8 +392,9 @@ public class QuestionManager : MonoBehaviour {
 		player.CurrentExp += monsterExp;
 		if(player.CurrentExp >= player.NextLevelExp){
 			player.Level += 1;
+			player.BonusPoint += 5;
 			Debug.Log("Cong level mot lan!");
-			statusDialog.SetActive(true);
+			statusDialogScript.ShowStatusDialog();
 
 		}
 	}

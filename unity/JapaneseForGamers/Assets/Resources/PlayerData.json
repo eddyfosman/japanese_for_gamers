@@ -6,7 +6,8 @@
 			"atk":5,
 			"def":0,
 			"exp":0,
-			"nextLevelExp":100
+			"nextLevelExp":100,
+			"bonusPoint":0
 		}
 	]
 }

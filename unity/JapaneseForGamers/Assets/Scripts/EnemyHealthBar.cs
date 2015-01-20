@@ -63,6 +63,7 @@ public class EnemyHealthBar : MonoBehaviour {
 		healthText.text = currentHealth.ToString();
 		if(currentHealth <= 0){
 			questionManagerScript.GainExp();
+			Debug.Log("Giet mot con quai!!!");
 			questionManagerScript.SetMonster();
 			CurrentHealth = maxHealth;
 		}
