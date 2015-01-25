@@ -5,6 +5,8 @@
 			"hp":100,
 			"atk":5,
 			"def":0,
+			"agi":0,
+			"luk":0,
 			"exp":0,
 			"nextLevelExp":100,
 			"bonusPoint":0

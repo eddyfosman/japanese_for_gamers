@@ -27,6 +27,16 @@ public class PlayerData{
 		set;
 		get;
 	}
+	int agi;
+	public int Agi {
+				set;
+				get;
+	}
+	int luk;
+	public int Luk {
+				set;
+				get;
+	}
 	int currentExp;
 	public int CurrentExp {
 		set;
@@ -193,7 +203,7 @@ public class QuestionManager : MonoBehaviour {
 
 			while(!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")){
 				Debug.Log("File khong ton tai!");
-				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":5,\n\t\t\t\"def\":0,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
+				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":5,\n\t\t\t\"def\":0,\n\t\t\t\"agi\":0,\n\t\t\t\"luk\":0,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
 				Debug.Log(str);
 
 				File.WriteAllText(Application.persistentDataPath + "/" + "PlayerData.json", str);
@@ -278,11 +288,7 @@ public class QuestionManager : MonoBehaviour {
 			TextAsset jsonMonsterFile = Resources.Load("monster") as TextAsset;
 			TextAsset jsonPlayerDataFile = Resources.Load("PlayerData") as TextAsset;
 
-//			if(jsonPlayerDataFile == null){
-//				Debug.Log("File khong ton tai!");
-//				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":5,\n\t\t\t\"def\":0,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100\n\t\t}\n\t]\n}";
-//				Debug.Log(str);
-//			}
+
 			JsonData jsonKanjis = JsonMapper.ToObject(jsonFile.text);
 			JsonData jsonMonster = JsonMapper.ToObject(jsonMonsterFile.text);
 			JsonData jsonPlayerData = JsonMapper.ToObject(jsonPlayerDataFile.text);
@@ -296,6 +302,8 @@ public class QuestionManager : MonoBehaviour {
 			player.Level = System.Convert.ToInt16(jsonPlayerData["player"][0]["level"].ToString());
 			player.Atk = System.Convert.ToInt16(jsonPlayerData["player"][0]["atk"].ToString());
 			player.Def = System.Convert.ToInt16(jsonPlayerData["player"][0]["def"].ToString());
+			player.Agi = System.Convert.ToInt16(jsonPlayerData["player"][0]["agi"].ToString());
+			player.Luk = System.Convert.ToInt16(jsonPlayerData["player"][0]["luk"].ToString());
 			player.CurrentExp = System.Convert.ToInt16(jsonPlayerData["player"][0]["exp"].ToString());
 			player.NextLevelExp = System.Convert.ToInt16(jsonPlayerData["player"][0]["nextLevelExp"].ToString());
 			player.BonusPoint = System.Convert.ToInt16(jsonPlayerData["player"][0]["bonusPoint"].ToString());

@@ -12,6 +12,8 @@ public class StatusDialogScript : MonoBehaviour {
 	public Text hp;
 	public Text atk;
 	public Text def;
+	public Text agi;
+	public Text luk;
 	public Text bonusPoints;
 
 	PlayerData tempPlayer;
@@ -34,6 +36,14 @@ public class StatusDialogScript : MonoBehaviour {
 	public Button addDefButton;
 	private Selectable addDefButtonSelectable;
 
+	public Button addAgiButton;
+	private Selectable addAgiButtonSelectable;
+
+	public Button addLukButton;
+	private Selectable addLukButtonSelectable;
+
+
+
 	public bool onCD = false;
 	public bool onChange = false;
 
@@ -43,6 +53,9 @@ public class StatusDialogScript : MonoBehaviour {
 	}
 
 	public void HideStatusDialog(){
+		if(onChange){
+			CancelStatusChange();
+		}
 		onCD = false;
 		gameObject.SetActive (false);
 	}
@@ -72,10 +85,28 @@ public class StatusDialogScript : MonoBehaviour {
 		onChange = true;
 	}
 
+	public void AddPointAgi(){
+		tempPlayer.Agi++;
+		agi.text = "AGI \t" + tempPlayer.Agi;
+		tempPlayer.BonusPoint--;
+		bonusPoints.text = "Bonus Points\t" + tempPlayer.BonusPoint;
+		onChange = true;
+	}
+
+	public void AddPointLuk(){
+		tempPlayer.Luk++;
+		luk.text = "LUK \t" + tempPlayer.Luk;
+		tempPlayer.BonusPoint--;
+		bonusPoints.text = "Bonus Points\t" + tempPlayer.BonusPoint;
+		onChange = true;
+	}
+
 	public void ApplyStatusChange(){
 		player.Hp = tempPlayer.Hp;
 		player.Atk = tempPlayer.Atk;
 		player.Def = tempPlayer.Def;
+		player.Agi = tempPlayer.Agi;
+		player.Luk = tempPlayer.Luk;
 		player.BonusPoint = tempPlayer.BonusPoint;
 		onChange = false;
 	}
@@ -87,6 +118,8 @@ public class StatusDialogScript : MonoBehaviour {
 		hp.text = "HP \t" + player.Hp;
 		atk.text = "ATK \t\t" + player.Atk;
 		def.text = "DEF \t" + player.Def;
+		agi.text = "AGI \t" + player.Agi;
+		luk.text = "LUK \t" + player.Luk;
 		bonusPoints.text = "Bonus Points\t" + player.BonusPoint;
 		onChange = false;
 	}
@@ -100,12 +133,16 @@ public class StatusDialogScript : MonoBehaviour {
 		tempPlayer.Atk = player.Atk;
 		tempPlayer.Def = player.Def;
 		tempPlayer.Hp = player.Hp;
+		tempPlayer.Agi = player.Agi;
+		tempPlayer.Luk = player.Luk;
 		tempPlayer.BonusPoint = player.BonusPoint;
 
-		level.text = "Level \t" + player.Level.ToString();
-		hp.text = "HP \t" + player.Hp.ToString();
-		atk.text = "ATK \t\t" + player.Atk.ToString();
-		def.text = "DEF \t" + player.Def.ToString();
+		level.text = "Level \t" + player.Level;
+		hp.text = "HP \t" + player.Hp;
+		atk.text = "ATK \t\t" + player.Atk;
+		def.text = "DEF \t" + player.Def;
+		agi.text = "AGI \t" + player.Agi;
+		luk.text = "LUK \t" + player.Luk;
 		bonusPoints.text = "Bonus Points\t" + player.BonusPoint.ToString ();
 
 	}
@@ -119,6 +156,8 @@ public class StatusDialogScript : MonoBehaviour {
 		addHpButtonSelectable = addHpButton.GetComponent<Selectable>();
 		addAtkButtonSelectable = addAtkButton.GetComponent<Selectable>();
 		addDefButtonSelectable = addDefButton.GetComponent<Selectable>();
+		addAgiButtonSelectable = addAgiButton.GetComponent<Selectable>();
+		addLukButtonSelectable = addLukButton.GetComponent<Selectable>();
 		questionManagerScript = questionManager.GetComponent<QuestionManager> ();
 
 		applyButtonSelectable.interactable = false;
@@ -137,11 +176,15 @@ public class StatusDialogScript : MonoBehaviour {
 				addHpButtonSelectable.interactable = false;
 				addAtkButtonSelectable.interactable = false;
 				addDefButtonSelectable.interactable = false;
+				addAgiButtonSelectable.interactable = false;
+				addLukButtonSelectable.interactable = false;
 			}
 			else{
 				addHpButtonSelectable.interactable = true;
 				addAtkButtonSelectable.interactable = true;
 				addDefButtonSelectable.interactable = true;
+				addAgiButtonSelectable.interactable = true;
+				addLukButtonSelectable.interactable = true;
 			}
 
 			if(onChange){
