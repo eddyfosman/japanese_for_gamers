@@ -12,28 +12,28 @@ public class PlayerData{
 		set;
 		get;
 	}
-	int hp;
-	public int Hp {
+	long hp;
+	public long Hp {
 		set;
 		get;
 	}
-	int atk;
-	public int Atk {
+	long atk;
+	public long Atk {
 		set;
 		get;
 	}
-	int def;
-	public int Def {
+	long def;
+	public long Def {
 		set;
 		get;
 	}
-	int agi;
-	public int Agi {
+	long agi;
+	public long Agi {
 				set;
 				get;
 	}
-	int luk;
-	public int Luk {
+	long luk;
+	public long Luk {
 				set;
 				get;
 	}
@@ -72,18 +72,18 @@ public class MonsterBean{
 		get;
 		set;
 	}
-	int hp;
-	public int Hp {
+	long hp;
+	public long Hp {
 		get;
 		set;
 	}
-	int atk;
-	public int Atk {
+	long atk;
+	public long Atk {
 		get;
 		set;
 	}
-	int def;
-	public int Def {
+	long def;
+	public long Def {
 		get;
 		set;
 	}
@@ -166,7 +166,8 @@ public class QuestionManager : MonoBehaviour {
 	public GameObject enemyHealthBar;
 	private EnemyHealthBar enemyHealthBarScript;
 	int monsterID = 0;
-	PlayerData player;
+	private PlayerData player;
+	private MonsterBean monster;
 	private int monsterExp;
 
 
@@ -178,6 +179,10 @@ public class QuestionManager : MonoBehaviour {
 	public PlayerData GetPlayerData(){
 		Debug.Log ("Gui nhan vat");
 		return player;
+	}
+
+	public MonsterBean GetMonsterData(){
+		return monster;
 	}
 
 	public class QuestionBean{
@@ -220,7 +225,7 @@ public class QuestionManager : MonoBehaviour {
 			JsonData jsonMonster = JsonMapper.ToObject(jsonMonsterFile.text);
 //			JsonData jsonPlayerData = JsonMapper.ToObject(jsonPlayerDataFile.text);
 			KanjiBean kanji;
-			MonsterBean monster;
+
 //			PlayerData player;
 			kanjiList = new List<KanjiBean>();
 			monsterList = new List<MonsterBean>();
@@ -230,9 +235,9 @@ public class QuestionManager : MonoBehaviour {
 				monster.ID = System.Convert.ToInt16(jsonMonster["monsters"][i]["id"].ToString());
 				monster.Name = jsonMonster["monsters"][i]["name"].ToString();
 				monster.Level = System.Convert.ToInt16(jsonMonster["monsters"][i]["level"].ToString());
-				monster.Hp = System.Convert.ToInt16(jsonMonster["monsters"][i]["hp"].ToString());
-				monster.Atk = System.Convert.ToInt16(jsonMonster["monsters"][i]["atk"].ToString());
-				monster.Def = System.Convert.ToInt16(jsonMonster["monsters"][i]["def"].ToString());
+				monster.Hp = System.Convert.ToInt64(jsonMonster["monsters"][i]["hp"].ToString());
+				monster.Atk = System.Convert.ToInt64(jsonMonster["monsters"][i]["atk"].ToString());
+				monster.Def = System.Convert.ToInt64(jsonMonster["monsters"][i]["def"].ToString());
 				monster.Exp = System.Convert.ToInt16(jsonMonster["monsters"][i]["exp"].ToString());
 				monster.Image = jsonMonster["monsters"][i]["image"].ToString();
 				
@@ -294,16 +299,16 @@ public class QuestionManager : MonoBehaviour {
 			JsonData jsonPlayerData = JsonMapper.ToObject(jsonPlayerDataFile.text);
 
 			KanjiBean kanji;
-			MonsterBean monster;
+
 
 			player = new PlayerData();
 			Debug.Log("Cai nay chay truoc hay sau!");
-			player.Hp = System.Convert.ToInt16(jsonPlayerData["player"][0]["hp"].ToString());
+			player.Hp = System.Convert.ToInt64(jsonPlayerData["player"][0]["hp"].ToString());
 			player.Level = System.Convert.ToInt16(jsonPlayerData["player"][0]["level"].ToString());
-			player.Atk = System.Convert.ToInt16(jsonPlayerData["player"][0]["atk"].ToString());
-			player.Def = System.Convert.ToInt16(jsonPlayerData["player"][0]["def"].ToString());
-			player.Agi = System.Convert.ToInt16(jsonPlayerData["player"][0]["agi"].ToString());
-			player.Luk = System.Convert.ToInt16(jsonPlayerData["player"][0]["luk"].ToString());
+			player.Atk = System.Convert.ToInt64(jsonPlayerData["player"][0]["atk"].ToString());
+			player.Def = System.Convert.ToInt64(jsonPlayerData["player"][0]["def"].ToString());
+			player.Agi = System.Convert.ToInt64(jsonPlayerData["player"][0]["agi"].ToString());
+			player.Luk = System.Convert.ToInt64(jsonPlayerData["player"][0]["luk"].ToString());
 			player.CurrentExp = System.Convert.ToInt16(jsonPlayerData["player"][0]["exp"].ToString());
 			player.NextLevelExp = System.Convert.ToInt16(jsonPlayerData["player"][0]["nextLevelExp"].ToString());
 			player.BonusPoint = System.Convert.ToInt16(jsonPlayerData["player"][0]["bonusPoint"].ToString());
@@ -316,9 +321,9 @@ public class QuestionManager : MonoBehaviour {
 				monster.ID = System.Convert.ToInt16(jsonMonster["monsters"][i]["id"].ToString());
 				monster.Name = jsonMonster["monsters"][i]["name"].ToString();
 				monster.Level = System.Convert.ToInt16(jsonMonster["monsters"][i]["level"].ToString());
-				monster.Hp = System.Convert.ToInt16(jsonMonster["monsters"][i]["hp"].ToString());
-				monster.Atk = System.Convert.ToInt16(jsonMonster["monsters"][i]["atk"].ToString());
-				monster.Def = System.Convert.ToInt16(jsonMonster["monsters"][i]["def"].ToString());
+				monster.Hp = System.Convert.ToInt64(jsonMonster["monsters"][i]["hp"].ToString());
+				monster.Atk = System.Convert.ToInt64(jsonMonster["monsters"][i]["atk"].ToString());
+				monster.Def = System.Convert.ToInt64(jsonMonster["monsters"][i]["def"].ToString());
 				monster.Exp = System.Convert.ToInt16(jsonMonster["monsters"][i]["exp"].ToString());
 				monster.Image = jsonMonster["monsters"][i]["image"].ToString();
 
@@ -408,7 +413,7 @@ public class QuestionManager : MonoBehaviour {
 	}
 
 	public void SetMonster(){
-		MonsterBean monster = monsterList [monsterID];
+		monster = monsterList [monsterID];
 		enemyHealthBarScript.maxHealth = monster.Hp;
 		monsterExp = monster.Exp;
 		monsterImage.sprite = Resources.Load<Sprite> (monster.Image);
@@ -505,6 +510,7 @@ public class QuestionManager : MonoBehaviour {
 		enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
 		timeBarScript = timeBar.GetComponent<TimeBar> ();
 		Read ();
+		playerHealthBarScript.maxHealth = player.Hp;
 		SetMonster ();
 		SetQuestion ();
 

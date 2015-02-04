@@ -4,9 +4,9 @@
 			"id":1,
 			"name":"q1",
 			"level":1,
-			"hp":100,
-			"atk":5,
-			"def":2,
+			"hp":100000,
+			"atk":50000,
+			"def":45000,
 			"exp":100,
 			"image":"monster1"
 		},

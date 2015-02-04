@@ -1,8 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="C:\Users\Administrator\Desktop\2DPlatformer\Assets\Enemy.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Rope.cs">
     <Files>
-      <File FileName="C:\Users\Administrator\Desktop\2DPlatformer\Assets\Enemy.cs" Line="1" Column="1" />
+      <File FileName="Assets\Test.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Rope.cs" Line="55" Column="71" />
+      <File FileName="Assets\Scripts\QuestionManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\EnemyHealthBar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Resources\monster.json" Line="1" Column="1" />
+      <File FileName="Assets\Resources\PlayerData.json" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerHealthBar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\StatusDialogScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MonsterFadeScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

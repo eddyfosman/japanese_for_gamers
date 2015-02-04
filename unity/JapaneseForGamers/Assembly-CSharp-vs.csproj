@@ -54,8 +54,10 @@
      <Compile Include="Assets\Scripts\PlayerHealthBar.cs" />
      <Compile Include="Assets\Scripts\QuestionFadeScript.cs" />
      <Compile Include="Assets\Scripts\QuestionManager.cs" />
+     <Compile Include="Assets\Scripts\Rope.cs" />
      <Compile Include="Assets\Scripts\StatusDialogScript.cs" />
      <Compile Include="Assets\Scripts\TimeBar.cs" />
+     <Compile Include="Assets\Test.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
