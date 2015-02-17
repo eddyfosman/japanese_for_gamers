@@ -7,13 +7,14 @@ public class Rope : MonoBehaviour {
 	float i2 = 1f;
 	bool a = false;
 	bool shoot = false;
+	bool isPulling = false;
 	private float cachedX;
 	float gocQuay;
 	Vector3 cachedPosRope;
 	private Renderer render;
 	Vector3 from;
 	Vector3 to;
-	Vector3 distance;
+	Vector3 position;
 
 
 	// Use this for initialization
@@ -43,7 +44,8 @@ public class Rope : MonoBehaviour {
 		if(!shoot){
 			gameObject.transform.localRotation = Quaternion.Euler(0f,0f,i);
 		}
-		from = GameObject.Find ("Rope").transform.position;
+		position = GameObject.Find ("Rope").transform.position;
+		from = GameObject.Find ("TipPoint").transform.position;
 		if(shoot){
 //			gameObject.GetComponentInChildren<Transform>().localScale = new Vector3(cachedX, i2++);
 			GameObject.Find("Rope").transform.localScale = new Vector3(cachedX, (i2+=1f));
@@ -54,7 +56,7 @@ public class Rope : MonoBehaviour {
 		}
 		to = GameObject.Find ("TipPoint").transform.position;
 		if(shoot){
-			GameObject.Find ("Rope").transform.position = from + (to - from)*Time.deltaTime;
+			GameObject.Find ("Rope").transform.position = position + (to - from);
 			Debug.Log("TIMEDELTA TIME " + Time.deltaTime);
 		}
 
