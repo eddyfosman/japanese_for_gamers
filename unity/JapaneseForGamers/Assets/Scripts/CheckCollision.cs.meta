@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: ea315d9480a30d043b8271eb6ac5634f
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - loveGO: {fileID: 100000, guid: b8e690f7a85a3b74cae86c0ac10cf4bb, type: 3}
+  executionOrder: 300
+  icon: {instanceID: 0}
+  userData: 

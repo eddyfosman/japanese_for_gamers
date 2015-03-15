@@ -56,6 +56,7 @@ public class Rope : MonoBehaviour {
 		}
 		to = GameObject.Find ("TipPoint").transform.position;
 		if(shoot){
+//			GameObject.Find ("Rope").transform.position = position + (to - from);
 			GameObject.Find ("Rope").transform.position = position + (to - from);
 			Debug.Log("TIMEDELTA TIME " + Time.deltaTime);
 		}

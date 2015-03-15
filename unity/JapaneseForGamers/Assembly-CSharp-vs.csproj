@@ -46,24 +46,32 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Prefab.cs" />
-     <Compile Include="Assets\Puzzle.cs" />
+     <Compile Include="Assets\Scripts\BallScript.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
+     <Compile Include="Assets\Scripts\CharacterMovement.cs" />
+     <Compile Include="Assets\Scripts\CheckCollision.cs" />
+     <Compile Include="Assets\Scripts\Cube.cs" />
      <Compile Include="Assets\Scripts\EnemyHealthBar.cs" />
+     <Compile Include="Assets\Scripts\EyesBlink.cs" />
+     <Compile Include="Assets\Scripts\Flood.cs" />
+     <Compile Include="Assets\Scripts\GetF.cs" />
      <Compile Include="Assets\Scripts\MonsterFadeScript.cs" />
+     <Compile Include="Assets\Scripts\PaddleScript.cs" />
      <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
      <Compile Include="Assets\Scripts\PlayerCharacter1.cs" />
      <Compile Include="Assets\Scripts\PlayerHealthBar.cs" />
+     <Compile Include="Assets\Scripts\Prefab.cs" />
+     <Compile Include="Assets\Scripts\Puzzle.cs" />
      <Compile Include="Assets\Scripts\QuestionFadeScript.cs" />
      <Compile Include="Assets\Scripts\QuestionManager.cs" />
      <Compile Include="Assets\Scripts\Rope.cs" />
      <Compile Include="Assets\Scripts\StatusDialogScript.cs" />
+     <Compile Include="Assets\Scripts\Test.cs" />
      <Compile Include="Assets\Scripts\TimeBar.cs" />
-     <Compile Include="Assets\Test.cs" />
+     <Compile Include="Assets\Scripts\TipPoint.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
      <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
-     <Compile Include="Assets\TipPoint.cs" />
      <None Include="Assets\Tiled2Unity\Imported\4.tiled2unity.xml" />
      <None Include="Assets\Tiled2Unity\Prefabs\_ReadMe.txt" />
      <None Include="Assets\Tiled2Unity\Shaders\shaTiledMap.shader" />
