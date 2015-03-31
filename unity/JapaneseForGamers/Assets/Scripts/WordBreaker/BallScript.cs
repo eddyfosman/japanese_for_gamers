@@ -8,8 +8,10 @@ public class BallScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		foreach(Transform transform in GameObject.Find("love").transform){
 			transform.gameObject.AddComponent<MeshCollider>();
+			transform.gameObject.AddComponent<SelfDestroy>();
 			transform.gameObject.GetComponent<MeshCollider>().material = physBall ;
 		}
 
@@ -30,10 +32,18 @@ public class BallScript : MonoBehaviour {
 		{
 
 			
-			gameObject.rigidbody.AddForce( dir * 1.2f );
+			gameObject.rigidbody.AddForce( dir * Time.deltaTime);
 			Debug.Log ("GIA TRI 0 la " + dir);
 			Debug.Log ("GIA TRI 1 la " + (-dir * 1.2f));
-//			Debug.Log (gameObject.rigidbody.velocity.sqrMagnitude);	
+			Debug.Log (rigidbody.velocity);	
+		}
+
+		if( curSqrMag > 30f )
+		{
+			
+			
+			gameObject.rigidbody.AddForce( -dir );
+
 		}
 		
 //		if( curSqrMag > targetSqrMag )

@@ -3,18 +3,37 @@ using System.Collections;
 
 public class CharacterMovement : MonoBehaviour {
 
-	private Animator anim;
 	public Vector2 speed = new Vector2 (1, 0);
-	Vector3 worldPoint;
-	bool clicked = false;
-	bool collided = false;
-	Rigidbody rigid;
+	public float xMargin = 0.3f;
+	public float yMargin = 0.3f;
+
+	private Animator anim;
+
+	// the vector that we want to measure an angle from
+	private Vector3 referenceForward;	
+
+	private Vector3 worldPoint;
+	private bool clicked = false;
+	private bool collided = false;
+	private bool firstCal = true;
+	private Rigidbody rigid;
+	private MovementEnergy movementEnergyScript;
+
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
 		rigid = GetComponent<Rigidbody>();
+		movementEnergyScript = gameObject.GetComponent<MovementEnergy> ();
 	}
-	
+
+	bool CheckXMargin(){
+		return Mathf.Abs (worldPoint.x - gameObject.transform.position.x) < xMargin;
+	}
+
+	bool CheckYMargin(){
+		return Mathf.Abs (worldPoint.y - gameObject.transform.position.y) < yMargin;
+	}
+
 	// Update is called once per frame
 	void Update () {
 	
@@ -40,6 +59,7 @@ public class CharacterMovement : MonoBehaviour {
 			if(Input.GetMouseButtonDown(0)){
 				worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				clicked = true;
+				firstCal = true;
 				rigid.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
 				Debug.Log("CLICKED");
 			}
@@ -49,6 +69,7 @@ public class CharacterMovement : MonoBehaviour {
 			if(Input.touchCount > 0){
 				worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				clicked = true;
+				firstCal = true;
 				rigid.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
 			}
 		}
@@ -56,18 +77,28 @@ public class CharacterMovement : MonoBehaviour {
 
 
 		Vector3 movement;
-//		if(!clicked){
-//			movement = new Vector3 (speed.x * inputX, speed.y * inputY, 0 );
-//			movement *= Time.deltaTime;
-//		}
-//		else{
+		if(CheckXMargin() && CheckYMargin()){
+			movementEnergyScript.isMoving = false;
+		}
+		else{
+			movementEnergyScript.isMoving = true;
+		}
+		Debug.DrawRay(transform.position, new Vector3(worldPoint.x, worldPoint.y, 0) - transform.position, Color.red, 5.0f);
+
+		if(firstCal){
+			referenceForward = new Vector3(transform.position.x, 0f , 0f);
+			float angle = Vector3.Angle(new Vector3(worldPoint.x, worldPoint.y, 0) - transform.position, referenceForward);
+			Vector3 referenceRight = Vector3.Cross(Vector3.up, new Vector3(worldPoint.x, worldPoint.y, 0) - transform.position);
+			float sign = Mathf.Sign(Vector3.Dot(Vector3.Cross(new Vector3(worldPoint.x, worldPoint.y, 0) - transform.position, referenceForward), referenceRight));
 			
-//		}
-		Debug.DrawRay(transform.position, worldPoint - transform.position, Color.red, 1.0f);
-//		Debug.DrawRay(transform.position, movement - transform.position, Color.red, 1.0f);
-//		Debug.Log ("VI TRI GAMEOBJECT"+transform.position);
-//		Debug.Log ("VI TRI CHUOT"+worldPoint);
-//		Debug.Log ("HIEU 2 VECTOR"+movement);
+			float finalAngle = sign * angle;
+			Debug.DrawRay(transform.position, Vector3.Cross(Vector3.down, new Vector3(worldPoint.x, worldPoint.y, 0) - transform.position), Color.yellow, 5.0f);
+			Debug.Log (new Vector3(0f, transform.position.y, 0f));
+			Debug.Log ("GOC CUA 2 VECTOR " + angle);
+			Debug.Log ("GOC CUA 2 VECTOR THUC" + finalAngle);
+			firstCal = false;
+		}
+
 		rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
 //		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
 		movement = (worldPoint - transform.position) * Time.deltaTime * 50;
@@ -98,6 +129,8 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void OnCollisionExit(Collision collision) {
+
+//		worldPoint = transform.position;
 //		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
 		Debug.Log ("Khong VA CHAM NUA");
 	}
