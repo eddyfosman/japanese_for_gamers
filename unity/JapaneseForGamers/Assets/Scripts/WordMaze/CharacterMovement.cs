@@ -6,6 +6,7 @@ public class CharacterMovement : MonoBehaviour {
 	public Vector2 speed = new Vector2 (1, 0);
 	public float xMargin = 0.3f;
 	public float yMargin = 0.3f;
+	public bool is2D = false;
 
 	private Animator anim;
 
@@ -17,12 +18,19 @@ public class CharacterMovement : MonoBehaviour {
 	private bool collided = false;
 	private bool firstCal = true;
 	private Rigidbody rigid;
+	private Rigidbody2D rigid2d;
 	private MovementEnergy movementEnergyScript;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
-		rigid = GetComponent<Rigidbody>();
+		if(!is2D){
+			rigid = GetComponent<Rigidbody>();
+		}
+		else{
+			rigid2d = GetComponent<Rigidbody2D>();
+		}
+
 		movementEnergyScript = gameObject.GetComponent<MovementEnergy> ();
 	}
 
@@ -60,7 +68,10 @@ public class CharacterMovement : MonoBehaviour {
 				worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				clicked = true;
 				firstCal = true;
-				rigid.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
+				if(!is2D){
+					rigid.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
+				}
+
 				Debug.Log("CLICKED");
 			}
 		}
@@ -70,7 +81,10 @@ public class CharacterMovement : MonoBehaviour {
 				worldPoint = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 				clicked = true;
 				firstCal = true;
-				rigid.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
+				if(!is2D){
+					rigid.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX;
+				}
+
 			}
 		}
 
@@ -98,8 +112,10 @@ public class CharacterMovement : MonoBehaviour {
 			Debug.Log ("GOC CUA 2 VECTOR THUC" + finalAngle);
 			firstCal = false;
 		}
+		if(!is2D){
+			rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
+		}
 
-		rigid.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
 //		rigid.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY;
 		movement = (worldPoint - transform.position) * Time.deltaTime * 50;
 //		transform.position = Vector3.Lerp (transform.position, new Vector3(worldPoint.x,worldPoint.y,0),Time.deltaTime);
@@ -114,7 +130,12 @@ public class CharacterMovement : MonoBehaviour {
 			collided = false;
 			Debug.Log("FALSE");
 		}
-		rigid.velocity = new Vector3 (movement.x, movement.y,0f);
+		if(!is2D){
+			rigid.velocity = new Vector3 (movement.x, movement.y,0f);
+		}
+		else{
+			rigid2d.velocity = new Vector2(movement.x, movement.y);
+		}
 //		transform.Translate (new Vector3(movement.x, movement.y,0f));
 		clicked = false;
 

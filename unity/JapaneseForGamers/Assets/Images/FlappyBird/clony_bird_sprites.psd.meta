@@ -57,7 +57,7 @@ TextureImporter:
   textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
-    filterMode: -1
+    filterMode: 0
     aniso: 16
     mipBias: -1
     wrapMode: 1
@@ -133,8 +133,8 @@ TextureImporter:
         y: 199
         width: 26
         height: 135
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 7
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: clony_bird_sprites_14
       rect:
@@ -143,8 +143,8 @@ TextureImporter:
         y: 213
         width: 26
         height: 121
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 2
+      pivot: {x: .5, y: 1}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: clony_bird_sprites_15
       rect:
