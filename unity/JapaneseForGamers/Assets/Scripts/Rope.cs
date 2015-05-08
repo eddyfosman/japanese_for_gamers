@@ -9,7 +9,7 @@ public class Rope : MonoBehaviour {
 	bool a = false;
 	bool b = false;
 	bool c = false;
-	bool d = false;
+	public bool d = false;
 	public bool shoot = false;
 	public bool isPulling = false;
 	public bool isShooting = true;
@@ -24,7 +24,7 @@ public class Rope : MonoBehaviour {
 	Vector3 from;
 	Vector3 to;
 	Vector3 position;
-	Rigidbody2D grabberRigid2d;
+	public Rigidbody2D grabberRigid2d;
 	Vector2 direction;
 	Vector2 grabberCachedPos;
 	Transform grabberTransform;
@@ -33,7 +33,10 @@ public class Rope : MonoBehaviour {
 	public ParticleSystem particleSystem;
 	FairyFly fairyFlyScript;
 
-
+	public void FaceTheOtherWay(){
+		Debug.Log ("QUAY DAU 1 LAN");
+		grabberTransform.localScale = new Vector3(-grabberTransform.localScale.x, grabberTransform.localScale.y, grabberTransform.localScale.z);
+	}
 
 	bool CheckXMargin(){
 		return Mathf.Abs (grabberTransform.position.x - grabberCachedPos.x) < 0.3;
@@ -146,7 +149,8 @@ public class Rope : MonoBehaviour {
 
 			grabberRigid2d.velocity = Vector2.zero;
 			grabberTransform.position = grabberCachedPos;
-			grabberTransform.localScale = new Vector3(-grabberTransform.localScale.x, grabberTransform.localScale.y, grabberTransform.localScale.z);
+			FaceTheOtherWay ();
+			Debug.Log("MA SO 00000000000000004");
 			shoot = false;
 			kanjiManagerScript.isKanjiGrabbed = false;
 			storedGrabberPos = false;
@@ -197,12 +201,14 @@ public class Rope : MonoBehaviour {
 
 			if(isPulling){
 				isMissed = false;
-				grabberTransform.localScale = new Vector3(-grabberTransform.localScale.x, grabberTransform.localScale.y, grabberTransform.localScale.z);
+				FaceTheOtherWay();
+				Debug.Log("MA SO 00000000000000001");
 				return;
 			}
 			if(!d){
 				d = true;
-				grabberTransform.localScale = new Vector3(-grabberTransform.localScale.x, grabberTransform.localScale.y, grabberTransform.localScale.z);
+				FaceTheOtherWay();
+				Debug.Log("MA SO 00000000000000002");
 //				Debug.Log("CHAY VAO MAY LAN VAY");
 			}
 //			Debug.Log("CO VAO DAY KHONG THE");
@@ -218,7 +224,8 @@ public class Rope : MonoBehaviour {
 
 		if(isPulling){
 			if(!b){
-				grabberTransform.localScale = new Vector3(-grabberTransform.localScale.x, grabberTransform.localScale.y, grabberTransform.localScale.z);
+				FaceTheOtherWay();
+				Debug.Log("MA SO 00000000000000003");
 				grabberRigid2d.velocity *= 0.1f;
 				b = true;
 			}

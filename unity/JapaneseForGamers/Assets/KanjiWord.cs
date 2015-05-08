@@ -14,6 +14,7 @@ public class KanjiWord : MonoBehaviour {
 	float cachedY;
 	float multiplier = 0.2f;
 	KanjiManager kanjiManagerScript;
+	bool test = false;
 
 	void InstantiateStarDust(){
 		GameObject starDust = Instantiate (starParticle) as GameObject;
@@ -24,10 +25,16 @@ public class KanjiWord : MonoBehaviour {
 
 	IEnumerator CoolDown(){
 		onCD = false;
+		Debug.Log ("CHAY 5 GIAY BAT DAU");
 		yield return new WaitForSeconds (5f);
 		onCD = true;
+		Invoke ("DoThisAfter1Sec", 1f);
 		Debug.Log ("SAU 5 GIAY CHAY VAO DAY");
 
+	}
+
+	void DoThisAfter1Sec(){
+		test = false;
 	}
 
 	// Use this for initialization
@@ -45,17 +52,22 @@ public class KanjiWord : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!grabbed || isMoveable ){
-			if(Mathf.Abs(transform.position.y - cachedY) > 1.5f){
-
-				Debug.Log("BAT DAU CHO 5 GIAY");
-				multiplier *= -1;
-				StartCoroutine(CoolDown());
-
-
-
-			}
 			if(onCD){
 				transform.position = Vector3.Lerp(transform.position, (transform.position + Vector3.up * multiplier),10f * Time.deltaTime);
+				Debug.Log("DANG D CHUYEN DAY NE");
+			}
+
+			if((Mathf.Abs(transform.position.y - cachedY) > 1.5f) && !test){
+
+				Debug.Log("BAT DAU CHO 5 GIAY");
+				test = true;
+				multiplier *= -1;
+				if(onCD){
+					StartCoroutine(CoolDown());
+				}
+
+
+
 
 			}
 

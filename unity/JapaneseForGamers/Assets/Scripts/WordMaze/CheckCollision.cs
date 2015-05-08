@@ -9,6 +9,24 @@ public class CheckCollision : MonoBehaviour {
 
 
 
+	void OnTriggerStay2D(Collider2D other)
+	{
+		
+		
+		getFlood = true;
+		if (other.gameObject.name != null)
+		{
+			if(other.gameObject.name != "Ninja"){
+				gameObject.GetComponent<Cube>().isCollided = true;
+				
+				Debug.Log("THIET LAP TRUE");
+				Destroy(gameObject.GetComponent<CheckCollision>());
+				
+			}
+			
+		}
+	}
+
 	void OnTriggerStay(Collider other)
 	{
 

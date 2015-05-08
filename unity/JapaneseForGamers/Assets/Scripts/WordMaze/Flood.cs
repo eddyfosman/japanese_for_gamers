@@ -11,6 +11,7 @@ public class Flood : MonoBehaviour {
 	bool isDestroyed = false;
 	bool isFirst = false;
 	bool firstCube = true;
+	public bool isWordMaze2 = false;
 
 
 	IEnumerator WaitForChecking(){
@@ -82,8 +83,8 @@ public class Flood : MonoBehaviour {
 //		float x =	-4f +	j*0.8f;
 //		float y =  2.4f -	i*0.8f;
 
-		float x =	-18f +	j*1.8f;
-		float y =  21f -	i*1.8f;
+		float x =	-3.13f +	j*3.15f;
+		float y =  	11f	 -	i*2.2f;
 
 //		float x =	-7f +	j*2.8f;
 //		float y =  21.3f -	i*2.8f;
@@ -93,11 +94,21 @@ public class Flood : MonoBehaviour {
 		newGO.transform.position = new Vector3(x, y, 0f);
 		Vector3 temp = newGO.transform.localScale;
 		newGO.transform.localScale = new Vector3(temp.x * 7f, temp.y * 7f, temp.z * 7f);
-		newGO.AddComponent<BoxCollider>();
-		newGO.AddComponent<Rigidbody>();
+		if(!isWordMaze2){
+			newGO.AddComponent<BoxCollider>();
+			newGO.AddComponent<Rigidbody>();
+			
+			newGO.GetComponent<Rigidbody>().useGravity = false;
+			newGO.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+		}
+		else{
+			newGO.AddComponent<BoxCollider2D>();
+			newGO.AddComponent<Rigidbody2D>();
+			
+			newGO.GetComponent<Rigidbody2D>().gravityScale = 0f;
 
-		newGO.GetComponent<Rigidbody>().useGravity = false;
-		newGO.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX;
+		}
+
 		newGO.AddComponent<Cube>();
 		newGO.AddComponent<CheckCollision>();
 
@@ -113,8 +124,14 @@ public class Flood : MonoBehaviour {
 		Vector3 temp = newGO.transform.localScale;
 		Debug.Log("VAO DAY 9");
 		newGO.transform.localScale = new Vector3(temp.x * 7f, temp.y * 7f, temp.z * 7f);
-		newGO.AddComponent<BoxCollider>();
-		newGO.GetComponent<BoxCollider>().isTrigger = true;
+		if(!isWordMaze2){
+			newGO.AddComponent<BoxCollider>();
+			newGO.GetComponent<BoxCollider>().isTrigger = true;
+		}
+		else{
+			newGO.AddComponent<BoxCollider2D>();
+			newGO.GetComponent<BoxCollider2D>().isTrigger = true;
+		}
 		newGO.AddComponent<GetF>();
 	}
 
@@ -123,24 +140,49 @@ public class Flood : MonoBehaviour {
 		for(int d = 0; d < listCube.Count; d++){
 			Destroy(listCube[d]);
 		}
-		foreach(Transform transform in loveGO.transform){
-			
 
-			transform.gameObject.GetComponent<MeshCollider>().isTrigger = false;
-			
+
+		if(!isWordMaze2){
+			foreach(Transform transform in loveGO.transform){
+				
+				
+				transform.gameObject.GetComponent<MeshCollider>().isTrigger = false;
+				
+			}
 		}
+		else{
+			foreach(Transform transform in loveGO.transform){
+				
+				transform.gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+				transform.gameObject.GetComponent<EdgeCollider2D>().isTrigger = false;
+				
+			}
+		}
+
 		CreateFood ();
 	}
 
 	// Use this for initialization
 	void Start () {
-		loveGO = GameObject.Find ("love");
-		foreach(Transform transform in loveGO.transform){
-
-			transform.gameObject.AddComponent<MeshCollider>();
-			transform.gameObject.GetComponent<MeshCollider>().isTrigger = true;
-			
+		if(!isWordMaze2){
+			loveGO = GameObject.Find ("love");
+			foreach(Transform transform in loveGO.transform){
+				
+				transform.gameObject.AddComponent<MeshCollider>();
+				transform.gameObject.GetComponent<MeshCollider>().isTrigger = true;
+				
+			}
 		}
+		else{
+			loveGO = GameObject.Find("AutoTileSet");
+			foreach(Transform transform in loveGO.transform){
+
+				transform.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+				transform.gameObject.GetComponent<EdgeCollider2D>().isTrigger = true;
+
+			}
+		}
+
 
 		for(int a = 0; a < N; a++){
 			for(int b = 0; b < N; b++){

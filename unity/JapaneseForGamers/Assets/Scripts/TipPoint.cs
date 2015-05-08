@@ -26,7 +26,7 @@ public class TipPoint : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		ropeScript = GameObject.Find ("Hand_L").GetComponent<Rope>();;
+		ropeScript = GameObject.Find ("Hand_L").GetComponent<Rope>();
 	}
 	
 	// Update is called once per frame
