@@ -2,7 +2,11 @@
 using System.Collections;
 
 public class KanjiWord : MonoBehaviour {
-	bool isMoveable = false;
+	public bool isMoveable = false;
+
+	float speedMultiplier;
+	public float SpeedMultiplier{ get; set;}
+
 	bool onCD = true;
 	bool switchCo = false;
 	public bool grabbed = false;

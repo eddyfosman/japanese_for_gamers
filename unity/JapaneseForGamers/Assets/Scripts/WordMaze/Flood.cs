@@ -1,6 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using LitJson;
+
+public class PostitionBean1{
+
+//	int idX;
+//	public int IdX{ set; get;}
+//
+//	int idY;
+//	public int IdY{ set; get;}
+
+	float posX;
+	public float PosX{ set; get;}
+
+	float posY;
+	public float PosY{ set; get;}
+
+//	float posZ;
+//	public float PosZ{ set; get;}
+
+
+
+}
 
 public class Flood : MonoBehaviour {
 	public Camera camera;
@@ -12,7 +34,10 @@ public class Flood : MonoBehaviour {
 	bool isFirst = false;
 	bool firstCube = true;
 	public bool isWordMaze2 = false;
+	PostitionBean1 posObject;
 
+
+	List<Vector3> listPos2 = new List<Vector3>();
 
 	IEnumerator WaitForChecking(){
 		while(!cube.GetComponent<CheckCollision>().getFlood){
@@ -27,6 +52,19 @@ public class Flood : MonoBehaviour {
 	List<Vector2> check = new List<Vector2>();
 	List<GameObject> listCube = new List<GameObject>();
 	List<Vector3> listPos = new List<Vector3>();
+
+	void GetData(){
+		TextAsset jsonFile = Resources.Load ("wordmazedata") as TextAsset;
+		JsonData jsonPos = JsonMapper.ToObject (jsonFile.text);
+		for(int i = 0;i < jsonPos["pos"].Count; i ++){
+			posObject = new PostitionBean1();
+			posObject.PosX = float.Parse(jsonPos["pos"][i]["posx"].ToString());
+			posObject.PosY = float.Parse(jsonPos["pos"][i]["posy"].ToString());
+			Vector3 posv3 = new Vector3(posObject.PosX, posObject.PosY, 0f);
+			listPos2.Add(posv3);
+		}
+	}
+
 
 	void CheckFlood(int i, int j){
 
@@ -119,7 +157,9 @@ public class Flood : MonoBehaviour {
 		Debug.Log("VAO DAY 6");
 		GameObject newGO = Instantiate (Cube) as GameObject;
 		Debug.Log("VAO DAY 7");
-		newGO.transform.position = listPos[Random.Range(0, listPos.Count)];
+		//dong nay de dung cho AI flood
+//		newGO.transform.position = listPos[Random.Range(0, listPos.Count)];
+		newGO.transform.position = listPos2[Random.Range(0, listPos2.Count)];
 		Debug.Log("VAO DAY 8");
 		Vector3 temp = newGO.transform.localScale;
 		Debug.Log("VAO DAY 9");
@@ -164,6 +204,7 @@ public class Flood : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		GetData ();
 		if(!isWordMaze2){
 			loveGO = GameObject.Find ("love");
 			foreach(Transform transform in loveGO.transform){
