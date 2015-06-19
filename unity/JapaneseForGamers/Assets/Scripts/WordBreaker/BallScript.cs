@@ -11,6 +11,8 @@ public class BallScript : MonoBehaviour {
 	public PhysicMaterial physBall;
 	float targetSqrMag = 25.0f;
 	float ballSpeed = 200f;
+	int a;
+
 
 
 	bool CheckXOffset(){
@@ -30,6 +32,7 @@ public class BallScript : MonoBehaviour {
 //		}
 
 		paddle1 = GameObject.FindGameObjectWithTag ("Paddle1");
+
 //		GetComponent<Rigidbody>().AddForce (0f, 300f, 0f);
 
 //		Debug.Log (gameObject.GetComponent<Rigidbody>().velocity.sqrMagnitude);	
@@ -37,7 +40,15 @@ public class BallScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+//		Debug.Log ("Gia tri cua a la: " + a );
+		if(0 == a){
+			GetComponent<Rigidbody>().AddForce (4f, 0, 0f);
+		}else{
+			GetComponent<Rigidbody>().AddForce (-4f, 0, 0f);
+		}
 
+
+//		GetComponent<Rigidbody>().AddForce( 10f*Vector3.Cross(GetComponent<Rigidbody>().velocity,GetComponent<Rigidbody>().angularVelocity), ForceMode.Force);
 //		iTween.PutOnPath(gameObject, iTweenPath.GetPath("Gamba1"), .5);
 
 		if(!isFirstLaunch){
@@ -82,7 +93,17 @@ public class BallScript : MonoBehaviour {
 		
 	}
 
+	void OnCollisionEnter(Collision other){
+		if(other.gameObject.name == "TopWall" || other.gameObject.name == "RightWall" || other.gameObject.name == "LeftWall"){
+			Debug.Log ("CO CHAY VAO DAY KHONG");
+			
+			a = Random.Range (0,2);
+		}
+	}
+
+
 	void OnTriggerEnter(Collider other){
+
 		if(other.tag == "Brick"){
 			other.gameObject.GetComponent<SelfDestroy>().hitPoints = 0;
 			other.gameObject.GetComponent<SelfDestroy>().DoBeforeDestroy();

@@ -1,10 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WordBreaker\BallScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\WordBreaker\BallScript.cs" Line="40" Column="3" />
-      <File FileName="Assets\PaddleManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\WordBreaker\PaddleScript.cs" Line="98" Column="7" />
+      <File FileName="Assets\Scripts\WordBreaker\BallScript.cs" Line="97" Column="100" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
