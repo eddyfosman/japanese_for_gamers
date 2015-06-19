@@ -88,11 +88,21 @@ public class CharacterMovement : MonoBehaviour {
 			}
 		}
 
-
+		if(worldPoint.x > gameObject.transform.position.x){
+			anim.SetBool("walking", true);
+			anim.SetFloat ("SpeedX", 1f);
+			anim.SetFloat ("LastMoveX", 1f);
+		}
+		else if(worldPoint.x < gameObject.transform.position.x){
+			anim.SetBool("walking", true);
+			anim.SetFloat ("SpeedX", -1f);
+			anim.SetFloat ("LastMoveX", -1f);
+		}
 
 		Vector3 movement;
 		if(CheckXMargin() && CheckYMargin()){
 			movementEnergyScript.isMoving = false;
+			anim.SetBool("walking", false);
 		}
 		else{
 			movementEnergyScript.isMoving = true;

@@ -13,7 +13,7 @@ public class GetF : MonoBehaviour {
 			//			floodScript.CreateFood();
 			//			Destroy(gameObject.collider);
 			
-			gameObject.renderer.enabled = false;
+			gameObject.GetComponent<Renderer>().enabled = false;
 			Debug.Log("VAO DAY 3");
 			Destroy(gameObject.GetComponent<CheckCollision>());
 			Debug.Log("VAO DAY 4");
@@ -35,7 +35,7 @@ public class GetF : MonoBehaviour {
 			//			floodScript.CreateFood();
 			//			Destroy(gameObject.collider);
 			
-			gameObject.renderer.enabled = false;
+			gameObject.GetComponent<Renderer>().enabled = false;
 			Debug.Log("VAO DAY 3");
 			Destroy(gameObject.GetComponent<CheckCollision>());
 			Debug.Log("VAO DAY 4");

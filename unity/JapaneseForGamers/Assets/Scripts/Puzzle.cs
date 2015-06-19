@@ -68,7 +68,7 @@ public class Puzzle : MonoBehaviour {
 					{
 						toDrag.position = oriPos;
 						foreach(Transform transform in toDrag.transform){
-							Destroy(transform.collider);
+							Destroy(transform.GetComponent<Collider>());
 
 						}
 						distance = dist;
@@ -130,7 +130,7 @@ public class Puzzle : MonoBehaviour {
 						{
 							toDrag.position = oriPos;
 							foreach(Transform transform in toDrag.transform){
-								Destroy(transform.collider);
+								Destroy(transform.GetComponent<Collider>());
 								
 							}
 							distance = dist;

@@ -31,8 +31,8 @@ public class Prefab : MonoBehaviour {
 					if(hit.collider.name == listChildCurStroke[j].name){
 						
 						Debug.Log ("I'm hitting "+ listChildCurStroke[j].name);
-						listChildCurStroke[j].gameObject.GetComponent<MeshRenderer>().renderer.material = clickedMaterial;
-						Destroy (listChildCurStroke[j].collider);
+						listChildCurStroke[j].gameObject.GetComponent<MeshRenderer>().GetComponent<Renderer>().material = clickedMaterial;
+						Destroy (listChildCurStroke[j].GetComponent<Collider>());
 						if(j < listChildCurStroke.Count - 1 ){
 							j++;
 						}
@@ -45,7 +45,7 @@ public class Prefab : MonoBehaviour {
 								
 								if(child.name.StartsWith("S" + i + ".")){
 									listChildCurStroke.Add(child);
-									child.renderer.enabled = true;
+									child.GetComponent<Renderer>().enabled = true;
 								}
 								
 								
@@ -66,8 +66,8 @@ public class Prefab : MonoBehaviour {
 						if(hit.collider.name == listChildCurStroke[j].name && !touched){
 							
 							Debug.Log ("I'm hitting "+ listChildCurStroke[j].name);
-							listChildCurStroke[j].gameObject.GetComponent<MeshRenderer>().renderer.material = clickedMaterial;
-							Destroy (listChildCurStroke[j].collider);
+							listChildCurStroke[j].gameObject.GetComponent<MeshRenderer>().GetComponent<Renderer>().material = clickedMaterial;
+							Destroy (listChildCurStroke[j].GetComponent<Collider>());
 							if(j < listChildCurStroke.Count - 1 ){
 								j++;
 							}
@@ -80,7 +80,7 @@ public class Prefab : MonoBehaviour {
 									
 									if(child.name.StartsWith("S" + i + ".")){
 										listChildCurStroke.Add(child);
-										child.renderer.enabled = true;
+										child.GetComponent<Renderer>().enabled = true;
 									}
 									
 									
@@ -123,7 +123,7 @@ public class Prefab : MonoBehaviour {
 				listChildCurStroke.Add(child);
 			}
 			if(!child.name.StartsWith("S" + i + ".")){
-				child.renderer.enabled = false;
+				child.GetComponent<Renderer>().enabled = false;
 			}
 
 		}

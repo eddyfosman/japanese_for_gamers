@@ -14,12 +14,12 @@ public class AutoTileSetQuad : AutoTile {
 	
 	override protected void UpdateDisplay() {
 		if (tempMaterial==null) {
-			tempMaterial = new Material(renderer.sharedMaterial);
+			tempMaterial = new Material(GetComponent<Renderer>().sharedMaterial);
 		}
-		tempMaterial.mainTexture=renderer.sharedMaterial.mainTexture;
+		tempMaterial.mainTexture=GetComponent<Renderer>().sharedMaterial.mainTexture;
 		tempMaterial.mainTextureScale=new Vector2(1f/8f,1f/6f);
 		tempMaterial.mainTextureOffset=new Vector2(1f/8f*sx,1f/6f*sy);
-		tempMaterial.shader=renderer.sharedMaterial.shader;
+		tempMaterial.shader=GetComponent<Renderer>().sharedMaterial.shader;
 		if (autoTileMode==AutoTileMode.Corner) {
 			if (tilesetVariations_Squared.Length>0) {
 				tempMaterial.mainTexture=tilesetVariations_Squared.PickElement();
@@ -29,7 +29,7 @@ public class AutoTileSetQuad : AutoTile {
 				tempMaterial.mainTexture=tilesetVariations_Sloped.PickElement();
 			}
 		}
-		tempMaterial.mainTexture=renderer.sharedMaterial.mainTexture;
+		tempMaterial.mainTexture=GetComponent<Renderer>().sharedMaterial.mainTexture;
 		
 		if (autoTileMode==AutoTileMode.Corner) {
 			if (tilesetSquaredNormalMap!=null) {
@@ -43,8 +43,8 @@ public class AutoTileSetQuad : AutoTile {
 		tempMaterial.SetTextureScale ("_BumpMap", new Vector2(1f/8f,1f/6f));
 		tempMaterial.SetTextureOffset("_BumpMap", new Vector2(1f/8f*sx,1f/6f*sy));
 		
-		tempMaterial.shader=renderer.sharedMaterial.shader;
-		renderer.sharedMaterial = tempMaterial;
+		tempMaterial.shader=GetComponent<Renderer>().sharedMaterial.shader;
+		GetComponent<Renderer>().sharedMaterial = tempMaterial;
 	}
 	 
 }

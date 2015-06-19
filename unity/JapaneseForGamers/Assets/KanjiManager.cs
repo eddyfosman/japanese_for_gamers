@@ -69,15 +69,25 @@ public class KanjiManager : MonoBehaviour {
 			posObject.Option["speed"] = jsonItem["items"][i]["options"][0]["speed"].ToString();
 			itemWordMiner.Add(posObject);
 		}
+
+		InstantiateItemInMap ();
 	}
 
 	void InstantiateItemInMap(){
 		foreach(PositionBean posObject in itemWordMiner){
 			if(posObject.Type == "word"){
 				GameObject newWordItem = Instantiate (wordItem) as GameObject;
+				newWordItem.transform.position = new Vector3(posObject.XPos, posObject.YPos, 0f);
 				kanjiWordScript = newWordItem.GetComponent<KanjiWord>();
 				kanjiWordScript.isMoveable = bool.Parse(posObject.Option["moving"]);
-				kanjiWordScript.SpeedMultiplier = float.Parse(posObject.);
+				kanjiWordScript.SpeedMultiplier = float.Parse(posObject.Option["speed"]);
+				kanjiWordScript.Direction = float.Parse(posObject.Option["direction"]);
+				kanjiWordScript.TimeDelay = float.Parse(posObject.Option["delay"]);
+				kanjiWordScript.InvokeTime = float.Parse(posObject.Option["timeinvoke"]);
+			}
+			else if(posObject.Type == "tnt"){
+				GameObject tnt = Instantiate(explosion) as GameObject;
+				tnt.transform.position = new Vector3(posObject.XPos, posObject.YPos, 0f);
 			}
 		}
 	}
@@ -131,6 +141,8 @@ public class KanjiManager : MonoBehaviour {
 		foreach(GameObject go in wordList){
 			wordList2.Add(go);
 		}
+
+		GetItemDataFromJson ();
 	}
 	
 	// Update is called once per frame

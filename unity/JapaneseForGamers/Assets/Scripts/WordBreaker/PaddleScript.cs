@@ -5,10 +5,12 @@ public class PaddleScript : MonoBehaviour {
 
 	public Animator anim;
 	public Transform swappingFaceTransform;
-
+	PaddleManager paddleManagerScript;
 	private int attackID = Animator.StringToHash("attack");
 	private int attackTypeID = Animator.StringToHash("attackType");
-	private bool isFacingLeft = true;
+	public bool isFacingLeft = true;
+	PaddleScript paddle1Script;
+	float movingSpeed = 10f;
 
 	#region Facing
 	public void FaceLeft(){
@@ -34,32 +36,113 @@ public class PaddleScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		renderer.enabled = false;
+		GetComponent<Renderer>().enabled = false;
+		paddleManagerScript = GameObject.Find ("PaddleManager").GetComponent<PaddleManager>();
+		if(gameObject.tag != "Paddle1"){
+			paddle1Script = GameObject.FindGameObjectWithTag("Paddle1").GetComponent<PaddleScript>();
+		}
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetAxis("Horizontal") < 0){
-			transform.Translate(-10f * Time.deltaTime, 0f, 0f);
+		if(paddleManagerScript.paddleCount > 1){
+
+
+			if(gameObject.tag == "Paddle3" && paddleManagerScript.paddleCount > 3){
+				if(Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Paddle4").transform.position.x) > 0f){
+					GameObject.FindGameObjectWithTag("Paddle4").transform.position = new Vector3(gameObject.GetComponent<Collider>().bounds.size.x + transform.position.x, transform.position.y, transform.position.z);
+				}
+			}
+			if(gameObject.tag == "Paddle1"){
+				if(Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Paddle2").transform.position.x) > 0f){
+					GameObject.FindGameObjectWithTag("Paddle2").transform.position = new Vector3(gameObject.GetComponent<Collider>().bounds.size.x + transform.position.x, transform.position.y, transform.position.z);
+				}
+			}
+			if(gameObject.tag == "Paddle2" && paddleManagerScript.paddleCount > 2){
+				if(Mathf.Abs(transform.position.x - GameObject.FindGameObjectWithTag("Paddle3").transform.position.x) > 0f){
+					GameObject.FindGameObjectWithTag("Paddle3").transform.position = new Vector3(gameObject.GetComponent<Collider>().bounds.size.x + transform.position.x, transform.position.y, transform.position.z);
+				}
+			}
+		}
+		if(transform.position.x < -7.28f){
+//			transform.position = new Vector3(-7.28f, transform.position.y, transform.position.z);
+//			return;
+			paddleManagerScript.reachedLeft = true;
 		}
 
-		if(Input.GetAxis("Horizontal") > 0){
-			transform.Translate(10f * Time.deltaTime, 0f, 0f);
+
+
+		if(transform.position.x > 7.3f){
+//			transform.position = new Vector3(7.33f, transform.position.y, transform.position.z);
+//			return;
+			paddleManagerScript.reachedRight = true;
 		}
 
-		if(transform.position.x < -0.2f){
-			FaceLeft();
+		if(Input.GetMouseButton(0)){
+			Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			if(paddle1Script != null){
+				if(paddle1Script.isFacingLeft){
+					FaceLeft();
+				}
+				else{
+					FaceRight();
+				}
+			}
+
+			if(mousePos.x > transform.position.x && !paddleManagerScript.reachedRight){
+				if(Mathf.Abs(mousePos.x - transform.position.x) > 0.5f){
+					transform.Translate(movingSpeed * Time.deltaTime, 0f, 0f);
+					if(paddle1Script == null){
+						FaceRight();
+					}
+
+					paddleManagerScript.reachedLeft = false;
+				}
+
+			}
+			if(mousePos.x < transform.position.x && !paddleManagerScript.reachedLeft){
+				if(Mathf.Abs(mousePos.x - transform.position.x) > 0.5f){
+					transform.Translate(-movingSpeed * Time.deltaTime, 0f, 0f);
+					if(paddle1Script == null){
+						FaceLeft();
+					}
+
+					paddleManagerScript.reachedRight = false;
+				}
+
+			}
 		}
-		else if(transform.position.x > -0.2f){
+
+		if(Input.GetAxis("Horizontal") > 0 && !paddleManagerScript.reachedRight){
+			transform.Translate(movingSpeed * Time.deltaTime, 0f, 0f);
 			FaceRight();
+			paddleManagerScript.reachedLeft = false;
 		}
+
+		if(Input.GetAxis("Horizontal") < 0 && !paddleManagerScript.reachedLeft){
+			transform.Translate(-movingSpeed * Time.deltaTime, 0f, 0f);
+			FaceLeft();
+			paddleManagerScript.reachedRight = false;
+		}
+
+
+
+
 	}
 
 	void OnCollisionEnter(Collision col){
 		foreach(ContactPoint contact in col.contacts){
-			if(contact.thisCollider == collider){
+			if(contact.thisCollider == GetComponent<Collider>()){
 				float english = contact.point.x - transform.position.x;
-				contact.otherCollider.rigidbody.AddForce(10f * english, 0, 0);
+				if((-0.5f >= english && -0.3f < english) || (0.5f <= english && 0.3f > english)){
+					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 200f, 0);
+				}
+				else{
+					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 0, 0);
+				}
+
+//				Debug.Log("ENGLISH LA : " + english);
 				anim.SetFloat( attackTypeID, UnityEngine.Random.Range(0, 2) );
 				anim.SetTrigger( attackID );
 			}

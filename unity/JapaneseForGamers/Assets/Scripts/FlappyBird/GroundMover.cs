@@ -14,7 +14,7 @@ public class GroundMover : MonoBehaviour {
 			return;
 		}
 		
-		player = player_go.rigidbody2D;
+		player = player_go.GetComponent<Rigidbody2D>();
 		
 
 	}

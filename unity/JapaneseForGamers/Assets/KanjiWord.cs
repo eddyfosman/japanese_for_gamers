@@ -7,6 +7,15 @@ public class KanjiWord : MonoBehaviour {
 	float speedMultiplier;
 	public float SpeedMultiplier{ get; set;}
 
+	float delay;
+	public float TimeDelay{ get; set;}
+
+	float direction;
+	public float Direction{ get; set;}
+
+	float invokeTime;
+	public float InvokeTime{ get; set;}
+
 	bool onCD = true;
 	bool switchCo = false;
 	public bool grabbed = false;
@@ -30,9 +39,9 @@ public class KanjiWord : MonoBehaviour {
 	IEnumerator CoolDown(){
 		onCD = false;
 		Debug.Log ("CHAY 5 GIAY BAT DAU");
-		yield return new WaitForSeconds (5f);
+		yield return new WaitForSeconds (TimeDelay);
 		onCD = true;
-		Invoke ("DoThisAfter1Sec", 1f);
+		Invoke ("DoThisAfter1Sec", InvokeTime);
 		Debug.Log ("SAU 5 GIAY CHAY VAO DAY");
 
 	}
@@ -57,7 +66,7 @@ public class KanjiWord : MonoBehaviour {
 	void Update () {
 		if(!grabbed || isMoveable ){
 			if(onCD){
-				transform.position = Vector3.Lerp(transform.position, (transform.position + Vector3.up * multiplier),10f * Time.deltaTime);
+				transform.position = Vector3.Lerp(transform.position, (transform.position + Vector3.up * multiplier * direction ),10f * Time.deltaTime);
 				Debug.Log("DANG D CHUYEN DAY NE");
 			}
 

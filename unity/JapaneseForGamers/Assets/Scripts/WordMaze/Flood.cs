@@ -90,7 +90,7 @@ public class Flood : MonoBehaviour {
 
 		if(cube.GetComponent<Cube>().isCollided){
 
-			cube.renderer.enabled = false;
+			cube.GetComponent<Renderer>().enabled = false;
 //			Destroy(cube);
 			Debug.Log("XOA CUBE");
 
@@ -102,7 +102,7 @@ public class Flood : MonoBehaviour {
 
 
 			
-				cube.renderer.enabled = true;
+				cube.GetComponent<Renderer>().enabled = true;
 				listPos.Add(cube.transform.position);
 //				Destroy(cube);
 			
@@ -128,7 +128,7 @@ public class Flood : MonoBehaviour {
 //		float y =  21.3f -	i*2.8f;
 
 		GameObject newGO = Instantiate (Cube) as GameObject;
-		newGO.renderer.enabled = false;
+		newGO.GetComponent<Renderer>().enabled = false;
 		newGO.transform.position = new Vector3(x, y, 0f);
 		Vector3 temp = newGO.transform.localScale;
 		newGO.transform.localScale = new Vector3(temp.x * 7f, temp.y * 7f, temp.z * 7f);

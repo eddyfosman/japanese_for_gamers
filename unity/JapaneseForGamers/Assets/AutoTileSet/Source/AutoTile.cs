@@ -44,7 +44,7 @@ public class AutoTile : MonoBehaviour {
 	}
 	
 	public void OnDestroy() {
-		collider2D.enabled=false;
+		GetComponent<Collider2D>().enabled=false;
 		UpdateTile();
 	}
 	

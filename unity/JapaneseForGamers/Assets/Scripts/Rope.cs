@@ -237,7 +237,7 @@ public class Rope : MonoBehaviour {
 						KanjiWord kanjiWordScript = go.GetComponent<KanjiWord>();
 						if(kanjiWordScript.grabbed){
 							
-							go.renderer.enabled = false;
+							go.GetComponent<Renderer>().enabled = false;
 							
 							Destroy(go);
 						}

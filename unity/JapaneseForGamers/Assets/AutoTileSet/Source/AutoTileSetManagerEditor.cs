@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
-using System.Collections;
+#endif
 
+using System.Collections;
+#if UNITY_EDITOR
 [CustomEditor(typeof(AutoTileSetManager))]
+
 public class AutoTileSetManagerEditor : Editor {
 
 	System.Action TileTool;
@@ -136,3 +140,4 @@ public class AutoTileSetManagerEditor : Editor {
 		Tools.current=savedTool;
 	}
 }
+#endif

@@ -30,21 +30,21 @@ public class BirdMovement : MonoBehaviour {
 		if (dead)
 			return;
 
-		rigidbody2D.AddForce (Vector2.right * forwardSpeed);
+		GetComponent<Rigidbody2D>().AddForce (Vector2.right * forwardSpeed);
 
 		if(didFlap){
-			rigidbody2D.AddForce (Vector2.up * flapSpeed);
+			GetComponent<Rigidbody2D>().AddForce (Vector2.up * flapSpeed);
 
 			animator.SetTrigger("DoFlap");
 
 			didFlap = false;
 		}
 
-		if (rigidbody2D.velocity.y > 0) {
+		if (GetComponent<Rigidbody2D>().velocity.y > 0) {
 //			transform.rotation = Quaternion.Euler(0, 0, 0);
 		}
 		else{
-			float angle = Mathf.Lerp(0, -90, -rigidbody2D.velocity.y / 3f);
+			float angle = Mathf.Lerp(0, -90, -GetComponent<Rigidbody2D>().velocity.y / 3f);
 //			transform.rotation = Quaternion.Euler(0, 0, angle);
 		}
 

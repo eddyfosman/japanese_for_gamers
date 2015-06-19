@@ -1,11 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\KanjiManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WordBreaker\BallScript.cs">
     <Files>
-      <File FileName="Assets\KanjiManager.cs" Line="80" Column="1" />
-      <File FileName="Assets\KanjiWord.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\WordMaze\Flood.cs" Line="1" Column="1" />
-      <File FileName="Assets\Resources\wordminerjson.json" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\WordBreaker\BallScript.cs" Line="40" Column="3" />
+      <File FileName="Assets\PaddleManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\WordBreaker\PaddleScript.cs" Line="98" Column="7" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
