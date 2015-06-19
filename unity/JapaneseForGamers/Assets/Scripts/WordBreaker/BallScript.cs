@@ -38,7 +38,7 @@ public class BallScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		iTween.PutOnPath(gameObject, iTweenPath.GetPath("Gamba1"), .5);
+//		iTween.PutOnPath(gameObject, iTweenPath.GetPath("Gamba1"), .5);
 
 		if(!isFirstLaunch){
 			if(Input.GetMouseButtonDown(0)){
