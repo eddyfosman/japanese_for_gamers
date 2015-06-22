@@ -42,9 +42,9 @@ public class BallScript : MonoBehaviour {
 	void Update () {
 //		Debug.Log ("Gia tri cua a la: " + a );
 		if(0 == a){
-			GetComponent<Rigidbody>().AddForce (4f, 0, 0f);
+//			GetComponent<Rigidbody>().AddForce (4f, 0, 0f);
 		}else{
-			GetComponent<Rigidbody>().AddForce (-4f, 0, 0f);
+//			GetComponent<Rigidbody>().AddForce (-4f, 0, 0f);
 		}
 
 
@@ -94,11 +94,11 @@ public class BallScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other){
-		if(other.gameObject.name == "TopWall" || other.gameObject.name == "RightWall" || other.gameObject.name == "LeftWall"){
-			Debug.Log ("CO CHAY VAO DAY KHONG");
-			
-			a = Random.Range (0,2);
-		}
+//		if(other.gameObject.name == "TopWall" || other.gameObject.name == "RightWall" || other.gameObject.name == "LeftWall"){
+//			Debug.Log ("CO CHAY VAO DAY KHONG");
+//			
+//			a = Random.Range (0,2);
+//		}
 	}
 
 

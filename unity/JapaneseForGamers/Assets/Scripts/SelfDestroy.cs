@@ -5,13 +5,15 @@ public class SelfDestroy : MonoBehaviour {
 	public int hitPoints = 1;
 	public GameObject clone;
 	public GameObject word;
-
+	MapController mapControllerScript;
 	public GameObject powerup;
+	MeshCollider mesh;
 
 
 	// Use this for initialization
 	void Start () {
-	
+		mapControllerScript = GameObject.FindGameObjectWithTag("Map").GetComponent<MapController>();
+		mesh = gameObject.GetComponent<MeshCollider>();
 	}
 	
 	// Update is called once per frame
@@ -64,7 +66,11 @@ public class SelfDestroy : MonoBehaviour {
 		hitPoints--;
 		if(hitPoints <= 0){
 			CreateWord();
-			Destroy (gameObject);
+			if(!mapControllerScript.isLastStroke){
+				mapControllerScript.CallNextStrokeAfter1Sec();
+			}
+
+			Destroy (mesh);
 		}
 	}
 

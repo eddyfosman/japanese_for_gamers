@@ -1,8 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WordBreaker\BallScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Plugins\Pixelplacement\iTween\Sample\RotateSample.cs">
     <Files>
-      <File FileName="Assets\Scripts\WordBreaker\BallScript.cs" Line="97" Column="100" />
+      <File FileName="Assets\MapController.cs" Line="11" Column="9" />
+      <File FileName="Assets\iTweenExamples\MemoryGame\Scripts\BoardControl.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\WordBreaker\BallScript.cs" Line="101" Column="6" />
+      <File FileName="Assets\iTweenExamples\RandomPathGeneration\Scripts\CameraFollow.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraFollow.cs" Line="1" Column="1" />
+      <File FileName="Assets\iTweenExamples\AnimatingGUITextures\Scripts\PresentationScreen.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\SelfDestroy.cs" Line="70" Column="17" />
+      <File FileName="Assets\Plugins\Pixelplacement\iTween\Sample\RotateSample.cs" Line="7" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
