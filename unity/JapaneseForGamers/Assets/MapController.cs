@@ -8,7 +8,8 @@ public class MapController : MonoBehaviour {
 	Transform[] listStroke = new Transform[20];
 	public int strokeOrder = 1;
 	public bool isLastStroke = false;
-
+	public List<Vector3> listPos = new List<Vector3>(); 
+	public int currentStroke = 2;
 	public void NextStroke(){
 		strokeOrder += 1;
 		if((strokeOrder - 1 ) < listStroke2.Count){
@@ -28,6 +29,24 @@ public class MapController : MonoBehaviour {
 		foreach(Transform child in transform){
 			if(child != null){
 				listStroke2.Add(child);
+//				Debug.Log("VI TRI CUA " + child.name + " LA : " + child.transform.TransformPoint(child.gameObject));
+				Mesh mesh = child.gameObject.GetComponent<MeshFilter>().mesh;
+				Vector3[] vertices = mesh.vertices;
+
+				int i = 0;
+				while (i < vertices.Length) {
+					if(i == vertices.Length/2){
+						Vector3 worldPt = transform.TransformPoint(vertices[i]);
+						Debug.Log("VI TRI CUA " + child.name + " LA : " + child.transform.TransformPoint(worldPt));
+						listPos.Add(worldPt);
+					}
+
+
+//					vertices[i] += Vector3.up * Time.deltaTime;
+					i++;
+				}
+				mesh.vertices = vertices;
+				mesh.RecalculateBounds();
 				if(child.name != "S1"){
 					child.gameObject.SetActive(false);
 				}

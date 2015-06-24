@@ -8,12 +8,17 @@ public class SelfDestroy : MonoBehaviour {
 	MapController mapControllerScript;
 	public GameObject powerup;
 	MeshCollider mesh;
+	public static int numberDestroy = 0;
+	Vector3 wordPos;
 
 
 	// Use this for initialization
 	void Start () {
+		Debug.Log ("DA CHAY CAI NAY CHUA THE NHI");
 		mapControllerScript = GameObject.FindGameObjectWithTag("Map").GetComponent<MapController>();
 		mesh = gameObject.GetComponent<MeshCollider>();
+
+
 	}
 	
 	// Update is called once per frame
@@ -22,7 +27,17 @@ public class SelfDestroy : MonoBehaviour {
 	}
 
 	void CreateWord(){
-		GameObject wordBonus = Instantiate (word, transform.parent.localPosition, Quaternion.Euler(0f, 0f, 0f)) as GameObject;
+		numberDestroy++;
+
+		mapControllerScript.currentStroke = numberDestroy + 1;
+
+
+
+		Debug.Log("THU TU CUA NET VE TRONG SELFDESTROY LA : " + mapControllerScript.currentStroke);
+		wordPos = new Vector3 (mapControllerScript.listPos[numberDestroy-1].x, mapControllerScript.listPos[numberDestroy-1].y, mapControllerScript.listPos[numberDestroy-1].z);
+//		wordPos = new Vector3 (0.3f,  4.4f, 1f);
+
+		GameObject wordBonus = Instantiate (word, wordPos, Quaternion.Euler(0f, 0f, 0f)) as GameObject;
 
 		int rnd = Random.Range (5, 10);
 		Sprite myFruit;

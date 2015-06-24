@@ -10,8 +10,9 @@ public class BallScript : MonoBehaviour {
 	public GameObject paddle1;
 	public PhysicMaterial physBall;
 	float targetSqrMag = 25.0f;
-	float ballSpeed = 200f;
+	float ballSpeed = 1000f;
 	int a;
+	PaddleScript paddleScript;
 
 
 

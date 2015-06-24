@@ -8,6 +8,7 @@ public class PaddleScript : MonoBehaviour {
 	PaddleManager paddleManagerScript;
 	private int attackID = Animator.StringToHash("attack");
 	private int attackTypeID = Animator.StringToHash("attackType");
+	MapController mapControllerScript;
 	public bool isFacingLeft = true;
 	PaddleScript paddle1Script;
 	float movingSpeed = 10f;
@@ -36,6 +37,7 @@ public class PaddleScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		mapControllerScript = GameObject.FindGameObjectWithTag("Map").GetComponent<MapController>();
 		GetComponent<Renderer>().enabled = false;
 		paddleManagerScript = GameObject.Find ("PaddleManager").GetComponent<PaddleManager>();
 		if(gameObject.tag != "Paddle1"){
@@ -135,14 +137,23 @@ public class PaddleScript : MonoBehaviour {
 		foreach(ContactPoint contact in col.contacts){
 			if(contact.thisCollider == GetComponent<Collider>()){
 				float english = contact.point.x - transform.position.x;
-				if((-0.5f >= english && -0.3f < english) || (0.5f <= english && 0.3f > english)){
-					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 200f, 0);
+//				if((-0.5f >= english && -0.3f < english) || (0.5f <= english && 0.3f > english)){
+//					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 200f, 0);
+//				}
+//				else{
+//					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 0, 0);
+//				}
+				Vector3 dir;
+				if(1 == mapControllerScript.currentStroke){
+					dir = Vector3.zero;
 				}
 				else{
-					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 0, 0);
+					dir = mapControllerScript.listPos[mapControllerScript.currentStroke - 1] - transform.position;
 				}
 
-//				Debug.Log("ENGLISH LA : " + english);
+				dir = dir.normalized;
+				contact.otherCollider.GetComponent<Rigidbody>().AddForce(dir * 1000f);
+				Debug.Log("THU TU CUA NET VE LA : " + mapControllerScript.currentStroke);
 				anim.SetFloat( attackTypeID, UnityEngine.Random.Range(0, 2) );
 				anim.SetTrigger( attackID );
 			}
