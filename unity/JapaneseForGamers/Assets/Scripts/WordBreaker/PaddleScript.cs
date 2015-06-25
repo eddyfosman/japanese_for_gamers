@@ -12,6 +12,7 @@ public class PaddleScript : MonoBehaviour {
 	public bool isFacingLeft = true;
 	PaddleScript paddle1Script;
 	float movingSpeed = 10f;
+	bool didHit = false;
 
 	#region Facing
 	public void FaceLeft(){
@@ -132,6 +133,8 @@ public class PaddleScript : MonoBehaviour {
 
 
 	}
+
+
 
 	void OnCollisionEnter(Collision col){
 		foreach(ContactPoint contact in col.contacts){

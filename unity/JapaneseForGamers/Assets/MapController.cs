@@ -21,18 +21,47 @@ public class MapController : MonoBehaviour {
 	}
 
 	public void CallNextStrokeAfter1Sec(){
-		Invoke ("NextStroke", 1f);
+//		Invoke ("NextStroke", 1f);
+		Invoke("GetNextStroke", 1f) ;
 	}
 
 	// Use this for initialization
 	void Start () {
+//		foreach(Transform child in transform){
+//			if(child != null){
+//				listStroke2.Add(child);
+//
+//				Mesh mesh = child.gameObject.GetComponent<MeshFilter>().mesh;
+//				Vector3[] vertices = mesh.vertices;
+//
+//				int i = 0;
+//				while (i < vertices.Length) {
+//					if(i == vertices.Length/2){
+//						Vector3 worldPt = transform.TransformPoint(vertices[i]);
+//						Debug.Log("VI TRI CUA " + child.name + " LA : " + child.transform.TransformPoint(worldPt));
+//						listPos.Add(worldPt);
+//					}
+//
+//
+//
+//					i++;
+//				}
+//				mesh.vertices = vertices;
+//				mesh.RecalculateBounds();
+//				if(child.name != "S1"){
+//					child.gameObject.SetActive(false);
+//				}
+//
+//			}
+//		}
+
 		foreach(Transform child in transform){
 			if(child != null){
 				listStroke2.Add(child);
-//				Debug.Log("VI TRI CUA " + child.name + " LA : " + child.transform.TransformPoint(child.gameObject));
+				
 				Mesh mesh = child.gameObject.GetComponent<MeshFilter>().mesh;
 				Vector3[] vertices = mesh.vertices;
-
+				
 				int i = 0;
 				while (i < vertices.Length) {
 					if(i == vertices.Length/2){
@@ -40,19 +69,19 @@ public class MapController : MonoBehaviour {
 						Debug.Log("VI TRI CUA " + child.name + " LA : " + child.transform.TransformPoint(worldPt));
 						listPos.Add(worldPt);
 					}
-
-
-//					vertices[i] += Vector3.up * Time.deltaTime;
+					
+					
+					
 					i++;
 				}
 				mesh.vertices = vertices;
 				mesh.RecalculateBounds();
-				if(child.name != "S1"){
-					child.gameObject.SetActive(false);
-				}
-
+				child.gameObject.SetActive(false);
 			}
 		}
+
+		GetNextStroke ();
+
 //		for(int i = 0; i < gameObject.transform.childCount; i++){
 //			Transform child = gameObject.transform.GetChild(i);
 //			if(child != null){
@@ -67,14 +96,22 @@ public class MapController : MonoBehaviour {
 //
 //		}
 
-		foreach(Transform child in listStroke2){
-			if(child != null){
 
-				
-			}
-		}
 
 	}
+
+	public void GetNextStroke(){
+		if(listStroke2.Count == 0){
+			return;
+		}
+		int number = Random.Range (0, listStroke2.Count);
+		listStroke2 [number].gameObject.SetActive (true);
+		listStroke2.Remove(listStroke2[number]);
+
+		Debug.Log ("SO NGAU NHIEN LA: " + number);
+		Debug.Log ("SO PHAN TU CON TRONG LIST LA: " + listStroke2.Count);
+	}
+
 	
 	// Update is called once per frame
 	void Update () {

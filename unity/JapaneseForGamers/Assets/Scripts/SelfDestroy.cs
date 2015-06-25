@@ -14,7 +14,7 @@ public class SelfDestroy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("DA CHAY CAI NAY CHUA THE NHI");
+//		Debug.Log ("DA CHAY CAI NAY CHUA THE NHI");
 		mapControllerScript = GameObject.FindGameObjectWithTag("Map").GetComponent<MapController>();
 		mesh = gameObject.GetComponent<MeshCollider>();
 

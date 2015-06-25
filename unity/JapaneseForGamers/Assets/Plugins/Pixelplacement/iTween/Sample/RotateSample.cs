@@ -10,5 +10,13 @@ public class RotateSample : MonoBehaviour
 		iTween.RotateBy(gameObject, iTween.Hash("x", random, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", .4));
 		iTween.ScaleBy(gameObject, iTween.Hash("x", random2, "easeType", "easeInOutBack", "loopType", "pingPong", "delay", .4));
 	}
+
+	void OnCollisionEnter(Collision other){
+		if(other != null){
+			iTween.Stop(gameObject);
+			iTween.ScaleFrom(gameObject,new Vector3(1.5f,1f,1f),.5f);
+		}
+	}
+
 }
 
