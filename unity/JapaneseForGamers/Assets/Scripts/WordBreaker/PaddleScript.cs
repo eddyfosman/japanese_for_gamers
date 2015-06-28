@@ -13,6 +13,7 @@ public class PaddleScript : MonoBehaviour {
 	PaddleScript paddle1Script;
 	float movingSpeed = 10f;
 	bool didHit = false;
+	BallScript ballScript;
 
 	#region Facing
 	public void FaceLeft(){
@@ -38,6 +39,7 @@ public class PaddleScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		ballScript = GameObject.FindGameObjectWithTag ("Ball").GetComponent<BallScript>();
 		mapControllerScript = GameObject.FindGameObjectWithTag("Map").GetComponent<MapController>();
 		GetComponent<Renderer>().enabled = false;
 		paddleManagerScript = GameObject.Find ("PaddleManager").GetComponent<PaddleManager>();
@@ -84,6 +86,7 @@ public class PaddleScript : MonoBehaviour {
 
 		if(Input.GetMouseButton(0)){
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+//			Debug.Log("VI TRÍ CỦA CHUỘT LÀ : "  + mousePos);
 			if(paddle1Script != null){
 				if(paddle1Script.isFacingLeft){
 					FaceLeft();
@@ -93,7 +96,11 @@ public class PaddleScript : MonoBehaviour {
 				}
 			}
 
-			if(mousePos.x > transform.position.x && !paddleManagerScript.reachedRight){
+			if(mousePos.y > -2f){
+				ballScript.boostSpeed = true;
+			}
+
+			if(mousePos.y < -2f && mousePos.x > transform.position.x && !paddleManagerScript.reachedRight){
 				if(Mathf.Abs(mousePos.x - transform.position.x) > 0.5f){
 					transform.Translate(movingSpeed * Time.deltaTime, 0f, 0f);
 					if(paddle1Script == null){
@@ -104,7 +111,7 @@ public class PaddleScript : MonoBehaviour {
 				}
 
 			}
-			if(mousePos.x < transform.position.x && !paddleManagerScript.reachedLeft){
+			if(mousePos.y < -2f && mousePos.x < transform.position.x && !paddleManagerScript.reachedLeft){
 				if(Mathf.Abs(mousePos.x - transform.position.x) > 0.5f){
 					transform.Translate(-movingSpeed * Time.deltaTime, 0f, 0f);
 					if(paddle1Script == null){
@@ -115,6 +122,9 @@ public class PaddleScript : MonoBehaviour {
 				}
 
 			}
+		}
+		else{
+			ballScript.boostSpeed = false;
 		}
 
 		if(Input.GetAxis("Horizontal") > 0 && !paddleManagerScript.reachedRight){
@@ -156,7 +166,7 @@ public class PaddleScript : MonoBehaviour {
 
 				dir = dir.normalized;
 				contact.otherCollider.GetComponent<Rigidbody>().AddForce(dir * 1000f);
-				Debug.Log("THU TU CUA NET VE LA : " + mapControllerScript.currentStroke);
+//				Debug.Log("THU TU CUA NET VE LA : " + mapControllerScript.currentStroke);
 				anim.SetFloat( attackTypeID, UnityEngine.Random.Range(0, 2) );
 				anim.SetTrigger( attackID );
 			}

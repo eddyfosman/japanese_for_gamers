@@ -33,7 +33,7 @@ public class SelfDestroy : MonoBehaviour {
 
 
 
-		Debug.Log("THU TU CUA NET VE TRONG SELFDESTROY LA : " + mapControllerScript.currentStroke);
+//		Debug.Log("THU TU CUA NET VE TRONG SELFDESTROY LA : " + mapControllerScript.currentStroke);
 		wordPos = new Vector3 (mapControllerScript.listPos[numberDestroy-1].x, mapControllerScript.listPos[numberDestroy-1].y, mapControllerScript.listPos[numberDestroy-1].z);
 //		wordPos = new Vector3 (0.3f,  4.4f, 1f);
 

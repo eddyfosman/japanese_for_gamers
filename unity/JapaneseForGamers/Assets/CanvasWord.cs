@@ -6,7 +6,7 @@ public class CanvasWord : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("VI TRI CUA CANVAS :" + transform.position);
+//		Debug.Log ("VI TRI CUA CANVAS :" + transform.position);
 		Invoke ("Destroyer", 2f);
 		Text textCanvas = gameObject.gameObject.GetComponentInChildren<Text> ();
 		int rnd = Random.Range (0, 10);

@@ -13,7 +13,8 @@ public class BallScript : MonoBehaviour {
 	float ballSpeed = 1000f;
 	int a;
 	PaddleScript paddleScript;
-
+	Rigidbody rigid;
+	public bool boostSpeed = false;
 
 
 	bool CheckXOffset(){
@@ -31,7 +32,7 @@ public class BallScript : MonoBehaviour {
 //			transform.gameObject.AddComponent<SelfDestroy>();
 //			transform.gameObject.GetComponent<MeshCollider>().material = physBall ;
 //		}
-
+		rigid = GetComponent<Rigidbody>();
 		paddle1 = GameObject.FindGameObjectWithTag ("Paddle1");
 
 //		GetComponent<Rigidbody>().AddForce (0f, 300f, 0f);
@@ -58,7 +59,7 @@ public class BallScript : MonoBehaviour {
 				if(CheckXOffset() && CheckYOffset()){
 					isFirstLaunch = true;
 					didLaunch = true;
-					GetComponent<Rigidbody>().AddForce (0f, 300f, 0f);
+					rigid.AddForce (0f, 300f, 0f);
 				}
 			}
 		}
@@ -67,7 +68,7 @@ public class BallScript : MonoBehaviour {
 			gameObject.transform.position = paddle1.transform.position;
 		}
 
-		GetComponent<Rigidbody>().velocity = ballSpeed * Time.deltaTime * (GetComponent<Rigidbody>().velocity.normalized);
+
 		//		Debug.Log (gameObject.rigidbody.velocity.sqrMagnitude);	
 //		Vector3 dir = rigidbody.velocity;
 //		
@@ -92,6 +93,36 @@ public class BallScript : MonoBehaviour {
 //
 //		}
 		
+	}
+
+	void FixedUpdate(){
+		if(boostSpeed){
+			ballSpeed = 1500f;
+		}
+		else{
+			ballSpeed = 1000f;
+		}
+
+		rigid.velocity = ballSpeed * Time.deltaTime * (rigid.velocity.normalized);
+//		Debug.Log ("GOC HIEN TAI CUA BONG LA: " + rigid.velocity);
+		if(isFirstLaunch && rigid.velocity.y < 5f && rigid.velocity.y > -5f){
+			if(rigid.velocity.y < 0){
+				rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y - 4f, rigid.velocity.z);
+			}
+			else{
+				rigid.velocity = new Vector3(rigid.velocity.x, rigid.velocity.y + 4f, rigid.velocity.z);
+			}
+
+		}
+		if(isFirstLaunch && rigid.velocity.x < 1f && rigid.velocity.x > -1f){
+			if(rigid.velocity.y < 0){
+				rigid.velocity = new Vector3(rigid.velocity.x - 1f, rigid.velocity.y, rigid.velocity.z);
+			}
+			else{
+				rigid.velocity = new Vector3(rigid.velocity.x + 1f, rigid.velocity.y, rigid.velocity.z);
+			}
+			
+		}
 	}
 
 	void OnCollisionEnter(Collision other){

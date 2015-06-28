@@ -57,6 +57,7 @@
      <Compile Include="Assets\DontGoThroughThings.cs" />
      <Compile Include="Assets\FairyFly.cs" />
      <Compile Include="Assets\Floating.cs" />
+     <Compile Include="Assets\Gizmos2.cs" />
      <Compile Include="Assets\KanjiManager.cs" />
      <Compile Include="Assets\KanjiWord.cs" />
      <Compile Include="Assets\LevelCreator.cs" />

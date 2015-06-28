@@ -13,8 +13,9 @@ public class RotateSample : MonoBehaviour
 
 	void OnCollisionEnter(Collision other){
 		if(other != null){
+
 			iTween.Stop(gameObject);
-			iTween.ScaleFrom(gameObject,new Vector3(1.5f,1f,1f),.5f);
+			iTween.ScaleFrom(gameObject.transform.parent.gameObject,new Vector3(1.5f,1f,1.5f),.5f);
 		}
 	}
 
