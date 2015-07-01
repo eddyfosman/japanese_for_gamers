@@ -17,16 +17,19 @@ public class MonsterFadeScript : MonoBehaviour {
 			
 			yield return null;
 		}
+
+//		onCD = true;
 		onCD = false;
 	}
 
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (FadeToBlack(0.5f));
+//		onCD = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+//		onCD = true;
 	}
 }

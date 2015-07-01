@@ -1,26 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WordBreaker\BallScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Quiz\EnemyHealthBar.cs">
     <Files>
-      <File FileName="Assets\DontGoThroughThings.cs" Line="1" Column="1" />
-      <File FileName="Assets\MapController.cs" Line="51" Column="53" />
-      <File FileName="Assets\Plugins\Pixelplacement\iTween\Sample\RotateSample.cs" Line="1" Column="1" />
-      <File FileName="Assets\iTweenExamples\PunchAndStab\Scripts\Ticker.cs" Line="1" Column="1" />
-      <File FileName="Assets\WordKeeper.cs" Line="1" Column="1" />
-      <File FileName="Assets\iTweenExamples\MemoryGame\Scripts\BoardControl.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\WordBreaker\BallScript.cs" Line="113" Column="73" />
-      <File FileName="Assets\iTweenExamples\RandomPathGeneration\Scripts\CameraFollow.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\CameraFollow.cs" Line="1" Column="1" />
-      <File FileName="Assets\iTweenExamples\AnimatingGUITextures\Scripts\PresentationScreen.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\SelfDestroy.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\FlappyBird\GroundMover.cs" Line="1" Column="1" />
-      <File FileName="Assets\CanvasWord.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\WordBreaker\PaddleScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\iTweenExamples\PunchAndStab\Scripts\Bolt.cs" Line="1" Column="1" />
-      <File FileName="Assets\iTweenExamples\ScalingButton\Scripts\ScalingButton.cs" Line="1" Column="1" />
-      <File FileName="Assets\iTweenExamples\ValueToExample\Scripts\ValueToExample.cs" Line="1" Column="1" />
-      <File FileName="Assets\AutoTileSet\Source\AutoTileSetManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Gizmos2.cs" Line="1" Column="1" />
+      <File FileName="Assets\DeviceManager.cs" Line="17" Column="37" />
+      <File FileName="Assets\Scripts\Quiz\MonsterFadeScript.cs" Line="33" Column="17" />
+      <File FileName="Assets\Scripts\QuestionFadeScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\StatusDialogScript.cs" Line="131" Column="1" />
+      <File FileName="Assets\Scripts\QuestionManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\EnemyHealthBar.cs" Line="35" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

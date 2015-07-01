@@ -21,6 +21,7 @@ public class QuestionFadeScript : MonoBehaviour {
 	void Start () {
 		monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();
 
+
 	}
 	
 	// Update is called once per frame
