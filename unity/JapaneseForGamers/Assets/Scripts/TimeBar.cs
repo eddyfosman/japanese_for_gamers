@@ -46,6 +46,11 @@ public class TimeBar : MonoBehaviour {
 	private void HandleTime(){
 		float currentXValue = MapValues (currentTime, 0, maxTime, minXValue, maxXValue);
 		timeBarTransform.position = new Vector3 (currentXValue, cachedY);
+		Debug.Log ("currentTime la : "  + currentTime);
+		Debug.Log ("maxTime la : " + maxTime);
+		Debug.Log ("minXValue la : " + minXValue);
+		Debug.Log ("maxXValue la : " + maxXValue);
+		Debug.Log ("VI TRI HIEN TAI CUA THANH THOI GIAN: " + timeBarTransform.position);
 
 	}
 
@@ -64,6 +69,7 @@ public class TimeBar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Debug.Log ("VI TRI HIEN TAI CUA THANH THOI GIAN: " + timeBarTransform.position);
 		questionFadeScript = questionPanel.GetComponent<QuestionFadeScript>();
 		monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript>();
 		playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
@@ -83,6 +89,7 @@ public class TimeBar : MonoBehaviour {
 		if(!onCD && currentTime > 0 && !questionFadeScript.onCD && !monsterFadeScript.onCD && !statusDialogScript.onCD){
 			StartCoroutine(CoolDownTime());
 			CurrentTime -= 1;
+			Debug.Log("Thoi GIAN CON LAI LA: " + CurrentTime);
 			if(currentTime == 0){
 				playerHealthBarScript.Damage();
 				ResetTimeBar();

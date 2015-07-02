@@ -32,7 +32,7 @@ public class EnemyHealthBar : MonoBehaviour {
 	private int test;
 
 	private void CalculateDamage(){
-		Debug.Log ("Monster Attack " + monster.Atk);
+//		Debug.Log ("Monster Attack " + monster.Atk);
 		ratio = player.Atk / monster.Def;
 
 		if(ratio < 6/91){

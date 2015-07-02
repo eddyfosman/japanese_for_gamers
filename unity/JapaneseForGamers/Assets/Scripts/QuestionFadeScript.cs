@@ -17,6 +17,19 @@ public class QuestionFadeScript : MonoBehaviour {
 		onCD = false;
 	}
 
+	public void HideQuestion(){
+		fadeCanvasGroup.alpha = 0f;
+		onCD = true;
+		monsterFadeScript.onCD = true;
+	}
+
+	public void ShowQuestion(){
+		onCD = false;
+		monsterFadeScript.onCD = false;
+	}
+
+
+
 	// Use this for initialization
 	void Start () {
 		monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();

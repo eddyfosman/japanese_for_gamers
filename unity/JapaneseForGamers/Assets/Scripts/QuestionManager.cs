@@ -169,6 +169,8 @@ public class QuestionManager : MonoBehaviour {
 	private PlayerData player;
 	private MonsterBean monster;
 	private int monsterExp;
+	public GameObject slashGO;
+	ParticleSystem particle;
 
 
 
@@ -460,8 +462,9 @@ public class QuestionManager : MonoBehaviour {
 				timeBarScript.ResetTimeBar();
 			}
 			else{
+				questionFadeScript.HideQuestion();
 				playerHealthBarScript.Damage();
-				
+				ShowParticle();
 				timeBarScript.ResetTimeBar();
 			}
 		}
@@ -473,8 +476,9 @@ public class QuestionManager : MonoBehaviour {
 				timeBarScript.ResetTimeBar();
 			}
 			else{
+				questionFadeScript.HideQuestion();
 				playerHealthBarScript.Damage();
-				
+				ShowParticle();
 				timeBarScript.ResetTimeBar();
 			}
 		}
@@ -486,8 +490,9 @@ public class QuestionManager : MonoBehaviour {
 				timeBarScript.ResetTimeBar();
 			}
 			else{
+				questionFadeScript.HideQuestion();
 				playerHealthBarScript.Damage();
-				
+				ShowParticle();
 				timeBarScript.ResetTimeBar();
 			}
 		}
@@ -496,16 +501,33 @@ public class QuestionManager : MonoBehaviour {
 			if(answerD.text == qb.rightAnswer){
 				
 				enemyHealthBarScript.Damage();
+				
 				timeBarScript.ResetTimeBar();
 			}
 			else{
+				questionFadeScript.HideQuestion();
 				playerHealthBarScript.Damage();
-				
+				ShowParticle();
 				timeBarScript.ResetTimeBar();
 			}
 		}
 		
+		void SetParticleFalse(){
+			slashGO.SetActive (false);
+		}
+		
+		void ShowQuestion(){
+			questionFadeScript.ShowQuestion ();
+		}
+
+		void ShowParticle(){
+			slashGO.SetActive (true);
+			Invoke ("ShowQuestion", particle.duration);
+			Invoke ("SetParticleFalse", particle.duration);
+		}
+		
 		void Start () {
+			particle = slashGO.GetComponent<ParticleSystem>();
 			Screen.orientation = ScreenOrientation.Portrait;
 			buttonASelectable = buttonA.GetComponent<Selectable>();
 			buttonBSelectable = buttonB.GetComponent<Selectable>();

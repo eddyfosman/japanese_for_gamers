@@ -1,13 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Quiz\EnemyHealthBar.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\QuestionManager.cs">
     <Files>
-      <File FileName="Assets\DeviceManager.cs" Line="17" Column="37" />
-      <File FileName="Assets\Scripts\Quiz\MonsterFadeScript.cs" Line="33" Column="17" />
-      <File FileName="Assets\Scripts\QuestionFadeScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\StatusDialogScript.cs" Line="131" Column="1" />
-      <File FileName="Assets\Scripts\QuestionManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\EnemyHealthBar.cs" Line="35" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\EnemyHealthBar.cs" Line="82" Column="53" />
+      <File FileName="Assets\DeviceManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\MonsterFadeScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\QuestionFadeScript.cs" Line="31" Column="1" />
+      <File FileName="Assets\Scripts\StatusDialogScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\QuestionManager.cs" Line="500" Column="30" />
+      <File FileName="Assets\Scripts\PlayerHealthBar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\TimeBar.cs" Line="52" Column="43" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
