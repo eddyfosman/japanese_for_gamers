@@ -8,25 +8,6 @@ public class QuestionFadeScript : MonoBehaviour {
 	public CanvasGroup fadeCanvasGroup;
 	public bool onCD;
 
-	public IEnumerator FadeToScreen(float speed){
-		onCD = true;
-		while(fadeCanvasGroup.alpha < 1f){
-			fadeCanvasGroup.alpha += speed * Time.deltaTime;
-			yield return null;
-		}
-		onCD = false;
-	}
-
-	public void HideQuestion(){
-		fadeCanvasGroup.alpha = 0f;
-		onCD = true;
-		monsterFadeScript.onCD = true;
-	}
-
-	public void ShowQuestion(){
-		onCD = false;
-		monsterFadeScript.onCD = false;
-	}
 
 
 
@@ -43,4 +24,29 @@ public class QuestionFadeScript : MonoBehaviour {
 			StartCoroutine(FadeToScreen(0.5f));
 		}
 	}
+
+	#region Functions
+
+	public IEnumerator FadeToScreen(float speed){
+		onCD = true;
+		while(fadeCanvasGroup.alpha < 1f){
+			fadeCanvasGroup.alpha += speed * Time.deltaTime;
+			yield return null;
+		}
+		onCD = false;
+	}
+	
+	public void HideQuestion(){
+		fadeCanvasGroup.alpha = 0f;
+		onCD = true;
+		monsterFadeScript.onCD = true;
+	}
+	
+	public void ShowQuestion(){
+		onCD = false;
+		monsterFadeScript.onCD = false;
+	}
+
+	#endregion //Functions
+
 }

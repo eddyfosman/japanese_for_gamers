@@ -5,188 +5,220 @@ using UnityEngine.UI;
 using System.IO;
 using LitJson;
 
+public class PlayerData
+{
+		int level;
 
-public class PlayerData{
-	int level;
-	public int Level {
-		set;
-		get;
-	}
-	long hp;
-	public long Hp {
-		set;
-		get;
-	}
-	long atk;
-	public long Atk {
-		set;
-		get;
-	}
-	long def;
-	public long Def {
-		set;
-		get;
-	}
-	long agi;
-	public long Agi {
+		public int Level {
 				set;
 				get;
-	}
-	long luk;
-	public long Luk {
+		}
+
+		long hp;
+
+		public long Hp {
 				set;
 				get;
-	}
-	int currentExp;
-	public int CurrentExp {
-		set;
-		get;
-	}
-	int nextLevelExp;
-	public int NextLevelExp {
-		set;
-		get;
-	}
-	int bonusPoint;
-	public int BonusPoint {
+		}
+
+		long atk;
+
+		public long Atk {
 				set;
 				get;
-	}
+		}
+
+		long def;
+
+		public long Def {
+				set;
+				get;
+		}
+
+		long agi;
+
+		public long Agi {
+				set;
+				get;
+		}
+
+		long luk;
+
+		public long Luk {
+				set;
+				get;
+		}
+
+		int currentExp;
+
+		public int CurrentExp {
+				set;
+				get;
+		}
+
+		int nextLevelExp;
+
+		public int NextLevelExp {
+				set;
+				get;
+		}
+
+		int bonusPoint;
+
+		public int BonusPoint {
+				set;
+				get;
+		}
 }
 
-	
+public class MonsterBean
+{
+		int id;
 
-public class MonsterBean{
-	int id;
-	public int ID {
-		get;
-		set;
-	}
-	string name;
-	public string Name {
-		get;
-		set;
-	}
-	int level;
-	public int Level {
-		get;
-		set;
-	}
-	long hp;
-	public long Hp {
-		get;
-		set;
-	}
-	long atk;
-	public long Atk {
-		get;
-		set;
-	}
-	long def;
-	public long Def {
-		get;
-		set;
-	}
-	int exp;
-	public int Exp {
-		get;
-		set;
-	}
-	string image;
-	public string Image {
-		get;
-		set;
-	}
-	
-	
-}
+		public int ID {
+				get;
+				set;
+		}
 
-public class KanjiBean{
-	int id;
-	public int ID {
-		get;
-		set;
-	}
-	string writing;
-	public string Writing {
-		get;
-		set;
-	}
-	string meaning;
-	public string Meaning {
-		get;
-		set;
-	}
-	string on;
-	public string OnReading {
-		get;
-		set;
-	}
-	string kun;
-	public string KunReading {
-		get;
-		set;
-	}
+		string name;
+
+		public string Name {
+				get;
+				set;
+		}
+
+		int level;
+
+		public int Level {
+				get;
+				set;
+		}
+
+		long hp;
+
+		public long Hp {
+				get;
+				set;
+		}
+
+		long atk;
+
+		public long Atk {
+				get;
+				set;
+		}
+
+		long def;
+
+		public long Def {
+				get;
+				set;
+		}
+
+		int exp;
+
+		public int Exp {
+				get;
+				set;
+		}
+
+		string image;
+
+		public string Image {
+				get;
+				set;
+		}
+	
 	
 }
 
-public class QuestionManager : MonoBehaviour {
-	public Button buttonA;
-	public Button buttonB;
-	public Button buttonC;
-	public Button buttonD;
-	private Selectable buttonASelectable;
-	private Selectable buttonBSelectable;
-	private Selectable buttonCSelectable;
-	private Selectable buttonDSelectable;
+public class KanjiBean
+{
+		int id;
 
+		public int ID {
+				get;
+				set;
+		}
 
-	public GameObject statusDialog;
-	private StatusDialogScript statusDialogScript;
+		string writing;
 
-	public GameObject questionPanel;
-	private CanvasGroup questionCanvasGroup;
-	private QuestionFadeScript questionFadeScript;
-	public GameObject monsterPanel;
-	private CanvasGroup monsterCanvasGroup;
-	private MonsterFadeScript monsterFadeScript;
-	public Text test;
-	public Text question;
-	public Text answerA;
-	public Text answerB;
-	public Text answerC;
-	public Text answerD;
-	private QuestionBean qb ;
-	public GameObject monsterGameObject;
-	private Image monsterImage;
-	public GameObject playerHealthBar;
-	private PlayerHealthBar playerHealthBarScript;
-	public GameObject timeBar;
-	private TimeBar timeBarScript;
-	public GameObject enemyHealthBar;
-	private EnemyHealthBar enemyHealthBarScript;
-	int monsterID = 0;
-	private PlayerData player;
-	private MonsterBean monster;
-	private int monsterExp;
-	public GameObject slashGO;
-	ParticleSystem particle;
+		public string Writing {
+				get;
+				set;
+		}
 
+		string meaning;
 
+		public string Meaning {
+				get;
+				set;
+		}
 
+		string on;
 
+		public string OnReading {
+				get;
+				set;
+		}
 
+		string kun;
 
+		public string KunReading {
+				get;
+				set;
+		}
+	
+}
 
+public class QuestionManager : MonoBehaviour
+{
 
-	public void Read(){
+		private GameObject[] answerText;
+		public Button buttonA;
+		public Button buttonB;
+		public Button buttonC;
+		public Button buttonD;
+		private Selectable buttonASelectable;
+		private Selectable buttonBSelectable;
+		private Selectable buttonCSelectable;
+		private Selectable buttonDSelectable;
+		public GameObject statusDialog;
+		private StatusDialogScript statusDialogScript;
+		public GameObject questionPanel;
+		private CanvasGroup questionCanvasGroup;
+		private QuestionFadeScript questionFadeScript;
+		public GameObject monsterPanel;
+		private CanvasGroup monsterCanvasGroup;
+		private MonsterFadeScript monsterFadeScript;
+		public Text test;
+		public Text question;
+		public Text answerA;
+		public Text answerB;
+		public Text answerC;
+		public Text answerD;
+		private QuestionBean qb ;
+		public GameObject monsterGameObject;
+		private Image monsterImage;
+		public GameObject playerHealthBar;
+		private PlayerHealthBar playerHealthBarScript;
+		public GameObject timeBar;
+		private TimeBar timeBarScript;
+		public GameObject enemyHealthBar;
+		private EnemyHealthBar enemyHealthBarScript;
+		int monsterID = 0;
+		private PlayerData player;
+		private MonsterBean monster;
+		private int monsterExp;
+		public GameObject slashGO;
+		ParticleSystem particle;
 
-
-
+		public void Read ()
+		{
 
 //#if UNITY_ANDROID
 
-		if (Application.platform == RuntimePlatform.Android) {
+				if (Application.platform == RuntimePlatform.Android) {
 						string jsonPlayerDataFile = "";
 						Debug.Log ("DANG O TRONG ANDROID NE");
 						while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
@@ -369,205 +401,243 @@ public class QuestionManager : MonoBehaviour {
 //#endif
 				}
 
+		}
+		
+	void ShowOnlyRightAnswerButton(){
+		for(int i = 0; i < answerText.Length; i++){
+			if(answerText[i].GetComponent<Text>().text != qb.rightAnswer){
+				answerText[i].transform.parent.gameObject.SetActive(false);
+			}
+		}
 	}
 
-		public PlayerData GetPlayerData(){
-			Debug.Log ("Gui nhan vat");
-			return player;
+	void ShowAllAnswerButton(){
+		for(int i = 0; i < answerText.Length; i++){
+
+				answerText[i].transform.parent.gameObject.SetActive(true);
+
+		}
+	}
+
+		public PlayerData GetPlayerData ()
+		{
+				Debug.Log ("Gui nhan vat");
+				return player;
 		}
 		
-		public MonsterBean GetMonsterData(){
-			return monster;
+		public MonsterBean GetMonsterData ()
+		{
+				return monster;
 		}
 		
-		public class QuestionBean{
-			public string question;
-			public string answerA;
-			public string answerB;
-			public string answerC;
-			public string answerD;
-			public string rightAnswer;
+		public class QuestionBean
+		{
+				public string question;
+				public string answerA;
+				public string answerB;
+				public string answerC;
+				public string answerD;
+				public string rightAnswer;
 		}
 		
 		public List<KanjiBean> kanjiList;
 		public List<MonsterBean> monsterList;
-		public List<QuestionBean> textToRead = new List<QuestionBean>();
+		public List<QuestionBean> textToRead = new List<QuestionBean> ();
 		
-		
-		
-		public QuestionBean GetRandomQuestion(){
-			int q = Random.Range (0, textToRead.Count);
-			return textToRead [q];
+		public QuestionBean GetRandomQuestion ()
+		{
+				int q = Random.Range (0, textToRead.Count);
+				return textToRead [q];
 		}
 		
-		public KanjiBean GetRandomKanji(){
-			int q = Random.Range (0, kanjiList.Count);
-			return kanjiList [q];
+		public KanjiBean GetRandomKanji ()
+		{
+				int q = Random.Range (0, kanjiList.Count);
+				return kanjiList [q];
 		}
 		
-		private void Shuffle<T>(List<T> list){
-			int count = list.Count;
-			for(int i = count - 1; i > 0; i--){
-				int randIndex = Random.Range(0, i);
-				T temp = list[i];
-				list[i] = list[randIndex];
-				list[randIndex] = temp;
+		private void Shuffle<T> (List<T> list)
+		{
+				int count = list.Count;
+				for (int i = count - 1; i > 0; i--) {
+						int randIndex = Random.Range (0, i);
+						T temp = list [i];
+						list [i] = list [randIndex];
+						list [randIndex] = temp;
 				
-			}
+				}
 		}
 		
-		public void GainExp(){
-			player.CurrentExp += monsterExp;
-			if(player.CurrentExp >= player.NextLevelExp){
-				player.Level += 1;
-				player.BonusPoint += 5;
-				Debug.Log("Cong level mot lan!");
-				statusDialogScript.ShowStatusDialog();
+		public void GainExp ()
+		{
+				player.CurrentExp += monsterExp;
+				if (player.CurrentExp >= player.NextLevelExp) {
+						player.Level += 1;
+						player.BonusPoint += 5;
+						Debug.Log ("Cong level mot lan!");
+						statusDialogScript.ShowStatusDialog ();
 				
-			}
+				}
 		}
 		
-		public void SetMonster(){
-			monster = monsterList [monsterID];
-			enemyHealthBarScript.maxHealth = monster.Hp;
-			monsterExp = monster.Exp;
-			monsterImage.sprite = Resources.Load<Sprite> (monster.Image);
-			monsterCanvasGroup.alpha = 1f;
-			StartCoroutine (monsterFadeScript.FadeToBlack(0.5f));
-			monsterID++;
+		public void SetMonster ()
+		{
+				monster = monsterList [monsterID];
+				enemyHealthBarScript.maxHealth = monster.Hp;
+				monsterExp = monster.Exp;
+				monsterImage.sprite = Resources.Load<Sprite> (monster.Image);
+				monsterCanvasGroup.alpha = 1f;
+				StartCoroutine (monsterFadeScript.FadeToBlack (0.5f));
+				monsterID++;
 		}
 		
-		public void SetQuestion(){
-			qb = GetRandomQuestion ();
-			question.text = qb.question;
-			List<string> list = new List<string> ();
-			list.Add (qb.answerA);
-			list.Add (qb.answerB);
-			list.Add (qb.answerC);
-			list.Add (qb.answerD);
+		public void SetQuestion ()
+		{
+				qb = GetRandomQuestion ();
+				question.text = qb.question;
+				List<string> list = new List<string> ();
+				list.Add (qb.answerA);
+				list.Add (qb.answerB);
+				list.Add (qb.answerC);
+				list.Add (qb.answerD);
 			
-			Shuffle (list);
+				Shuffle (list);
 			
-			answerA.text = list[0];
-			answerB.text = list[1];
-			answerC.text = list[2];
-			answerD.text = list[3];
+				answerA.text = list [0];
+				answerB.text = list [1];
+				answerC.text = list [2];
+				answerD.text = list [3];
 			
 		}
 		
-		public void CheckAnswerA(){
-			if(answerA.text == qb.rightAnswer){
+		public void CheckAnswerA ()
+		{
+
+				if (answerA.text == qb.rightAnswer) {
 				
-				enemyHealthBarScript.Damage();
-				timeBarScript.ResetTimeBar();
-			}
-			else{
-				questionFadeScript.HideQuestion();
-				playerHealthBarScript.Damage();
-				ShowParticle();
-				timeBarScript.ResetTimeBar();
-			}
+						enemyHealthBarScript.Damage ();
+						ResetTimeBar ();
+				} else {
+						questionFadeScript.HideQuestion ();
+						playerHealthBarScript.Damage ();
+						ShowParticle ();
+						
+				}
 		}
 		
-		public void CheckAnswerB(){
-			if(answerB.text == qb.rightAnswer){
+		public void CheckAnswerB ()
+		{
+		ShowOnlyRightAnswerButton ();
+				if (answerB.text == qb.rightAnswer) {
 				
-				enemyHealthBarScript.Damage();
-				timeBarScript.ResetTimeBar();
-			}
-			else{
-				questionFadeScript.HideQuestion();
-				playerHealthBarScript.Damage();
-				ShowParticle();
-				timeBarScript.ResetTimeBar();
-			}
+						enemyHealthBarScript.Damage ();
+						ResetTimeBar ();
+				} else {
+						questionFadeScript.HideQuestion ();
+						playerHealthBarScript.Damage ();
+						ShowParticle ();
+						
+				}
 		}
 		
-		public void CheckAnswerC(){
-			if(answerC.text == qb.rightAnswer){
+		public void CheckAnswerC ()
+		{
+		ShowOnlyRightAnswerButton ();
+				if (answerC.text == qb.rightAnswer) {
 				
-				enemyHealthBarScript.Damage();
-				timeBarScript.ResetTimeBar();
-			}
-			else{
-				questionFadeScript.HideQuestion();
-				playerHealthBarScript.Damage();
-				ShowParticle();
-				timeBarScript.ResetTimeBar();
-			}
+						enemyHealthBarScript.Damage ();
+						ResetTimeBar ();
+				} else {
+						questionFadeScript.HideQuestion ();
+						playerHealthBarScript.Damage ();
+						ShowParticle ();
+						
+				}
 		}
 		
-		public void CheckAnswerD(){
-			if(answerD.text == qb.rightAnswer){
+		public void CheckAnswerD ()
+		{
+		ShowOnlyRightAnswerButton ();
+				if (answerD.text == qb.rightAnswer) {
 				
-				enemyHealthBarScript.Damage();
+						enemyHealthBarScript.Damage ();
 				
-				timeBarScript.ResetTimeBar();
-			}
-			else{
-				questionFadeScript.HideQuestion();
-				playerHealthBarScript.Damage();
-				ShowParticle();
-				timeBarScript.ResetTimeBar();
-			}
+						ResetTimeBar ();
+				} else {
+						questionFadeScript.HideQuestion ();
+						playerHealthBarScript.Damage ();
+						ShowParticle ();
+						
+				}
 		}
 		
-		void SetParticleFalse(){
-			slashGO.SetActive (false);
+	void ResetTimeBar(){
+		timeBarScript.ResetTimeBar ();
+	}
+
+		void SetParticleFalse ()
+		{
+				slashGO.SetActive (false);
 		}
 		
-		void ShowQuestion(){
-			questionFadeScript.ShowQuestion ();
+		void ShowQuestion ()
+		{
+				questionFadeScript.ShowQuestion ();
 		}
 
-		void ShowParticle(){
-			slashGO.SetActive (true);
-			Invoke ("ShowQuestion", particle.duration);
-			Invoke ("SetParticleFalse", particle.duration);
+		void ShowParticle ()
+		{
+				slashGO.SetActive (true);
+				Invoke ("ShowQuestion", particle.duration);
+				Invoke ("SetParticleFalse", particle.duration);
+				Invoke ("ResetTimeBar", particle.duration);
+				Invoke ("ShowAllAnswerButton", particle.duration);
 		}
 		
-		void Start () {
-			particle = slashGO.GetComponent<ParticleSystem>();
-			Screen.orientation = ScreenOrientation.Portrait;
-			buttonASelectable = buttonA.GetComponent<Selectable>();
-			buttonBSelectable = buttonB.GetComponent<Selectable>();
-			buttonCSelectable = buttonC.GetComponent<Selectable>();
-			buttonDSelectable = buttonD.GetComponent<Selectable>();
-			statusDialog.SetActive (false);
-			questionCanvasGroup = questionPanel.GetComponent<CanvasGroup>();
-			monsterCanvasGroup = monsterPanel.GetComponent<CanvasGroup>();
-			statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
-			questionFadeScript = questionPanel.GetComponent<QuestionFadeScript>();
-			monsterImage = monsterGameObject.GetComponent<Image> ();
-			monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript>();
-			playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
-			enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
-			timeBarScript = timeBar.GetComponent<TimeBar> ();
-			Read ();
-			playerHealthBarScript.maxHealth = player.Hp;
-			SetMonster ();
-			SetQuestion ();
+		void Start ()
+		{
+				answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
+				particle = slashGO.GetComponent<ParticleSystem> ();
+				Screen.orientation = ScreenOrientation.Portrait;
+				buttonASelectable = buttonA.GetComponent<Selectable> ();
+				buttonBSelectable = buttonB.GetComponent<Selectable> ();
+				buttonCSelectable = buttonC.GetComponent<Selectable> ();
+				buttonDSelectable = buttonD.GetComponent<Selectable> ();
+				statusDialog.SetActive (false);
+				questionCanvasGroup = questionPanel.GetComponent<CanvasGroup> ();
+				monsterCanvasGroup = monsterPanel.GetComponent<CanvasGroup> ();
+				statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
+				questionFadeScript = questionPanel.GetComponent<QuestionFadeScript> ();
+				monsterImage = monsterGameObject.GetComponent<Image> ();
+				monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();
+				playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
+				enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
+				timeBarScript = timeBar.GetComponent<TimeBar> ();
+				Read ();
+				playerHealthBarScript.maxHealth = player.Hp;
+				SetMonster ();
+				SetQuestion ();
 			
 			
 			
 		}
 		
 		// Update is called once per frame
-		void Update () {
-			if(!questionFadeScript.onCD && !monsterFadeScript.onCD){
+		void Update ()
+		{
+				if (!questionFadeScript.onCD && !monsterFadeScript.onCD) {
 				
-				buttonASelectable.interactable = true;
-				buttonBSelectable.interactable = true;
-				buttonCSelectable.interactable = true;
-				buttonDSelectable.interactable = true;
-			}
-			else if(questionFadeScript.onCD || monsterFadeScript.onCD){
+						buttonASelectable.interactable = true;
+						buttonBSelectable.interactable = true;
+						buttonCSelectable.interactable = true;
+						buttonDSelectable.interactable = true;
+				} else if (questionFadeScript.onCD || monsterFadeScript.onCD) {
 				
-				buttonASelectable.interactable = false;
-				buttonBSelectable.interactable = false;
-				buttonCSelectable.interactable = false;
-				buttonDSelectable.interactable = false;
-			}
+						buttonASelectable.interactable = false;
+						buttonBSelectable.interactable = false;
+						buttonCSelectable.interactable = false;
+						buttonDSelectable.interactable = false;
+				}
 		}
 
 	
@@ -578,6 +648,6 @@ public class QuestionManager : MonoBehaviour {
 
 	
 
-	// Use this for initialization
+		// Use this for initialization
 	
 }
