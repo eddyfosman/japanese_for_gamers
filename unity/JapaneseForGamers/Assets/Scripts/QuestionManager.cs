@@ -211,13 +211,65 @@ public class QuestionManager : MonoBehaviour
 		private MonsterBean monster;
 		private int monsterExp;
 		public GameObject slashGO;
+		public GameObject thunderGO;
+	public GameObject chargeGO;
+	ParticleSystem chargeParticle;
+		ParticleSystem thunderParticle;
 		ParticleSystem particle;
+		string textClickedButton;
+		Vector3 thunderParticlePos;
 
+		void Start ()
+		{
+				answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
+		chargeParticle = chargeGO.GetComponent<ParticleSystem>();
+				thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
+				particle = slashGO.GetComponent<ParticleSystem> ();
+				Screen.orientation = ScreenOrientation.Portrait;
+				buttonASelectable = buttonA.GetComponent<Selectable> ();
+				buttonBSelectable = buttonB.GetComponent<Selectable> ();
+				buttonCSelectable = buttonC.GetComponent<Selectable> ();
+				buttonDSelectable = buttonD.GetComponent<Selectable> ();
+				statusDialog.SetActive (false);
+				questionCanvasGroup = questionPanel.GetComponent<CanvasGroup> ();
+				monsterCanvasGroup = monsterPanel.GetComponent<CanvasGroup> ();
+				statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
+				questionFadeScript = questionPanel.GetComponent<QuestionFadeScript> ();
+				monsterImage = monsterGameObject.GetComponent<Image> ();
+				monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();
+				playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
+				enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
+				timeBarScript = timeBar.GetComponent<TimeBar> ();
+				Read ();
+				playerHealthBarScript.maxHealth = player.Hp;
+				SetMonster ();
+				SetQuestion ();
+		
+		
+		
+		}
+	
+		// Update is called once per frame
+		void Update ()
+		{
+				if (!questionFadeScript.onCD && !monsterFadeScript.onCD) {
+			
+						buttonASelectable.interactable = true;
+						buttonBSelectable.interactable = true;
+						buttonCSelectable.interactable = true;
+						buttonDSelectable.interactable = true;
+				} else if (questionFadeScript.onCD || monsterFadeScript.onCD) {
+			
+						buttonASelectable.interactable = false;
+						buttonBSelectable.interactable = false;
+						buttonCSelectable.interactable = false;
+						buttonDSelectable.interactable = false;
+				}
+		}
+	
 		public void Read ()
 		{
-
-//#if UNITY_ANDROID
-
+		
 				if (Application.platform == RuntimePlatform.Android) {
 						string jsonPlayerDataFile = "";
 						Debug.Log ("DANG O TRONG ANDROID NE");
@@ -235,18 +287,17 @@ public class QuestionManager : MonoBehaviour
 						test.text = jsonPlayerData ["player"] [0] ["hp"].ToString ();
 						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
 						TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
-//			TextAsset jsonPlayerDataFile = Resources.Load("PlayerData") as TextAsset;
 						JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
 						JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
-//			JsonData jsonPlayerData = JsonMapper.ToObject(jsonPlayerDataFile.text);
+
 						KanjiBean kanji;
 
-//			PlayerData player;
+
 						kanjiList = new List<KanjiBean> ();
 						monsterList = new List<MonsterBean> ();
 
 						player = new PlayerData ();
-						Debug.Log ("Cai nay chay truoc hay sau!");
+						Debug.Log ("Cai nay chay truoc hay sau656756765!");
 						player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
 						player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
 						player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
@@ -312,8 +363,8 @@ public class QuestionManager : MonoBehaviour
 								textToRead.Add (qb);
 						}
 
-				}
-//#else
+
+				}	
 		else {
 
 
@@ -398,26 +449,27 @@ public class QuestionManager : MonoBehaviour
 								textToRead.Add (qb);
 						}
 
-//#endif
 				}
 
 		}
 		
-	void ShowOnlyRightAnswerButton(){
-		for(int i = 0; i < answerText.Length; i++){
-			if(answerText[i].GetComponent<Text>().text != qb.rightAnswer){
-				answerText[i].transform.parent.gameObject.SetActive(false);
-			}
+		public void ShowOnlyRightAnswerButton ()
+		{
+				for (int i = 0; i < answerText.Length; i++) {
+						if (answerText [i].GetComponent<Text> ().text != qb.rightAnswer) {
+								answerText [i].transform.parent.gameObject.SetActive (false);
+						}
+				}
 		}
-	}
 
-	void ShowAllAnswerButton(){
-		for(int i = 0; i < answerText.Length; i++){
+		public void ShowAllAnswerButton ()
+		{
+				for (int i = 0; i < answerText.Length; i++) {
 
-				answerText[i].transform.parent.gameObject.SetActive(true);
+						answerText [i].transform.parent.gameObject.SetActive (true);
 
+				}
 		}
-	}
 
 		public PlayerData GetPlayerData ()
 		{
@@ -492,7 +544,7 @@ public class QuestionManager : MonoBehaviour
 		}
 		
 		public void SetQuestion ()
-		{
+		{		
 				qb = GetRandomQuestion ();
 				question.text = qb.question;
 				List<string> list = new List<string> ();
@@ -512,72 +564,160 @@ public class QuestionManager : MonoBehaviour
 		
 		public void CheckAnswerA ()
 		{
-
+				textClickedButton = answerA.text;
+				ShowOnlyRightAnswerButton ();
 				if (answerA.text == qb.rightAnswer) {
-				
-						enemyHealthBarScript.Damage ();
-						ResetTimeBar ();
+			questionFadeScript.SetButtonInteractiableFalse ();
+			ShowParticleWhenNotAnswer(chargeGO);
+			InvokeFunctionsRightAnswer();
+			//						enemyHealthBarScript.Damage ();
+//						ResetTimeBar ();
+//						ShowAllAnswerButton ();
 				} else {
-						questionFadeScript.HideQuestion ();
+						questionFadeScript.SetButtonInteractiableFalse ();
 						playerHealthBarScript.Damage ();
-						ShowParticle ();
+						ShowWrongAnswerParticle ();
+						
 						
 				}
 		}
+
+	void InvokeFunctionsRightAnswer(){
+		Invoke("HideQuestion", chargeParticle.duration);
+		Invoke("ShowAttackParticle", chargeParticle.duration);
+		Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
+		Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
+	}
 		
+	void DamageEnemyHealthbar(){
+		enemyHealthBarScript.Damage ();
+	}
+
+	void InvokeFunctionsAfterAttackParticle(){
+		Invoke ("SetChargeParticleFalse", particle.duration);
+		Invoke ("SetParticleFalse", particle.duration);
+		Invoke ("ResetTimeBar", particle.duration);
+		Invoke ("ShowAllAnswerButton", particle.duration);
+		Invoke ("ShowQuestion", particle.duration);
+	}
+
+	void SetChargeParticleFalse(){
+		chargeGO.SetActive (false);
+	}
+
 		public void CheckAnswerB ()
 		{
-		ShowOnlyRightAnswerButton ();
+				textClickedButton = answerB.text;
+				ShowOnlyRightAnswerButton ();
 				if (answerB.text == qb.rightAnswer) {
-				
-						enemyHealthBarScript.Damage ();
-						ResetTimeBar ();
+			questionFadeScript.SetButtonInteractiableFalse ();
+			ShowParticleWhenNotAnswer(chargeGO);
+			InvokeFunctionsRightAnswer();
+			//						enemyHealthBarScript.Damage ();
+//						ResetTimeBar ();
+//						ShowAllAnswerButton ();
 				} else {
-						questionFadeScript.HideQuestion ();
+						questionFadeScript.SetButtonInteractiableFalse ();
 						playerHealthBarScript.Damage ();
-						ShowParticle ();
+						ShowWrongAnswerParticle ();
+						
 						
 				}
 		}
 		
 		public void CheckAnswerC ()
 		{
-		ShowOnlyRightAnswerButton ();
+				textClickedButton = answerC.text;
+				ShowOnlyRightAnswerButton ();
 				if (answerC.text == qb.rightAnswer) {
-				
-						enemyHealthBarScript.Damage ();
-						ResetTimeBar ();
+			questionFadeScript.SetButtonInteractiableFalse ();
+			ShowParticleWhenNotAnswer(chargeGO);
+			InvokeFunctionsRightAnswer();
+			//						enemyHealthBarScript.Damage ();
+//						ResetTimeBar ();
+//						ShowAllAnswerButton ();
 				} else {
-						questionFadeScript.HideQuestion ();
+						questionFadeScript.SetButtonInteractiableFalse ();
 						playerHealthBarScript.Damage ();
-						ShowParticle ();
+						ShowWrongAnswerParticle ();
+						
 						
 				}
 		}
 		
 		public void CheckAnswerD ()
 		{
-		ShowOnlyRightAnswerButton ();
+				textClickedButton = answerD.text;
+				ShowOnlyRightAnswerButton ();
 				if (answerD.text == qb.rightAnswer) {
+			questionFadeScript.SetButtonInteractiableFalse ();
+			ShowParticleWhenNotAnswer(chargeGO);
+			InvokeFunctionsRightAnswer();
+//						enemyHealthBarScript.Damage ();
 				
-						enemyHealthBarScript.Damage ();
-				
-						ResetTimeBar ();
+//						ResetTimeBar ();
+//						ShowAllAnswerButton ();
 				} else {
-						questionFadeScript.HideQuestion ();
+						questionFadeScript.SetButtonInteractiableFalse ();
 						playerHealthBarScript.Damage ();
-						ShowParticle ();
+						ShowWrongAnswerParticle ();
+						
+
 						
 				}
 		}
 		
-	void ResetTimeBar(){
-		timeBarScript.ResetTimeBar ();
-	}
+		void ResetTimeBar ()
+		{
+				timeBarScript.ResetTimeBar ();
+		}
 
 		void SetParticleFalse ()
 		{
 				slashGO.SetActive (false);
+		}
+
+		void ShowWrongAnswerParticle ()
+		{
+				for (int i = 0; i < answerText.Length; i++) {
+						if (textClickedButton == answerText [i].GetComponent<Text> ().text) {
+								thunderParticlePos = answerText [i].transform.parent.transform.position;
+								thunderParticle.transform.position = thunderParticlePos;
+						}
+
+				}
+				thunderGO.SetActive (true);
+				Invoke ("ShowQuestion", CompareParticleDuration ());
+				
+				Invoke ("ResetTimeBar", CompareParticleDuration ());
+				Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
+				Invoke ("SetThunderParticleFalse", CompareParticleDuration ());
+		}
+
+		public void ShowParticleWhenNotAnswer (GameObject particleGO)
+		{
+				for (int i = 0; i < answerText.Length; i++) {
+						if (qb.rightAnswer == answerText [i].GetComponent<Text> ().text) {
+								thunderParticlePos = answerText [i].transform.parent.transform.position;
+								particleGO.transform.position = thunderParticlePos;
+						}
+			
+				}
+				particleGO.SetActive (true);
+		}
+
+		public float CompareParticleDuration ()
+		{
+				if (particle.duration > thunderParticle.duration) {
+						return particle.duration;
+				} else {
+						return thunderParticle.duration;		
+				}
+		}
+
+		public void SetThunderParticleFalse ()
+		{
+				thunderGO.SetActive (false);
 		}
 		
 		void ShowQuestion ()
@@ -585,61 +725,17 @@ public class QuestionManager : MonoBehaviour
 				questionFadeScript.ShowQuestion ();
 		}
 
-		void ShowParticle ()
+		void ShowAttackParticle ()
 		{
 				slashGO.SetActive (true);
-				Invoke ("ShowQuestion", particle.duration);
-				Invoke ("SetParticleFalse", particle.duration);
-				Invoke ("ResetTimeBar", particle.duration);
-				Invoke ("ShowAllAnswerButton", particle.duration);
-		}
-		
-		void Start ()
-		{
-				answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
-				particle = slashGO.GetComponent<ParticleSystem> ();
-				Screen.orientation = ScreenOrientation.Portrait;
-				buttonASelectable = buttonA.GetComponent<Selectable> ();
-				buttonBSelectable = buttonB.GetComponent<Selectable> ();
-				buttonCSelectable = buttonC.GetComponent<Selectable> ();
-				buttonDSelectable = buttonD.GetComponent<Selectable> ();
-				statusDialog.SetActive (false);
-				questionCanvasGroup = questionPanel.GetComponent<CanvasGroup> ();
-				monsterCanvasGroup = monsterPanel.GetComponent<CanvasGroup> ();
-				statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
-				questionFadeScript = questionPanel.GetComponent<QuestionFadeScript> ();
-				monsterImage = monsterGameObject.GetComponent<Image> ();
-				monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();
-				playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
-				enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
-				timeBarScript = timeBar.GetComponent<TimeBar> ();
-				Read ();
-				playerHealthBarScript.maxHealth = player.Hp;
-				SetMonster ();
-				SetQuestion ();
-			
-			
-			
-		}
-		
-		// Update is called once per frame
-		void Update ()
-		{
-				if (!questionFadeScript.onCD && !monsterFadeScript.onCD) {
 				
-						buttonASelectable.interactable = true;
-						buttonBSelectable.interactable = true;
-						buttonCSelectable.interactable = true;
-						buttonDSelectable.interactable = true;
-				} else if (questionFadeScript.onCD || monsterFadeScript.onCD) {
-				
-						buttonASelectable.interactable = false;
-						buttonBSelectable.interactable = false;
-						buttonCSelectable.interactable = false;
-						buttonDSelectable.interactable = false;
-				}
 		}
 
+	void HideQuestion(){
+		questionFadeScript.HideQuestion ();
+	}
+		
+		
 	
 
 

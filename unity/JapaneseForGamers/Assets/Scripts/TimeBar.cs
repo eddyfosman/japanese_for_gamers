@@ -67,6 +67,32 @@ public class TimeBar : MonoBehaviour {
 		onCD = false;
 	}
 
+	void ShowParticleWhenNotAnswer(){
+		questionManagerScript.ShowParticleWhenNotAnswer (questionManagerScript.thunderGO);
+		SetButtonInteractibleFalse ();
+		ShowOnlyRightAnswerButton ();
+	}
+
+	void SetThunderParticleFalse(){
+		questionManagerScript.SetThunderParticleFalse ();
+	}
+
+	void ShowQuestion(){
+		questionFadeScript.ShowQuestion ();
+	}
+
+	void SetButtonInteractibleFalse(){
+		questionFadeScript.SetButtonInteractiableFalse();
+	}
+
+	void ShowOnlyRightAnswerButton(){
+		questionManagerScript.ShowOnlyRightAnswerButton ();
+	}
+
+	void ShowAllAnswerButton(){
+		questionManagerScript.ShowAllAnswerButton ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		Debug.Log ("VI TRI HIEN TAI CUA THANH THOI GIAN: " + timeBarTransform.position);
@@ -91,8 +117,13 @@ public class TimeBar : MonoBehaviour {
 			CurrentTime -= 1;
 			Debug.Log("Thoi GIAN CON LAI LA: " + CurrentTime);
 			if(currentTime == 0){
+
+				ShowParticleWhenNotAnswer();
+				Invoke("SetThunderParticleFalse", questionManagerScript.CompareParticleDuration());
+				Invoke("ResetTimeBar", questionManagerScript.CompareParticleDuration());
+				Invoke("ShowQuestion", questionManagerScript.CompareParticleDuration());
+				Invoke("ShowAllAnswerButton", questionManagerScript.CompareParticleDuration());
 				playerHealthBarScript.Damage();
-				ResetTimeBar();
 			}
 		}
 		oldPos = timeBarTransform.position;

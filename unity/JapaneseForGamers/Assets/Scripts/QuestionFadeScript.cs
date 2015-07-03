@@ -41,6 +41,12 @@ public class QuestionFadeScript : MonoBehaviour {
 		onCD = true;
 		monsterFadeScript.onCD = true;
 	}
+
+	public void SetButtonInteractiableFalse(){
+
+		onCD = true;
+		monsterFadeScript.onCD = true;
+	}
 	
 	public void ShowQuestion(){
 		onCD = false;
