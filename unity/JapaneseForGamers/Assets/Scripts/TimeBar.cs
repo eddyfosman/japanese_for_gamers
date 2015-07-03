@@ -68,13 +68,13 @@ public class TimeBar : MonoBehaviour {
 	}
 
 	void ShowParticleWhenNotAnswer(){
-		questionManagerScript.ShowParticleWhenNotAnswer (questionManagerScript.thunderGO);
+		questionManagerScript.ShowParticleWhenNotAnswer (questionManagerScript.deadGO);
 		SetButtonInteractibleFalse ();
 		ShowOnlyRightAnswerButton ();
 	}
 
-	void SetThunderParticleFalse(){
-		questionManagerScript.SetThunderParticleFalse ();
+	void SetDeadParticleFalse(){
+		questionManagerScript.deadGO.SetActive (false);
 	}
 
 	void ShowQuestion(){
@@ -119,7 +119,7 @@ public class TimeBar : MonoBehaviour {
 			if(currentTime == 0){
 
 				ShowParticleWhenNotAnswer();
-				Invoke("SetThunderParticleFalse", questionManagerScript.CompareParticleDuration());
+				Invoke("SetDeadParticleFalse", questionManagerScript.CompareParticleDuration());
 				Invoke("ResetTimeBar", questionManagerScript.CompareParticleDuration());
 				Invoke("ShowQuestion", questionManagerScript.CompareParticleDuration());
 				Invoke("ShowAllAnswerButton", questionManagerScript.CompareParticleDuration());

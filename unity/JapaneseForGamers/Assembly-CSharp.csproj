@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\AttackedEffect.cs" />
      <Compile Include="Assets\AutoTileSet\Source\AutoTile.cs" />
      <Compile Include="Assets\AutoTileSet\Source\AutoTileSetManager.cs" />
      <Compile Include="Assets\AutoTileSet\Source\AutoTileSetManagerEditor.cs" />

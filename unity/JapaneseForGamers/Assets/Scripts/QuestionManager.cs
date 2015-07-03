@@ -218,11 +218,22 @@ public class QuestionManager : MonoBehaviour
 		ParticleSystem particle;
 		string textClickedButton;
 		Vector3 thunderParticlePos;
+	public GameObject deadGO;
+	ParticleSystem deadParticle;
+	GameObject monsterImg;
+	AttackedEffect attackedEffectScript;
+	iTween itweenScript;
+	Image imageScript;
 
 		void Start ()
 		{
+				
+		monsterImg = GameObject.FindGameObjectWithTag ("Monster");
+		imageScript = monsterImg.GetComponent<Image>();
+				attackedEffectScript = monsterImg.GetComponent<AttackedEffect>();
 				answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
-		chargeParticle = chargeGO.GetComponent<ParticleSystem>();
+				deadParticle = deadGO.GetComponent<ParticleSystem>();
+				chargeParticle = chargeGO.GetComponent<ParticleSystem>();
 				thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
 				particle = slashGO.GetComponent<ParticleSystem> ();
 				Screen.orientation = ScreenOrientation.Portrait;
@@ -582,8 +593,24 @@ public class QuestionManager : MonoBehaviour
 				}
 		}
 
+	void EnableAttackedEffect(){
+		attackedEffectScript.enabled = true;
+		imageScript.color = new Color32 (203, 165, 165, 255);
+		if(monsterImg.GetComponent<iTween>() != null){
+			monsterImg.GetComponent<iTween>().enabled = true;
+		}
+
+	}
+
+	void DisableAttackedEffect(){
+		attackedEffectScript.enabled = false;
+		imageScript.color = new Color32 (255, 255, 255, 255);
+		monsterImg.GetComponent<iTween> ().enabled = false;
+	}
+
 	void InvokeFunctionsRightAnswer(){
 		Invoke("HideQuestion", chargeParticle.duration);
+		Invoke("EnableAttackedEffect", chargeParticle.duration);
 		Invoke("ShowAttackParticle", chargeParticle.duration);
 		Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
 		Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
@@ -593,8 +620,11 @@ public class QuestionManager : MonoBehaviour
 		enemyHealthBarScript.Damage ();
 	}
 
+
+
 	void InvokeFunctionsAfterAttackParticle(){
 		Invoke ("SetChargeParticleFalse", particle.duration);
+		Invoke ("DisableAttackedEffect", particle.duration);
 		Invoke ("SetParticleFalse", particle.duration);
 		Invoke ("ResetTimeBar", particle.duration);
 		Invoke ("ShowAllAnswerButton", particle.duration);
