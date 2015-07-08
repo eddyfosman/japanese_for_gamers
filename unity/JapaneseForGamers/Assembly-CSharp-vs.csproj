@@ -64,6 +64,21 @@
      <Compile Include="Assets\KanjiWord.cs" />
      <Compile Include="Assets\LevelCreator.cs" />
      <Compile Include="Assets\MapController.cs" />
+     <Compile Include="Assets\MockupUI\MonsterDetail\MonsterDetail.cs" />
+     <Compile Include="Assets\MockupUI\MonsterDetail\TextData.cs" />
+     <Compile Include="Assets\MockupUI\MonsterDetail\TextListItem.cs" />
+     <Compile Include="Assets\MockupUI\MonsterList\MonsterData.cs" />
+     <Compile Include="Assets\MockupUI\MonsterList\MonsterList.cs" />
+     <Compile Include="Assets\MockupUI\MonsterList\MonsterListItem.cs" />
+     <Compile Include="Assets\MockupUI\Plugins\EnhancedScroller.cs" />
+     <Compile Include="Assets\MockupUI\Plugins\ListItemBase.cs" />
+     <Compile Include="Assets\MockupUI\Plugins\SmallList.cs" />
+     <Compile Include="Assets\MockupUI\WordDetail\ImageData.cs" />
+     <Compile Include="Assets\MockupUI\WordDetail\ImageListItem.cs" />
+     <Compile Include="Assets\MockupUI\WordDetail\Scene2.cs" />
+     <Compile Include="Assets\MockupUI\WordList\WordData.cs" />
+     <Compile Include="Assets\MockupUI\WordList\WordListItem.cs" />
+     <Compile Include="Assets\MockupUI\WordList\WordTutorial.cs" />
      <Compile Include="Assets\PaddleManager.cs" />
      <Compile Include="Assets\Powerup.cs" />
      <Compile Include="Assets\SceneManager.cs" />
@@ -161,6 +176,9 @@
  </Reference>
  <Reference Include="LitJSON">
  <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/LitJSON.dll</HintPath>
+ </Reference>
+ <Reference Include="LitJSON">
+ <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/MockupUI/LitJSON.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>D:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

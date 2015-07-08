@@ -1,13 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\QuestionManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MockupUI\MonsterDetail\MonsterDetail.cs">
     <Files>
-      <File FileName="Assets\Scripts\QuestionManager.cs" Line="598" Column="23" />
-      <File FileName="Assets\Scripts\TimeBar.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\PlayerHealthBar.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\QuestionFadeScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Plugins\Pixelplacement\iTween\Sample\MoveSample.cs" Line="8" Column="125" />
-      <File FileName="Assets\AttackedEffect.cs" Line="8" Column="82" />
+      <File FileName="Assets\MockupUI\MonsterDetail\TextData.cs" Line="6" Column="28" />
+      <File FileName="Assets\MockupUI\MonsterList\MonsterData.cs" Line="14" Column="34" />
+      <File FileName="Assets\MockupUI\MonsterList\MonsterListItem.cs" Line="26" Column="30" />
+      <File FileName="Assets\MockupUI\WordDetail\Scene2.cs" Line="1" Column="1" />
+      <File FileName="Assets\MockupUI\MonsterList\MonsterList.cs" Line="1" Column="1" />
+      <File FileName="Assets\MockupUI\WordList\WordTutorial.cs" Line="1" Column="1" />
+      <File FileName="Assets\MockupUI\Plugins\EnhancedScroller.cs" Line="1" Column="1" />
+      <File FileName="Assets\MockupUI\MonsterDetail\TextListItem.cs" Line="14" Column="11" />
+      <File FileName="Assets\MockupUI\MonsterDetail\MonsterDetail.cs" Line="56" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
