@@ -14,10 +14,20 @@ public class TextListItem : ListItemBase {
 		TextData data = (objectData as TextData);
 		wordText.text = data.wordWriting;
 		wordID.text = data.wordID;
+		wordMeaing.text = data.wordMeaning;
+		wordReading.text = data.wordReading;
 	}
 
 	public override void ItemSelected ()
 	{
+		SceneTransitionData sceneData = new SceneTransitionData ();
+		sceneData.IsFromWordListScene = false;
+
+		WordData selectedWord = new WordData ();
+		selectedWord.IDSelected = wordID.text;
+		selectedWord.MeaningText = wordMeaing.text;
+		selectedWord.ReadingText = wordReading.text;
+		selectedWord.WritingText = wordText.text;
 
 		Application.LoadLevel (1);
 	}

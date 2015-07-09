@@ -15,13 +15,25 @@ public class MonsterDetail : MonoBehaviour {
 	public UnityEngine.UI.Text monsterID;
 	public UnityEngine.UI.Text monsterName;
 	public UnityEngine.UI.Image monsterImage;
+	public UnityEngine.UI.Button opBackButton;
 
 	List<string> wordList = new List<string>();
+	SceneTransitionData sceneData = new SceneTransitionData();
 
 
 	// Use this for initialization
 	void Start () {
+		SetOpBackButton ();
 		Reload ();
+	}
+
+	void SetOpBackButton(){
+		if(!sceneData.IsFromMonsterListScene){
+			opBackButton.gameObject.SetActive(true);
+		}
+		else{
+			opBackButton.gameObject.SetActive(false);
+		}
 	}
 
 	public void Reload(){
@@ -55,7 +67,9 @@ public class MonsterDetail : MonoBehaviour {
 				if(jsonWords["words"][i]["id"].ToString() == wordList[j]){
 					dataList.Add(new TextData(){
 						wordID = wordList[j],
-						wordWriting = jsonWords["words"][i]["writing"].ToString()
+						wordWriting = jsonWords["words"][i]["writing"].ToString(),
+						wordMeaning = jsonWords["words"][i]["meaning"].ToString(),
+						wordReading = jsonWords["words"][i]["reading"].ToString()
 
 					});
 					Debug.Log("Chu duoc gan la: " + jsonWords["words"][i]["writing"].ToString());
@@ -69,7 +83,12 @@ public class MonsterDetail : MonoBehaviour {
 	}
 	
 	public void BackToMonsterListScene(){
+		sceneData.IsFromMonsterListScene = true;
 		Application.LoadLevel (2);
+	}
+
+	public void BackToWordDetailScene(){
+		Application.LoadLevel (1);
 	}
 
 

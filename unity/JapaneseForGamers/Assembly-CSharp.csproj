@@ -65,6 +65,7 @@
      <Compile Include="Assets\LevelCreator.cs" />
      <Compile Include="Assets\MapController.cs" />
      <Compile Include="Assets\MockupUI\MonsterDetail\MonsterDetail.cs" />
+     <Compile Include="Assets\MockupUI\MonsterDetail\SceneTransitionData.cs" />
      <Compile Include="Assets\MockupUI\MonsterDetail\TextData.cs" />
      <Compile Include="Assets\MockupUI\MonsterDetail\TextListItem.cs" />
      <Compile Include="Assets\MockupUI\MonsterList\MonsterData.cs" />
@@ -75,7 +76,7 @@
      <Compile Include="Assets\MockupUI\Plugins\SmallList.cs" />
      <Compile Include="Assets\MockupUI\WordDetail\ImageData.cs" />
      <Compile Include="Assets\MockupUI\WordDetail\ImageListItem.cs" />
-     <Compile Include="Assets\MockupUI\WordDetail\Scene2.cs" />
+     <Compile Include="Assets\MockupUI\WordDetail\WordDetail.cs" />
      <Compile Include="Assets\MockupUI\WordList\WordData.cs" />
      <Compile Include="Assets\MockupUI\WordList\WordListItem.cs" />
      <Compile Include="Assets\MockupUI\WordList\WordTutorial.cs" />

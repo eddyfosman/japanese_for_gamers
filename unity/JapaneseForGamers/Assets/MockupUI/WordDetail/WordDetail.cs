@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using LitJson;
 using EnhancedUI;
 
-public class Scene2 : MonoBehaviour {
+public class WordDetail : MonoBehaviour {
 
 	private List<object> dataList = new List<object>();
 	public EnhancedScroller scroller;
@@ -13,17 +13,33 @@ public class Scene2 : MonoBehaviour {
 	public UnityEngine.UI.Text meaningText;
 //	public UnityEngine.UI.Text writingText;
 	public UnityEngine.UI.Text wordID;
+	public UnityEngine.UI.Button opBackButton;
 
 	TextAsset jsonWordsFile;
 	TextAsset jsonMonsterFile;
 	JsonData jsonMonsters;
 	JsonData jsonWords;
 	List<string> monsterIdList = new List<string>();
-
+	SceneTransitionData sceneData = new SceneTransitionData ();
 
 	// Use this for initialization
 	void Start () {
+		SetOpBackButton ();
 		Reload ();
+	}
+
+	public void SetOpBackButton(){
+
+		if(!sceneData.IsFromWordListScene){
+			opBackButton.gameObject.SetActive(true);
+		}
+		else{
+			opBackButton.gameObject.SetActive(false);
+		}
+	}
+
+	public void BackToMonsterDetailScene(){
+		Application.LoadLevel (3);
 	}
 
 	public void Reload(){
@@ -56,7 +72,8 @@ public class Scene2 : MonoBehaviour {
 				if(jsonMonsters["monsters"][i]["id"].ToString() == monsterIdList[j]){
 					dataList.Add(new ImageData()
 					             {
-						monsterID = jsonMonsters["monsters"][i]["image"].ToString()
+						monsterName = jsonMonsters["monsters"][i]["image"].ToString(),
+						monsterID = jsonMonsters["monsters"][i]["id"].ToString()
 					});
 					monsterIdList.Remove(monsterIdList[j]);
 					break;
@@ -70,6 +87,7 @@ public class Scene2 : MonoBehaviour {
 	}
 
 	public void LoadSceneWord(){
+		sceneData.IsFromWordListScene = true;
 		Application.LoadLevel(0);
 	}
 
