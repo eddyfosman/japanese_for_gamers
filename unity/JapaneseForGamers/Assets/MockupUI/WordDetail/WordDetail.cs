@@ -83,7 +83,7 @@ public class WordDetail : MonoBehaviour {
 
 		}
 
-		scroller.Reload (dataList, 100f);
+		scroller.Reload (dataList, 150f);
 	}
 
 	public void LoadSceneWord(){

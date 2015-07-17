@@ -47,15 +47,11 @@ public class MonsterDetail : MonoBehaviour {
 		monsterID.text = selectedMonster.SelectedID;
 		monsterName.text = selectedMonster.SelectedMonsterName;
 		monsterImage.sprite = Resources.Load ("Sprites/" + selectedMonster.SelectedMonsterName, typeof(Sprite)) as Sprite;
-//		Debug.Log (selectedMonster.SelectedID);
-//		Debug.Log (selectedMonster.SelectedMonsterName);
 
 		for(int i = 0; i < jsonMonsters["monsters"].Count; i++){
-			Debug.Log(jsonMonsters["monsters"][i]["id"].ToString());
 			if(jsonMonsters["monsters"][i]["id"].ToString() == selectedMonster.SelectedID){
 				for(int j = 0; j < jsonMonsters["monsters"][i]["words"].Count; j++){
 					wordList.Add(jsonMonsters["monsters"][i]["words"][j]["id"].ToString());
-					Debug.Log(jsonMonsters["monsters"][i]["words"][j]["id"].ToString());
 				}
 			}
 		}
@@ -72,14 +68,13 @@ public class MonsterDetail : MonoBehaviour {
 						wordReading = jsonWords["words"][i]["reading"].ToString()
 
 					});
-					Debug.Log("Chu duoc gan la: " + jsonWords["words"][i]["writing"].ToString());
 					wordList.Remove(wordList[j]);
 					break;
 				}
 			}
 		}
 
-		scroller.Reload (dataList, 100f);
+		scroller.Reload (dataList, 150f);
 	}
 	
 	public void BackToMonsterListScene(){

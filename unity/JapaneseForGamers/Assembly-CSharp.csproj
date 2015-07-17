@@ -83,6 +83,8 @@
      <Compile Include="Assets\PaddleManager.cs" />
      <Compile Include="Assets\Powerup.cs" />
      <Compile Include="Assets\SceneManager.cs" />
+     <Compile Include="Assets\Scripts\BasketBall\Basket.cs" />
+     <Compile Include="Assets\Scripts\BasketBall\Shoot.cs" />
      <Compile Include="Assets\Scripts\Buoyancy.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\Cube.cs" />
@@ -92,6 +94,9 @@
      <Compile Include="Assets\Scripts\FlappyBird\BirdMovement.cs" />
      <Compile Include="Assets\Scripts\FlappyBird\CameraTracksPlayer.cs" />
      <Compile Include="Assets\Scripts\FlappyBird\GroundMover.cs" />
+     <Compile Include="Assets\Scripts\MemoryMatching\Card.cs" />
+     <Compile Include="Assets\Scripts\MemoryMatching\FlipCard.cs" />
+     <Compile Include="Assets\Scripts\MemoryMatching\MemoryMatching.cs" />
      <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
      <Compile Include="Assets\Scripts\PlayerCharacter1.cs" />
      <Compile Include="Assets\Scripts\PlayerHealthBar.cs" />
@@ -105,6 +110,8 @@
      <Compile Include="Assets\Scripts\SelfDestroy.cs" />
      <Compile Include="Assets\Scripts\StatusDialogScript.cs" />
      <Compile Include="Assets\Scripts\Test.cs" />
+     <Compile Include="Assets\Scripts\ThreeCups\Cup.cs" />
+     <Compile Include="Assets\Scripts\ThreeCups\ThreeCups.cs" />
      <Compile Include="Assets\Scripts\TimeBar.cs" />
      <Compile Include="Assets\Scripts\TipPoint.cs" />
      <Compile Include="Assets\Scripts\WordBreaker\BallScript.cs" />
@@ -177,9 +184,6 @@
  </Reference>
  <Reference Include="LitJSON">
  <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/LitJSON.dll</HintPath>
- </Reference>
- <Reference Include="LitJSON">
- <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/MockupUI/LitJSON.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>D:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

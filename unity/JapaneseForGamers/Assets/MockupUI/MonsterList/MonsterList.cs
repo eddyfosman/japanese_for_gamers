@@ -29,7 +29,7 @@ public class MonsterList : MonoBehaviour {
 			});
 		}
 
-		scroller.Reload (dataList, 100f);
+		scroller.Reload (dataList, 132f);
 
 	}
 	

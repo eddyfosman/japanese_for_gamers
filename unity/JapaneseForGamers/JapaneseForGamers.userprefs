@@ -1,20 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\MockupUI\MonsterDetail\MonsterDetail.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ThreeCups\ThreeCups.cs">
     <Files>
-      <File FileName="Assets\MockupUI\MonsterDetail\MonsterDetail.cs" Line="26" Column="22" />
-      <File FileName="Assets\MockupUI\MonsterDetail\TextData.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\MonsterList\MonsterData.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\MonsterList\MonsterListItem.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\MonsterList\MonsterList.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\WordList\WordTutorial.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\Plugins\EnhancedScroller.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\MonsterDetail\TextListItem.cs" Line="24" Column="41" />
-      <File FileName="Assets\MockupUI\WordDetail\WordDetail.cs" Line="43" Column="3" />
-      <File FileName="Assets\MockupUI\WordList\WordListItem.cs" Line="1" Column="1" />
-      <File FileName="Assets\MockupUI\WordDetail\ImageListItem.cs" Line="25" Column="44" />
-      <File FileName="Assets\MockupUI\WordDetail\ImageData.cs" Line="5" Column="28" />
-      <File FileName="Assets\MockupUI\MonsterDetail\SceneTransitionData.cs" Line="14" Column="36" />
+      <File FileName="Assets\Scripts\ThreeCups\ThreeCups.cs" Line="166" Column="29" />
+      <File FileName="Assets\Scripts\MemoryMatching\Card.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MemoryMatching\MemoryMatching.cs" Line="1" Column="1" />
+      <File FileName="Assets\iTweenExamples\RotatingUnityGUI\Scripts\RotatingUnityGUI.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MemoryMatching\FlipCard.cs" Line="1" Column="1" />
+      <File FileName="Assets\Plugins\Pixelplacement\iTween\iTween.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ThreeCups\Cup.cs" Line="1" Column="1" />
+      <File FileName="Assets\iTweenExamples\CallbacksExample\Scripts\CallbacksExample.cs" Line="1" Column="1" />
+      <File FileName="Assets\iTweenExamples\PathExample\Scripts\PathCameraController.cs" Line="1" Column="1" />
+      <File FileName="Assets\iTweenExamples\PathExample\Scripts\PathExample.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
