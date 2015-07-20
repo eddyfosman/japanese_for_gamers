@@ -14,9 +14,12 @@ public class ThreeCups : MonoBehaviour {
 	Vector3 firstPos;
 	GameObject ball;
 	bool once = false;
+	bool isCupUp = false;
 	GameObject tempCup;
 	bool isChangingCup = false;
 	bool ready = false;
+	bool isDoneShuffle = false;
+	SpriteRenderer ballRender;
 	public int numberShuffle;
 	public float timeShuffle;
 	public Transform[] path1;
@@ -52,8 +55,10 @@ public class ThreeCups : MonoBehaviour {
 		Debug.Log ("CHAY HAM NAY ROI DAY");
 	}
 	
-	void CupGoUp(){
-		iTween.MoveTo (allCups [firstCup], iTween.Hash ("position", new Vector3(allCups [firstCup].transform.position.x, allCups [firstCup].transform.position.y + 2f, allCups [firstCup].transform.position.z), "time", 1));
+	void CupGoUp(GameObject cup){
+//		iTween.MoveTo (allCups [firstCup], iTween.Hash ("position", new Vector3(allCups [firstCup].transform.position.x, allCups [firstCup].transform.position.y + 2f, allCups [firstCup].transform.position.z), "time", 1));
+		iTween.MoveTo (cup, iTween.Hash ("position", new Vector3(cup.transform.position.x, cup.transform.position.y + 2f, cup.transform.position.z), "time", 1));
+
 	}
 
 	void TweenPath1(int i, float time){
@@ -180,7 +185,7 @@ public class ThreeCups : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		ball = GameObject.FindGameObjectWithTag("Ball");
-
+		ballRender = ball.GetComponent<SpriteRenderer> ();
 		for(int i = 0; i < cupPos.Length; i++){
 			cupClone = Instantiate(cupPrefab) as GameObject;
 			cupClone.GetComponent<Cup> ().currentPosId = i;
@@ -193,7 +198,7 @@ public class ThreeCups : MonoBehaviour {
 		firstCup = Random.Range (0, 3);
 		allCups [firstCup].GetComponent<Cup> ().keepBall = true;
 		cupScript = allCups[firstCup].GetComponent<Cup> ();
-		CupGoUp ();
+		CupGoUp (allCups[firstCup]);
 		MoveBallToCup ();
 		CupGoDown ();
 	}
@@ -209,11 +214,45 @@ public class ThreeCups : MonoBehaviour {
 			Debug.Log("So lan tron coc con lai la: "  + numberShuffle);
 			ShuffleCups(timeShuffle);
 		}
-		if(!once){
-			once = true;
-			CupGoUp ();
+		else if(numberShuffle <= 0){
+			isDoneShuffle = true;
 		}
-		ball.transform.position = new Vector3(cupScript.gameObject.transform.position.x, cupScript.gameObject.transform.position.y, ball.transform.position.z);
+
+		if(isCupUp){
+			if(cupScript.keepBall){
+				ready = false;
+				ballRender.enabled = true;
+			}
+		}
+
+		if(isDoneShuffle){
+			if(Input.GetMouseButtonDown(0)){
+				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				Vector2 touchPos = new Vector2(wp.x, wp.y);
+				Collider2D hit = Physics2D.OverlapPoint(touchPos);
+				if(hit != null){
+					if(hit.gameObject.tag == "Cup" && !isCupUp){
+						CupGoUp(hit.gameObject);
+						cupScript = hit.gameObject.GetComponent<Cup>();
+						isCupUp = true;
+					}
+
+				}
+
+			}
+		}
+
+//		if(!once){
+//			once = true;
+//			CupGoUp ();
+//		}
+
+
+		if(ready){
+			ball.transform.position = new Vector3(cupScript.gameObject.transform.position.x, cupScript.gameObject.transform.position.y, ball.transform.position.z);
+			ballRender.enabled = false;
+		}
+
 	}
 
 

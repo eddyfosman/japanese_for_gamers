@@ -94,6 +94,9 @@
      <Compile Include="Assets\Scripts\FlappyBird\BirdMovement.cs" />
      <Compile Include="Assets\Scripts\FlappyBird\CameraTracksPlayer.cs" />
      <Compile Include="Assets\Scripts\FlappyBird\GroundMover.cs" />
+     <Compile Include="Assets\Scripts\Grammar\DragHandler.cs" />
+     <Compile Include="Assets\Scripts\Grammar\Grammar.cs" />
+     <Compile Include="Assets\Scripts\Grammar\Slot.cs" />
      <Compile Include="Assets\Scripts\MemoryMatching\Card.cs" />
      <Compile Include="Assets\Scripts\MemoryMatching\FlipCard.cs" />
      <Compile Include="Assets\Scripts\MemoryMatching\MemoryMatching.cs" />
