@@ -7,6 +7,12 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	public static GameObject itemBeingDragged;
 	Vector3 startPosition;
 	Transform startParent;
+	public Transform currentParent;
+	public Transform previousParent;
+
+	void Start(){
+		currentParent = transform.parent.gameObject.transform;
+	}
 
 	#region IBeginDragHandler implementation
 	
@@ -25,6 +31,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	
 	public void OnDrag (PointerEventData eventData)
 	{
+
 		transform.position = Input.mousePosition;
 	}
 	
@@ -39,6 +46,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		if(transform.parent == startParent){
 			transform.position = startPosition;
 		}
+
 
 	}
 

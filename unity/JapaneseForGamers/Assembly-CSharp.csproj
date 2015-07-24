@@ -94,6 +94,7 @@
      <Compile Include="Assets\Scripts\FlappyBird\BirdMovement.cs" />
      <Compile Include="Assets\Scripts\FlappyBird\CameraTracksPlayer.cs" />
      <Compile Include="Assets\Scripts\FlappyBird\GroundMover.cs" />
+     <Compile Include="Assets\Scripts\Grammar\AnswerPanel.cs" />
      <Compile Include="Assets\Scripts\Grammar\DragHandler.cs" />
      <Compile Include="Assets\Scripts\Grammar\Grammar.cs" />
      <Compile Include="Assets\Scripts\Grammar\Slot.cs" />
