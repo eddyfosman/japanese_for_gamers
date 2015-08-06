@@ -168,6 +168,14 @@ public class KanjiBean
 				get;
 				set;
 		}
+
+		string onSound;
+
+		public string OnSound{ get; set; }
+
+		string kunSound;
+
+		public string KunSound{ get; set; }
 	
 }
 
@@ -212,28 +220,30 @@ public class QuestionManager : MonoBehaviour
 		private int monsterExp;
 		public GameObject slashGO;
 		public GameObject thunderGO;
-	public GameObject chargeGO;
-	ParticleSystem chargeParticle;
+		public GameObject chargeGO;
+		ParticleSystem chargeParticle;
 		ParticleSystem thunderParticle;
 		ParticleSystem particle;
 		string textClickedButton;
 		Vector3 thunderParticlePos;
-	public GameObject deadGO;
-	ParticleSystem deadParticle;
-	GameObject monsterImg;
-	AttackedEffect attackedEffectScript;
-	iTween itweenScript;
-	Image imageScript;
+		public GameObject deadGO;
+		ParticleSystem deadParticle;
+		GameObject monsterImg;
+		AttackedEffect attackedEffectScript;
+		iTween itweenScript;
+		Image imageScript;
+		public GameObject soundManager;
+	AudioSource audioSource;
 
 		void Start ()
 		{
-				
-		monsterImg = GameObject.FindGameObjectWithTag ("Monster");
-		imageScript = monsterImg.GetComponent<Image>();
-				attackedEffectScript = monsterImg.GetComponent<AttackedEffect>();
+				audioSource = soundManager.GetComponent<AudioSource>();
+				monsterImg = GameObject.FindGameObjectWithTag ("Monster");
+				imageScript = monsterImg.GetComponent<Image> ();
+				attackedEffectScript = monsterImg.GetComponent<AttackedEffect> ();
 				answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
-				deadParticle = deadGO.GetComponent<ParticleSystem>();
-				chargeParticle = chargeGO.GetComponent<ParticleSystem>();
+				deadParticle = deadGO.GetComponent<ParticleSystem> ();
+				chargeParticle = chargeGO.GetComponent<ParticleSystem> ();
 				thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
 				particle = slashGO.GetComponent<ParticleSystem> ();
 				Screen.orientation = ScreenOrientation.Portrait;
@@ -343,7 +353,8 @@ public class QuestionManager : MonoBehaviour
 								kanji.Meaning = jsonKanjis ["kanjis"] [i] ["meaning"].ToString ();
 								kanji.OnReading = jsonKanjis ["kanjis"] [i] ["on"].ToString ();
 								kanji.KunReading = jsonKanjis ["kanjis"] [i] ["kun"].ToString ();
-				
+								kanji.OnSound = jsonKanjis ["kanjis"] [i] ["onsound"].ToString ();
+								kanji.KunSound = jsonKanjis ["kanjis"] [i] ["kunsound"].ToString ();
 				
 				
 								kanjiList.Add (kanji);
@@ -355,6 +366,8 @@ public class QuestionManager : MonoBehaviour
 								qb.question = kanjiList [i].Writing;
 								qb.rightAnswer = kanjiList [i].Meaning;
 								qb.answerA = kanjiList [i].Meaning;
+								qb.onSound = kanjiList [i].OnSound;
+								qb.kunSound = kanjiList [i].KunSound;
 								KanjiBean kanjiWord = new KanjiBean ();
 								kanjiWord = GetRandomKanji ();
 								while (kanjiWord.Meaning == qb.answerA) {
@@ -375,8 +388,7 @@ public class QuestionManager : MonoBehaviour
 						}
 
 
-				}	
-		else {
+				} else {
 
 
 						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
@@ -429,7 +441,8 @@ public class QuestionManager : MonoBehaviour
 								kanji.Meaning = jsonKanjis ["kanjis"] [i] ["meaning"].ToString ();
 								kanji.OnReading = jsonKanjis ["kanjis"] [i] ["on"].ToString ();
 								kanji.KunReading = jsonKanjis ["kanjis"] [i] ["kun"].ToString ();
-				
+								kanji.OnSound = jsonKanjis ["kanjis"] [i] ["onsound"].ToString ();
+								kanji.KunSound = jsonKanjis ["kanjis"] [i] ["kunsound"].ToString ();
 
 				
 								kanjiList.Add (kanji);
@@ -441,6 +454,8 @@ public class QuestionManager : MonoBehaviour
 								qb.question = kanjiList [i].Writing;
 								qb.rightAnswer = kanjiList [i].Meaning;
 								qb.answerA = kanjiList [i].Meaning;
+								qb.onSound = kanjiList [i].OnSound;
+								qb.kunSound = kanjiList [i].KunSound;
 								KanjiBean kanjiWord = new KanjiBean ();
 								kanjiWord = GetRandomKanji ();
 								while (kanjiWord.Meaning == qb.answerA) {
@@ -484,7 +499,7 @@ public class QuestionManager : MonoBehaviour
 
 		public PlayerData GetPlayerData ()
 		{
-				Debug.Log ("Gui nhan vat");
+//				Debug.Log ("Gui nhan vat");
 				return player;
 		}
 		
@@ -501,6 +516,8 @@ public class QuestionManager : MonoBehaviour
 				public string answerC;
 				public string answerD;
 				public string rightAnswer;
+				public string onSound;
+				public string kunSound;
 		}
 		
 		public List<KanjiBean> kanjiList;
@@ -563,7 +580,8 @@ public class QuestionManager : MonoBehaviour
 				list.Add (qb.answerB);
 				list.Add (qb.answerC);
 				list.Add (qb.answerD);
-			
+		audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
+
 				Shuffle (list);
 			
 				answerA.text = list [0];
@@ -578,10 +596,11 @@ public class QuestionManager : MonoBehaviour
 				textClickedButton = answerA.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerA.text == qb.rightAnswer) {
-			questionFadeScript.SetButtonInteractiableFalse ();
-			ShowParticleWhenNotAnswer(chargeGO);
-			InvokeFunctionsRightAnswer();
-			//						enemyHealthBarScript.Damage ();
+			audioSource.Play();
+						questionFadeScript.SetButtonInteractiableFalse ();
+						ShowParticleWhenNotAnswer (chargeGO);
+						InvokeFunctionsRightAnswer ();
+						//						enemyHealthBarScript.Damage ();
 //						ResetTimeBar ();
 //						ShowAllAnswerButton ();
 				} else {
@@ -593,57 +612,62 @@ public class QuestionManager : MonoBehaviour
 				}
 		}
 
-	void EnableAttackedEffect(){
-		attackedEffectScript.enabled = true;
-		imageScript.color = new Color32 (203, 165, 165, 255);
-		if(monsterImg.GetComponent<iTween>() != null){
-			monsterImg.GetComponent<iTween>().enabled = true;
+		void EnableAttackedEffect ()
+		{
+				attackedEffectScript.enabled = true;
+				imageScript.color = new Color32 (203, 165, 165, 255);
+				if (monsterImg.GetComponent<iTween> () != null) {
+						monsterImg.GetComponent<iTween> ().enabled = true;
+				}
+
 		}
 
-	}
+		void DisableAttackedEffect ()
+		{
+				attackedEffectScript.enabled = false;
+				imageScript.color = new Color32 (255, 255, 255, 255);
+				monsterImg.GetComponent<iTween> ().enabled = false;
+		}
 
-	void DisableAttackedEffect(){
-		attackedEffectScript.enabled = false;
-		imageScript.color = new Color32 (255, 255, 255, 255);
-		monsterImg.GetComponent<iTween> ().enabled = false;
-	}
-
-	void InvokeFunctionsRightAnswer(){
-		Invoke("HideQuestion", chargeParticle.duration);
-		Invoke("EnableAttackedEffect", chargeParticle.duration);
-		Invoke("ShowAttackParticle", chargeParticle.duration);
-		Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
-		Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
-	}
+		void InvokeFunctionsRightAnswer ()
+		{
+				Invoke ("HideQuestion", chargeParticle.duration);
+				Invoke ("EnableAttackedEffect", chargeParticle.duration);
+				Invoke ("ShowAttackParticle", chargeParticle.duration);
+				Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
+				Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
+		}
 		
-	void DamageEnemyHealthbar(){
-		enemyHealthBarScript.Damage ();
-	}
+		void DamageEnemyHealthbar ()
+		{
+				enemyHealthBarScript.Damage ();
+		}
 
+		void InvokeFunctionsAfterAttackParticle ()
+		{
+				Invoke ("SetChargeParticleFalse", particle.duration);
+				Invoke ("DisableAttackedEffect", particle.duration);
+				Invoke ("SetParticleFalse", particle.duration);
+				Invoke ("ResetTimeBar", particle.duration);
+				Invoke ("ShowAllAnswerButton", particle.duration);
+				Invoke ("ShowQuestion", particle.duration);
+		}
 
-
-	void InvokeFunctionsAfterAttackParticle(){
-		Invoke ("SetChargeParticleFalse", particle.duration);
-		Invoke ("DisableAttackedEffect", particle.duration);
-		Invoke ("SetParticleFalse", particle.duration);
-		Invoke ("ResetTimeBar", particle.duration);
-		Invoke ("ShowAllAnswerButton", particle.duration);
-		Invoke ("ShowQuestion", particle.duration);
-	}
-
-	void SetChargeParticleFalse(){
-		chargeGO.SetActive (false);
-	}
+		void SetChargeParticleFalse ()
+		{
+				chargeGO.SetActive (false);
+		}
 
 		public void CheckAnswerB ()
 		{
 				textClickedButton = answerB.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerB.text == qb.rightAnswer) {
-			questionFadeScript.SetButtonInteractiableFalse ();
-			ShowParticleWhenNotAnswer(chargeGO);
-			InvokeFunctionsRightAnswer();
-			//						enemyHealthBarScript.Damage ();
+			audioSource.Play();
+						questionFadeScript.SetButtonInteractiableFalse ();
+						ShowParticleWhenNotAnswer (chargeGO);
+						InvokeFunctionsRightAnswer ();
+//						enemyHealthBarScript.Damage ();
 //						ResetTimeBar ();
 //						ShowAllAnswerButton ();
 				} else {
@@ -660,10 +684,11 @@ public class QuestionManager : MonoBehaviour
 				textClickedButton = answerC.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerC.text == qb.rightAnswer) {
-			questionFadeScript.SetButtonInteractiableFalse ();
-			ShowParticleWhenNotAnswer(chargeGO);
-			InvokeFunctionsRightAnswer();
-			//						enemyHealthBarScript.Damage ();
+			audioSource.Play();
+						questionFadeScript.SetButtonInteractiableFalse ();
+						ShowParticleWhenNotAnswer (chargeGO);
+						InvokeFunctionsRightAnswer ();
+//						enemyHealthBarScript.Damage ();
 //						ResetTimeBar ();
 //						ShowAllAnswerButton ();
 				} else {
@@ -680,9 +705,10 @@ public class QuestionManager : MonoBehaviour
 				textClickedButton = answerD.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerD.text == qb.rightAnswer) {
-			questionFadeScript.SetButtonInteractiableFalse ();
-			ShowParticleWhenNotAnswer(chargeGO);
-			InvokeFunctionsRightAnswer();
+			audioSource.Play();
+						questionFadeScript.SetButtonInteractiableFalse ();
+						ShowParticleWhenNotAnswer (chargeGO);
+						InvokeFunctionsRightAnswer ();
 //						enemyHealthBarScript.Damage ();
 				
 //						ResetTimeBar ();
@@ -761,9 +787,10 @@ public class QuestionManager : MonoBehaviour
 				
 		}
 
-	void HideQuestion(){
-		questionFadeScript.HideQuestion ();
-	}
+		void HideQuestion ()
+		{
+				questionFadeScript.HideQuestion ();
+		}
 		
 		
 	

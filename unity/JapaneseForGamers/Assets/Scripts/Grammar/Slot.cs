@@ -25,9 +25,7 @@ public class Slot : MonoBehaviour, IDropHandler {
 			return null;
 		}
 		set{
-			if(!item){
 
-			}
 		}
 
 	}
@@ -43,17 +41,57 @@ public class Slot : MonoBehaviour, IDropHandler {
 		ID = cellStaticId;
 	}
 
+	void Update(){
+
+	}
+
+	void AddWordLoop(Transform trans, GameObject passedItem){
+		if(!item){
+			passedItem.transform.SetParent(trans, false);
+		}
+		else{
+			passedItem.transform.SetParent(trans, false);
+			foreach(Transform t in wordPanel.transform){
+				if(t.gameObject.GetComponent<Slot>().CellId == CellId + 1){
+					Debug.Log("O dang bi tranh cho la: " + t.gameObject.GetComponent<Slot>().CellId);
+					trans = t;
+					break;
+					
+				}
+			}
+			trans.GetComponent<Slot>().AddWordLoop(trans,item);
+		}
+
+	}
+
+
 			public void AddWordIntoCell ()
 		{
-				itemBeingDraggedDragHandler = DragHandler.itemBeingDragged.GetComponent<DragHandler> ();
-				if(!item){
-					
+		itemBeingDraggedDragHandler = DragHandler.itemBeingDragged.GetComponent<DragHandler> ();
+		if(!item){
+			
 //					Debug.Log(eventData.position);
-					DragHandler.itemBeingDragged.transform.SetParent(transform);
-					itemBeingDraggedDragHandler.previousParent = itemBeingDraggedDragHandler.currentParent;
-					itemBeingDraggedDragHandler.currentParent = transform;
-					Debug.Log(CellId);
+			DragHandler.itemBeingDragged.transform.SetParent(transform);
+			itemBeingDraggedDragHandler.previousParent = itemBeingDraggedDragHandler.currentParent;
+			itemBeingDraggedDragHandler.currentParent = transform;
+			Debug.Log(CellId);
+		}
+		else{
+			DragHandler.itemBeingDragged.transform.SetParent(transform);
+			itemBeingDraggedDragHandler.previousParent = itemBeingDraggedDragHandler.currentParent;
+			itemBeingDraggedDragHandler.currentParent = transform;
+			foreach(Transform t in wordPanel.transform){
+				if(t.gameObject.GetComponent<Slot>().CellId == CellId + 1){
+					Debug.Log("O dang bi tranh cho la: " + t.gameObject.GetComponent<Slot>().CellId);
+					trans = t;
+					break;
+					
 				}
+			}
+			trans.GetComponent<Slot>().AddWordLoop(trans,item);
+			
+
+		}
 
 //				if (itemDragHandler.currentParent.gameObject.GetComponent<Slot> ().CellId
 //						> itemBeingDraggedDragHandler.currentParent.gameObject.GetComponent<Slot> ().CellId) {

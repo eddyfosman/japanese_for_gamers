@@ -128,7 +128,7 @@ public class StatusDialogScript : MonoBehaviour {
 
 
 		player = questionManagerScript.GetPlayerData ();
-		Debug.Log (player.Level);
+//		Debug.Log (player.Level);
 		tempPlayer = new PlayerData ();
 		tempPlayer.Atk = player.Atk;
 		tempPlayer.Def = player.Def;

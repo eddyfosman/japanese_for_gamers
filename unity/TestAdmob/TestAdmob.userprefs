@@ -1,8 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\JapaneseForGamers\Assets\Scripts\ThreeCups\ThreeCups.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\JapaneseForGamers\Assets\Scripts\Grammar\AnswerPanel.cs">
     <Files>
-      <File FileName="..\JapaneseForGamers\Assets\Scripts\ThreeCups\ThreeCups.cs" Line="223" Column="19" />
+      <File FileName="..\JapaneseForGamers\Assets\Scripts\Grammar\AnswerPanel.cs" Line="1" Column="1" />
+      <File FileName="..\JapaneseForGamers\Assets\Scripts\Grammar\Grammar.cs" Line="12" Column="25" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

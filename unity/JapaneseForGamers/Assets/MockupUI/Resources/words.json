@@ -5,6 +5,8 @@
 		"writing":"一",
 		"meaning":"one",
 		"reading":"ichi",
+		"onsound":"Sounds/one",
+		"kunsound":"Sounds/one",
 		"monsters":[
 			{"id":"1"},
 			{"id":"2"},
@@ -16,6 +18,8 @@
 		"writing":"二",
 		"meaning":"two",
 		"reading":"ni",
+		"onsound":"Sounds/two",
+		"kunsound":"Sounds/two",
 		"monsters":[
 			{"id":"4"},
 			{"id":"5"},
@@ -27,6 +31,8 @@
 		"writing":"三",
 		"meaning":"two",
 		"reading":"san",
+		"onsound":"Sounds/three",
+		"kunsound":"Sounds/three",
 		"monsters":[
 			{"id":"7"},
 			{"id":"8"},
@@ -38,6 +44,8 @@
 		"writing":"四",
 		"meaning":"four",
 		"reading":"yon",
+		"onsound":"Sounds/four",
+		"kunsound":"Sounds/four",
 		"monsters":[
 			{"id":"8"},
 			{"id":"9"},
@@ -49,6 +57,8 @@
 		"writing":"五",
 		"meaning":"five",
 		"reading":"go",
+		"onsound":"Sounds/five",
+		"kunsound":"Sounds/five",
 		"monsters":[
 			{"id":"1"},
 			{"id":"3"},
@@ -60,6 +70,8 @@
 		"writing":"六",
 		"meaning":"six",
 		"reading":"roku",
+		"onsound":"Sounds/six",
+		"kunsound":"Sounds/six",
 		"monsters":[
 			{"id":"2"},
 			{"id":"5"},
@@ -71,6 +83,8 @@
 		"writing":"七",
 		"meaning":"seven",
 		"reading":"nana",
+		"onsound":"Sounds/seven",
+		"kunsound":"Sounds/seven",
 		"monsters":[
 			{"id":"3"},
 			{"id":"6"},
@@ -82,6 +96,8 @@
 		"writing":"八",
 		"meaning":"eight",
 		"reading":"hachi",
+		"onsound":"Sounds/eight",
+		"kunsound":"Sounds/eight",
 		"monsters":[
 			{"id":"4"},
 			{"id":"7"},
@@ -93,6 +109,8 @@
 		"writing":"九",
 		"meaning":"nine",
 		"reading":"kyuu",
+		"onsound":"Sounds/nine",
+		"kunsound":"Sounds/nine",
 		"monsters":[
 			{"id":"5"},
 			{"id":"6"},
@@ -104,6 +122,8 @@
 		"writing":"十",
 		"meaning":"ten",
 		"reading":"juu",
+		"onsound":"Sounds/ten",
+		"kunsound":"Sounds/ten",
 		"monsters":[
 			{"id":"2"},
 			{"id":"5"},

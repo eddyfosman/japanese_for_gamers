@@ -34,7 +34,9 @@ public class WordTutorial : MonoBehaviour {
 				wordId = jsonWords["words"][i]["id"].ToString(), 
 				wordWriting = jsonWords["words"][i]["writing"].ToString(), 
 				wordReading = jsonWords["words"][i]["reading"].ToString(), 
-				wordMeaning = jsonWords["words"][i]["meaning"].ToString()
+				wordMeaning = jsonWords["words"][i]["meaning"].ToString(),
+				onSound = jsonWords["words"][i]["onsound"].ToString(),
+				kunSound = jsonWords["words"][i]["kunsound"].ToString()
 			});
 		}
 
@@ -45,7 +47,9 @@ public class WordTutorial : MonoBehaviour {
 				wordId = jsonWords["words"][i]["id"].ToString(), 
 				wordWriting = jsonWords["words"][i]["writing"].ToString(), 
 				wordReading = jsonWords["words"][i]["reading"].ToString(), 
-				wordMeaning = jsonWords["words"][i]["meaning"].ToString()
+				wordMeaning = jsonWords["words"][i]["meaning"].ToString(),
+					onSound = jsonWords["words"][i]["onsound"].ToString(),
+					kunSound = jsonWords["words"][i]["kunsound"].ToString()
 			});
 		}
 
@@ -56,7 +60,9 @@ public class WordTutorial : MonoBehaviour {
 				wordId = jsonWords["words"][i]["id"].ToString(), 
 				wordWriting = jsonWords["words"][i]["writing"].ToString(), 
 				wordReading = jsonWords["words"][i]["reading"].ToString(), 
-				wordMeaning = jsonWords["words"][i]["meaning"].ToString()
+				wordMeaning = jsonWords["words"][i]["meaning"].ToString(),
+					onSound = jsonWords["words"][i]["onsound"].ToString(),
+					kunSound = jsonWords["words"][i]["kunsound"].ToString()
 			});
 		}
 

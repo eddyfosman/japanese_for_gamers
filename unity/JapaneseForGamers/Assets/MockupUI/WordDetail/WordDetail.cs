@@ -14,6 +14,10 @@ public class WordDetail : MonoBehaviour {
 //	public UnityEngine.UI.Text writingText;
 	public UnityEngine.UI.Text wordID;
 	public UnityEngine.UI.Button opBackButton;
+	public string onSoundPath;
+	public string kunSoundPath;
+
+	AudioSource audio1;
 
 	TextAsset jsonWordsFile;
 	TextAsset jsonMonsterFile;
@@ -24,8 +28,10 @@ public class WordDetail : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		audio1 = GetComponent<AudioSource>();
 		SetOpBackButton ();
 		Reload ();
+
 	}
 
 	public void SetOpBackButton(){
@@ -42,6 +48,18 @@ public class WordDetail : MonoBehaviour {
 		Application.LoadLevel (3);
 	}
 
+	public void PlayOnSound(){
+
+		audio1.clip = Resources.Load(onSoundPath) as AudioClip;
+		audio1.Play ();
+		
+	}
+
+	public void PlayKunSound(){
+		audio1.clip = Resources.Load(kunSoundPath) as AudioClip;
+		audio1.Play ();	
+	}
+
 	public void Reload(){
 
 		jsonMonsterFile = Resources.Load ("monsters") as TextAsset;
@@ -53,7 +71,9 @@ public class WordDetail : MonoBehaviour {
 		kanjiText.text = selectedWord.WritingText;
 		readingText.text = selectedWord.ReadingText;
 		meaningText.text = selectedWord.MeaningText;
-//		writingText;
+		onSoundPath = selectedWord.OnSoundPath;
+		kunSoundPath = selectedWord.KunSoundPath;
+		Debug.Log ("KUN SOUND LA: " + kunSoundPath);
 		wordID.text = selectedWord.IDSelected;
 
 		for(int i = 0; i < jsonWords["words"].Count; i++){

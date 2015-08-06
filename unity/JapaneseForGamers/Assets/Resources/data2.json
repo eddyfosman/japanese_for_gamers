@@ -5,70 +5,90 @@
 		   "writing":"一",
 		   "meaning":"one",
 		   "on":"mot",
-		   "kun":"ichi"
+		   "kun":"ichi",
+		   "onsound":"Sounds/one",
+		   "kunsound":"Sounds/one"
 		},
 		{
 		   "id":"2",
 		   "writing":"二",
 		   "meaning":"two",
 		   "on":"hai",
-		   "kun":"ni"
+		   "kun":"ni",
+		   "onsound":"Sounds/two",
+		   "kunsound":"Sounds/two"
 		},
 		{
 		   "id":"3",
 		   "writing":"三",
 		   "meaning":"three",
 		   "on":"ba",
-		   "kun":"san"
+		   "kun":"san",
+		   "onsound":"Sounds/three",
+		   "kunsound":"Sounds/three"
 		},
 		{
 		   "id":"4",
 		   "writing":"四",
 		   "meaning":"four",
 		   "on":"bon",
-		   "kun":"yon"
+		   "kun":"yon",
+		   "onsound":"Sounds/four",
+		   "kunsound":"Sounds/four"
 		},
 		{
 		   "id":"5",
 		   "writing":"五",
 		   "meaning":"five",
 		   "on":"nam",
-		   "kun":"go"
+		   "kun":"go",
+		   "onsound":"Sounds/five",
+		   "kunsound":"Sounds/five"
 		},
 		{
 		   "id":"6",
 		   "writing":"六",
 		   "meaning":"six",
 		   "on":"sau",
-		   "kun":"roku"
+		   "kun":"roku",
+		   "onsound":"Sounds/six",
+		   "kunsound":"Sounds/six"
 		},
 		{
 		   "id":"7",
 		   "writing":"七",
 		   "meaning":"seven",
 		   "on":"bay",
-		   "kun":"nana"
+		   "kun":"nana",
+		   "onsound":"Sounds/seven",
+		   "kunsound":"Sounds/seven"
 		},
 		{
 		   "id":"8",
 		   "writing":"八",
 		   "meaning":"eight",
 		   "on":"tam",
-		   "kun":"hachi"
+		   "kun":"hachi",
+		   "onsound":"Sounds/eight",
+		   "kunsound":"Sounds/eight"
 		},
 		{
 		   "id":"9",
 		   "writing":"九",
 		   "meaning":"nine",
 		   "on":"chin",
-		   "kun":"kyuu"
+		   "kun":"kyuu",
+		   "onsound":"Sounds/nine",
+		   "kunsound":"Sounds/nine"
 		},
 		{
 		   "id":"10",
 		   "writing":"十",
 		   "meaning":"ten",
 		   "on":"muoi",
-		   "kun":"juu"
+		   "kun":"juu",
+		   "onsound":"Sounds/ten",
+		   "kunsound":"Sounds/ten"
 		}
 	]
 }

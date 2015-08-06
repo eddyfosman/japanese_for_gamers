@@ -26,10 +26,32 @@ public class WordData {
 		set{meaningText = value;}
 	}
 
+	static string onSoundPath;
+	public string OnSoundPath{
+		get{
+			return onSoundPath;
+		}
+		set{
+			onSoundPath = value;
+		}
+	}
+
+	static string kunSoundPath;
+	public string KunSoundPath{
+		get{
+			return kunSoundPath;
+		}
+		set{
+			kunSoundPath = value;
+		}
+	}
+
 	public string wordId;
 	public string wordWriting;
 	public string wordReading;
 	public string wordMeaning;
+	public string onSound;
+	public string kunSound;
 	
 }
 

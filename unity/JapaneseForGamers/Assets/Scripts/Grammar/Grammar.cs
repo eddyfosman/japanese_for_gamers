@@ -9,7 +9,7 @@ public class Grammar : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 25; i++){
 			cellGo = Instantiate(prefabCell) as GameObject;
 			cellGo.transform.SetParent(wordPanel.transform, false);
 		}
