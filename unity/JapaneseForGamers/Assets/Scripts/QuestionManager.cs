@@ -181,7 +181,7 @@ public class KanjiBean
 
 public class QuestionManager : MonoBehaviour
 {
-
+		public Text visualDamage;
 		private GameObject[] answerText;
 		public Button buttonA;
 		public Button buttonB;
@@ -199,7 +199,7 @@ public class QuestionManager : MonoBehaviour
 		public GameObject monsterPanel;
 		private CanvasGroup monsterCanvasGroup;
 		private MonsterFadeScript monsterFadeScript;
-		public Text test;
+//		public Text test;
 		public Text question;
 		public Text answerA;
 		public Text answerB;
@@ -233,11 +233,21 @@ public class QuestionManager : MonoBehaviour
 		iTween itweenScript;
 		Image imageScript;
 		public GameObject soundManager;
-	AudioSource audioSource;
+		List<WordInfo> listWordInfo = new List<WordInfo> ();
+		AudioSource audioSource;
+	public GameObject monsterManager;
+	MonsterManager monsterManagerScript;
+	public bool isMonsterMoveOut = false;
+	FadeAwayVisualDamage fadeAwayVisualDamageScript;
+	public Text prefabTextUI;
+	Text charGO;
 
 		void Start ()
 		{
-				audioSource = soundManager.GetComponent<AudioSource>();
+		fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
+		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
+		visualDamage.gameObject.SetActive (false);
+				audioSource = soundManager.GetComponent<AudioSource> ();
 				monsterImg = GameObject.FindGameObjectWithTag ("Monster");
 				imageScript = monsterImg.GetComponent<Image> ();
 				attackedEffectScript = monsterImg.GetComponent<AttackedEffect> ();
@@ -265,6 +275,9 @@ public class QuestionManager : MonoBehaviour
 				playerHealthBarScript.maxHealth = player.Hp;
 				SetMonster ();
 				SetQuestion ();
+				if (!isFileExisted ("PlayerInfo")) {
+						File.WriteAllText (Application.persistentDataPath + "/" + "PlayerInfo", "");
+				}
 		
 		
 		
@@ -287,7 +300,14 @@ public class QuestionManager : MonoBehaviour
 						buttonDSelectable.interactable = false;
 				}
 		}
-	
+		
+		bool isFileExisted (string name)
+		{
+				string str = "{";
+				return File.Exists (Application.persistentDataPath + "/" + name);
+
+		}
+
 		public void Read ()
 		{
 		
@@ -296,16 +316,17 @@ public class QuestionManager : MonoBehaviour
 						Debug.Log ("DANG O TRONG ANDROID NE");
 						while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
 								Debug.Log ("File khong ton tai!");
-								string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":5,\n\t\t\t\"def\":0,\n\t\t\t\"agi\":0,\n\t\t\t\"luk\":0,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
+								string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":500,\n\t\t\t\"def\":100,\n\t\t\t\"agi\":100,\n\t\t\t\"luk\":100,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
 								Debug.Log (str);
 
 								File.WriteAllText (Application.persistentDataPath + "/" + "PlayerData.json", str);
 			
-								jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
+								
 						}
+						jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
 						JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile);
 
-						test.text = jsonPlayerData ["player"] [0] ["hp"].ToString ();
+//						test.text = jsonPlayerData ["player"] [0] ["hp"].ToString ();
 						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
 						TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
 						JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
@@ -404,7 +425,7 @@ public class QuestionManager : MonoBehaviour
 
 
 						player = new PlayerData ();
-						Debug.Log ("Cai nay chay truoc hay sau!");
+//						Debug.Log ("Cai nay chay truoc hay sau!");
 						player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
 						player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
 						player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
@@ -456,6 +477,8 @@ public class QuestionManager : MonoBehaviour
 								qb.answerA = kanjiList [i].Meaning;
 								qb.onSound = kanjiList [i].OnSound;
 								qb.kunSound = kanjiList [i].KunSound;
+
+
 								KanjiBean kanjiWord = new KanjiBean ();
 								kanjiWord = GetRandomKanji ();
 								while (kanjiWord.Meaning == qb.answerA) {
@@ -519,6 +542,13 @@ public class QuestionManager : MonoBehaviour
 				public string onSound;
 				public string kunSound;
 		}
+
+		public class WordInfo
+		{
+				public string word;
+				public int right = 0;
+				public int wrong = 0;
+		}
 		
 		public List<KanjiBean> kanjiList;
 		public List<MonsterBean> monsterList;
@@ -580,8 +610,8 @@ public class QuestionManager : MonoBehaviour
 				list.Add (qb.answerB);
 				list.Add (qb.answerC);
 				list.Add (qb.answerD);
-		audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
-
+				audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
+				Debug.Log ("TAI SAO SO 8 KHONG CO AM TNANH: " + qb.onSound);
 				Shuffle (list);
 			
 				answerA.text = list [0];
@@ -591,15 +621,84 @@ public class QuestionManager : MonoBehaviour
 			
 		}
 		
+		IEnumerator AudioCoolDown ()
+		{
+				while (audioSource.isPlaying) {
+						yield return null;
+				}
+		monsterManagerScript.MoveMonsterIn ();
+		StartCoroutine (MovingMonsterCoolDown ());
+				
+		}
+
+	IEnumerator MovingMonsterCoolDown(){
+		while(!isMonsterMoveOut){
+			yield return null;
+		}
+		ShowParticleWhenNotAnswer (chargeGO);
+		InvokeFunctionsRightAnswer ();
+		Debug.Log ("CHAY HIEU UNG!");
+	}
+		
+	void FadeAwayDamage(){
+		fadeAwayVisualDamageScript.FadeAwayDamage ();
+	}
+
+	void CreateTextForVisualDamage(){
+
+	}
+
+	void DisplayDamage(){
+		visualDamage.gameObject.SetActive (true);
+		Vector3 tempVector3 = GameObject.FindGameObjectWithTag ("Monster").transform.position;
+		visualDamage.gameObject.transform.position = tempVector3;
+//		visualDamage.GetComponent<RectTransform> ().offsetMax = new Vector2 (visualDamage.GetComponent<RectTransform> ().offsetMax.x + monsterGameObject.GetComponent<RectTransform> ().rect.width / 2, visualDamage.GetComponent<RectTransform> ().offsetMax.y);
+		visualDamage.text = "DISPLAYED DAMAGE!!!";
+		char[] copiedChar = visualDamage.text.ToCharArray ();
+		if(copiedChar != null){
+			for(int i = 0; i<copiedChar.Length; i++){
+				charGO = Instantiate (prefabTextUI, visualDamage.transform.position, visualDamage.transform.rotation) as Text;
+				charGO.text = copiedChar[i].ToString();
+				charGO.transform.SetParent(visualDamage.transform);
+				charGO.transform.localScale = new Vector3(1f,1f,1f);
+
+//				charGO.GetComponent<RectTransform>().position
+
+				charGO.GetComponent<RectTransform>().position = new Vector3(chargeGO.transform.position.x + i*0.1f,chargeGO.transform.position.y,chargeGO.transform.position.z);
+				Debug.Log(chargeGO.transform.position);
+			}
+		}
+
+		fadeAwayVisualDamageScript.ShowDamage ();
+//		ScaleBigger ();
+//		iTween.ScaleFrom (visualDamage.gameObject, iTween.Hash ("x",1f,"y",1f,"time",1f,"easetype","easeOutBack","oncomplete","FadeAwayDamage"));
+		iTween.MoveTo (visualDamage.gameObject, iTween.Hash ("x",visualDamage.transform.position.x,"y",visualDamage.transform.position.y + 2f,"z",visualDamage.transform.position.z,"time",1f,"easetype","easeOutBack","oncomplete","FadeAwayDamage"));
+//		iTween.ColorTo (visualDamage.GetComponent<Text>().gameObject, iTween.Hash ("a",0f,"time",2f));
+	}
+
+	void ScaleBigger(){
+		iTween.ValueTo (visualDamage.gameObject, iTween.Hash ("from",new Vector2(0.4f,0.4f),"to",new Vector2(0.8f,0.8f),"easetype","easeOutBack","time",0.2f,"onupdate","ScaleVisualDamage"));
+	}
+	
+	void ScaleNormal(){
+		
+	}
+	
+	void ScaleVisualDamage(Vector2 scaleV2){
+		visualDamage.GetComponent<RectTransform>().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
+	}
+
 		public void CheckAnswerA ()
 		{
 				textClickedButton = answerA.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerA.text == qb.rightAnswer) {
-			audioSource.Play();
+						audioSource.Play ();
+						StartCoroutine (AudioCoolDown ());
+//			DisplayDamage();
 						questionFadeScript.SetButtonInteractiableFalse ();
-						ShowParticleWhenNotAnswer (chargeGO);
-						InvokeFunctionsRightAnswer ();
+//						ShowParticleWhenNotAnswer (chargeGO);
+//						InvokeFunctionsRightAnswer ();
 						//						enemyHealthBarScript.Damage ();
 //						ResetTimeBar ();
 //						ShowAllAnswerButton ();
@@ -633,6 +732,7 @@ public class QuestionManager : MonoBehaviour
 		{
 				Invoke ("HideQuestion", chargeParticle.duration);
 				Invoke ("EnableAttackedEffect", chargeParticle.duration);
+				Invoke ("DisplayDamage", chargeParticle.duration);
 				Invoke ("ShowAttackParticle", chargeParticle.duration);
 				Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
 				Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
@@ -663,10 +763,12 @@ public class QuestionManager : MonoBehaviour
 				textClickedButton = answerB.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerB.text == qb.rightAnswer) {
-			audioSource.Play();
+						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
-						ShowParticleWhenNotAnswer (chargeGO);
-						InvokeFunctionsRightAnswer ();
+//			DisplayDamage();
+						StartCoroutine (AudioCoolDown ());
+//						ShowParticleWhenNotAnswer (chargeGO);
+//						InvokeFunctionsRightAnswer ();
 //						enemyHealthBarScript.Damage ();
 //						ResetTimeBar ();
 //						ShowAllAnswerButton ();
@@ -684,10 +786,12 @@ public class QuestionManager : MonoBehaviour
 				textClickedButton = answerC.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerC.text == qb.rightAnswer) {
-			audioSource.Play();
+						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
-						ShowParticleWhenNotAnswer (chargeGO);
-						InvokeFunctionsRightAnswer ();
+//			DisplayDamage();
+						StartCoroutine (AudioCoolDown ());
+//						ShowParticleWhenNotAnswer (chargeGO);
+//						InvokeFunctionsRightAnswer ();
 //						enemyHealthBarScript.Damage ();
 //						ResetTimeBar ();
 //						ShowAllAnswerButton ();
@@ -705,10 +809,12 @@ public class QuestionManager : MonoBehaviour
 				textClickedButton = answerD.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerD.text == qb.rightAnswer) {
-			audioSource.Play();
+						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
-						ShowParticleWhenNotAnswer (chargeGO);
-						InvokeFunctionsRightAnswer ();
+//			DisplayDamage();
+						StartCoroutine (AudioCoolDown ());
+//						ShowParticleWhenNotAnswer (chargeGO);
+//						InvokeFunctionsRightAnswer ();
 //						enemyHealthBarScript.Damage ();
 				
 //						ResetTimeBar ();

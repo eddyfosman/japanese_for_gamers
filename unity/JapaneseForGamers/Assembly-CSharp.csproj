@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_5_1_1;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_5_1_1;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_MONO;DEVELOPMENT_BUILD;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -54,32 +54,19 @@
      <Compile Include="Assets\AutoTileSet\Source\AutoTileSetSprite.cs" />
      <Compile Include="Assets\CanvasWord.cs" />
      <Compile Include="Assets\Cloner.cs" />
+     <Compile Include="Assets\CustomFont\BitmapFontImporter.cs" />
      <Compile Include="Assets\DestroyMagic.cs" />
      <Compile Include="Assets\DeviceManager.cs" />
      <Compile Include="Assets\DontGoThroughThings.cs" />
      <Compile Include="Assets\FairyFly.cs" />
+     <Compile Include="Assets\FileBrowser\Script\FileBrowser.cs" />
+     <Compile Include="Assets\FileBrowser\Script\testFileBrowser.cs" />
      <Compile Include="Assets\Floating.cs" />
      <Compile Include="Assets\Gizmos2.cs" />
      <Compile Include="Assets\KanjiManager.cs" />
      <Compile Include="Assets\KanjiWord.cs" />
      <Compile Include="Assets\LevelCreator.cs" />
      <Compile Include="Assets\MapController.cs" />
-     <Compile Include="Assets\MockupUI\MonsterDetail\MonsterDetail.cs" />
-     <Compile Include="Assets\MockupUI\MonsterDetail\SceneTransitionData.cs" />
-     <Compile Include="Assets\MockupUI\MonsterDetail\TextData.cs" />
-     <Compile Include="Assets\MockupUI\MonsterDetail\TextListItem.cs" />
-     <Compile Include="Assets\MockupUI\MonsterList\MonsterData.cs" />
-     <Compile Include="Assets\MockupUI\MonsterList\MonsterList.cs" />
-     <Compile Include="Assets\MockupUI\MonsterList\MonsterListItem.cs" />
-     <Compile Include="Assets\MockupUI\Plugins\EnhancedScroller.cs" />
-     <Compile Include="Assets\MockupUI\Plugins\ListItemBase.cs" />
-     <Compile Include="Assets\MockupUI\Plugins\SmallList.cs" />
-     <Compile Include="Assets\MockupUI\WordDetail\ImageData.cs" />
-     <Compile Include="Assets\MockupUI\WordDetail\ImageListItem.cs" />
-     <Compile Include="Assets\MockupUI\WordDetail\WordDetail.cs" />
-     <Compile Include="Assets\MockupUI\WordList\WordData.cs" />
-     <Compile Include="Assets\MockupUI\WordList\WordListItem.cs" />
-     <Compile Include="Assets\MockupUI\WordList\WordTutorial.cs" />
      <Compile Include="Assets\PaddleManager.cs" />
      <Compile Include="Assets\Powerup.cs" />
      <Compile Include="Assets\SceneManager.cs" />
@@ -98,6 +85,7 @@
      <Compile Include="Assets\Scripts\Grammar\DragHandler.cs" />
      <Compile Include="Assets\Scripts\Grammar\Grammar.cs" />
      <Compile Include="Assets\Scripts\Grammar\Slot.cs" />
+     <Compile Include="Assets\Scripts\Listening\ListeningManager.cs" />
      <Compile Include="Assets\Scripts\MemoryMatching\Card.cs" />
      <Compile Include="Assets\Scripts\MemoryMatching\FlipCard.cs" />
      <Compile Include="Assets\Scripts\MemoryMatching\MemoryMatching.cs" />
@@ -109,7 +97,9 @@
      <Compile Include="Assets\Scripts\QuestionFadeScript.cs" />
      <Compile Include="Assets\Scripts\QuestionManager.cs" />
      <Compile Include="Assets\Scripts\Quiz\EnemyHealthBar.cs" />
+     <Compile Include="Assets\Scripts\Quiz\FadeAwayVisualDamage.cs" />
      <Compile Include="Assets\Scripts\Quiz\MonsterFadeScript.cs" />
+     <Compile Include="Assets\Scripts\Quiz\MonsterManager.cs" />
      <Compile Include="Assets\Scripts\Rope.cs" />
      <Compile Include="Assets\Scripts\SelfDestroy.cs" />
      <Compile Include="Assets\Scripts\StatusDialogScript.cs" />
@@ -125,6 +115,16 @@
      <Compile Include="Assets\Scripts\WordMaze\Flood.cs" />
      <Compile Include="Assets\Scripts\WordMaze\GetF.cs" />
      <Compile Include="Assets\Scripts\WordMaze\MovementEnergy.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\InventoryCellView.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\InventoryData.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableData.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableList.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableListItem.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\MonsterInventory.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScroller.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScrollerCellView.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\Plugins\IEnhancedScrollerDelegate.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\Plugins\SmallList.cs" />
      <Compile Include="Assets\Tnt.cs" />
      <Compile Include="Assets\WordKeeper.cs" />
      <Compile Include="Assets\iTweenExamples\AccurateLob\Scripts\AccurateLob.cs" />
@@ -143,7 +143,7 @@
      <Compile Include="Assets\iTweenExamples\GridMovement\Scripts\GamePieceCSharp.cs" />
      <Compile Include="Assets\iTweenExamples\MemoryGame\Scripts\BoardControl.cs" />
      <Compile Include="Assets\iTweenExamples\MemoryGame\Scripts\BoxControl.cs" />
-     <Compile Include="Assets\iTweenExamples\OrbitExample\Scripts\Path.cs" />
+     <Compile Include="Assets\iTweenExamples\OrbitExample\Scripts\Path1.cs" />
      <Compile Include="Assets\iTweenExamples\OrbitExample\Scripts\Point.cs" />
      <Compile Include="Assets\iTweenExamples\PathControlledCharacter\Scripts\Controller.cs" />
      <Compile Include="Assets\iTweenExamples\PathControlledCharacter\Scripts\PathPoint.cs" />
@@ -175,6 +175,8 @@
      <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\Brick.cs" />
      <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\SimpleCameraFade.cs" />
      <None Include="Assets\AutoTileSet\README.txt" />
+     <None Include="Assets\FileBrowser\readme.txt" />
+     <None Include="Assets\CustomFont\customfont.xml" />
      <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
      <None Include="Assets\Resources\data.txt" />
  <Reference Include="UnityEngine.UI">

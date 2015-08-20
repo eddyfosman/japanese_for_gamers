@@ -17,10 +17,10 @@ public class PlayerHealthBar : MonoBehaviour {
 		get{return currentHealth;}
 		set{
 			tempHealth = currentHealth;
-			Debug.Log("TempHealth " + tempHealth);
+//			Debug.Log("TempHealth " + tempHealth);
 			oldPos = playerHealthTransform.position;
 			currentHealth = value;
-			Debug.Log("CurrentpHealth " + currentHealth);
+//			Debug.Log("CurrentpHealth " + currentHealth);
 			HandleHealth();
 		}
 	}
@@ -40,9 +40,9 @@ public class PlayerHealthBar : MonoBehaviour {
 	float damage;
 
 	private void CalculateDamage(){
-		Debug.Log ("Monster Attack " + monster.Atk);
+		Debug.Log ("Phong thu cua nguoi choi la: " + player.Def);
 		ratio = monster.Atk / player.Def;
-		
+
 		if(ratio < 6/91){
 			baseDmg = (monster.Atk*449/480 - player.Def/112) / 8;
 		}
@@ -58,7 +58,7 @@ public class PlayerHealthBar : MonoBehaviour {
 		else{
 			baseDmg = monster.Atk - player.Def*3/7;
 		}
-		
+//		damage = 5;
 		damage = baseDmg *  Random.Range(0.9f, 1.1f) + (monster.Atk / 400) * Random.Range (1, 10) + Random.Range (-2, 2);
 		//		if ratio < 6/91 (roughly .066) : baseDmg = (eneatk*449/480 - mydef/112) / 8
 		//			
@@ -101,7 +101,9 @@ public class PlayerHealthBar : MonoBehaviour {
 			float tempXValue = MapValues(tempHealth, 0 , maxHealth,minXValue, maxXValue);
 			long temp = (tempHealth - currentHealth)/100;
 			tempHealth -= temp;
-			playerHealthTransform.position =  new Vector3(tempXValue, cachedY);
+//			playerHealthTransform.position =  new Vector3(tempXValue, cachedY);
+			playerHealthTransform.GetComponent<RectTransform> ().offsetMax = new Vector2 (tempXValue, 0);
+			playerHealthTransform.GetComponent<RectTransform> ().offsetMin = new Vector2 (tempXValue, 0);
 			yield return null;
 		}
 	}
@@ -125,7 +127,7 @@ public class PlayerHealthBar : MonoBehaviour {
 		questionManagerScript = questionManager.GetComponent<QuestionManager>();
 		player = questionManagerScript.GetPlayerData ();
 		monster = questionManagerScript.GetMonsterData ();
-		Debug.Log ("Monster Attack " + monster.Atk);
+//		Debug.Log ("Monster Attack " + monster.Atk);
 		
 		cachedY = playerHealthTransform.position.y;
 		maxXValue = playerHealthTransform.position.x;

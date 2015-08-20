@@ -84,7 +84,9 @@ public class EnemyHealthBar : MonoBehaviour {
 
 	private void HandleHealth(){
 		float currentXValue = MapValues (currentHealth, 0, maxHealth, minXValue, maxXValue);
-		enemyHealthTranform.position = new Vector3 (currentXValue, cachedY);
+//		enemyHealthTranform.position = new Vector3 (currentXValue, cachedY);
+		enemyHealthTranform.GetComponent<RectTransform> ().offsetMax = new Vector2 (currentXValue, GetComponent<RectTransform> ().offsetMax.y);
+		enemyHealthTranform.GetComponent<RectTransform> ().offsetMin = new Vector2 (currentXValue, GetComponent<RectTransform> ().offsetMin.y);
 	}
 
 	IEnumerator CoolDownHealth(){
