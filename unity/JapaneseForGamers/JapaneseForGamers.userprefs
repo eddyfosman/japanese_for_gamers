@@ -1,13 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\SelectMonsterPopup\MonsterInventory.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\QuestionManager.cs">
     <Files>
-      <File FileName="Assets\SelectMonsterPopup\MonsterInventory.cs" Line="78" Column="37" />
+      <File FileName="Assets\Scripts\Quiz\MonsterManager.cs" Line="34" Column="40" />
+      <File FileName="Assets\SelectMonsterPopup\MonsterInventory.cs" Line="1" Column="1" />
       <File FileName="Assets\SelectMonsterPopup\InventoryCellView.cs" Line="1" Column="1" />
-      <File FileName="Assets\SelectMonsterPopup\Plugins\EnhancedScroller.cs" Line="1" Column="1" />
-      <File FileName="Assets\SelectMonsterPopup\MonsterEquippableListItem.cs" Line="1" Column="1" />
-      <File FileName="Assets\SelectMonsterPopup\MonsterEquippableList.cs" Line="1" Column="1" />
       <File FileName="Assets\SelectMonsterPopup\InventoryData.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\QuestionManager.cs" Line="700" Column="102" />
+      <File FileName="Assets\Plugins\Pixelplacement\iTween\iTween.cs" Line="6875" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

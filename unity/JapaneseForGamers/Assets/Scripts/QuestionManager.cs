@@ -181,6 +181,7 @@ public class KanjiBean
 
 public class QuestionManager : MonoBehaviour
 {
+
 		public Text visualDamage;
 		private GameObject[] answerText;
 		public Button buttonA;
@@ -244,6 +245,7 @@ public class QuestionManager : MonoBehaviour
 
 		void Start ()
 		{
+		monsterManagerScript = monsterManager.GetComponent<MonsterManager>();
 		fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
 		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
 		visualDamage.gameObject.SetActive (false);
@@ -695,6 +697,9 @@ public class QuestionManager : MonoBehaviour
 				if (answerA.text == qb.rightAnswer) {
 						audioSource.Play ();
 						StartCoroutine (AudioCoolDown ());
+			monsterManagerScript.LoadMonster(answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerA.transform.parent.name);
 //			DisplayDamage();
 						questionFadeScript.SetButtonInteractiableFalse ();
 //						ShowParticleWhenNotAnswer (chargeGO);
@@ -765,6 +770,9 @@ public class QuestionManager : MonoBehaviour
 				if (answerB.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
+			monsterManagerScript.LoadMonster(answerB.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerB.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerB.transform.parent.name);
 //			DisplayDamage();
 						StartCoroutine (AudioCoolDown ());
 //						ShowParticleWhenNotAnswer (chargeGO);
@@ -788,6 +796,9 @@ public class QuestionManager : MonoBehaviour
 				if (answerC.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
+			monsterManagerScript.LoadMonster(answerC.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerC.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerC.transform.parent.name);
 //			DisplayDamage();
 						StartCoroutine (AudioCoolDown ());
 //						ShowParticleWhenNotAnswer (chargeGO);
@@ -811,6 +822,9 @@ public class QuestionManager : MonoBehaviour
 				if (answerD.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
+			monsterManagerScript.LoadMonster(answerD.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerD.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
+			Debug.Log(answerD.transform.parent.name);
 //			DisplayDamage();
 						StartCoroutine (AudioCoolDown ());
 //						ShowParticleWhenNotAnswer (chargeGO);

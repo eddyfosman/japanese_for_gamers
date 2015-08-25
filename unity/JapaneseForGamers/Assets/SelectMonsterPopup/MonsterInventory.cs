@@ -15,11 +15,19 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 
 	static Stack<int> stack = new Stack<int>();
 
+	public Hashtable hashtableMonster = new Hashtable ();
+
 	private SmallList<InventoryData> _data;
 
 	public EnhancedScroller vScroller;
 
 	private List<int> listCellIndex;
+
+	public int StackCount{
+		get{
+			return stack.Count;
+		}
+	}
 
 	public EnhancedScrollerCellView vCellViewPrefab;
 
@@ -57,6 +65,8 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 		vScroller.ReloadData();
 	}
 
+
+
 	private void CellViewSelected(EnhancedScrollerCellView cellView){
 		if(cellView != null){
 			var selectedDataIndex = (cellView as InventoryCellView).DataIndex;
@@ -74,25 +84,66 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 //					_data[i].Selected = (selectedDataIndex == i && selectedDataIndex == j);
 //				}
 				if(selectedDataIndex == i){
-					if(!_data[i].Selected && monstersEquipped < 4){
-						stack.Push(selectedDataIndex);
-						monstersEquipped++;
-						_data[i].Selected = (selectedDataIndex == i);
-						break;
-					}
-					else if(_data[i].Selected && monstersEquipped > 0){
-						if(stack.Peek() != null){
-							while(stack.Peek() != i && stack.Count > 0){
-								_data[stack.Pop()].Selected = false;
-								monstersEquipped--;
-							}
-							_data[i].Selected = false;
+					if(!_data[i].Selected ){
+						if(stack.Count < 4){
+							stack.Push(selectedDataIndex);
+							hashtableMonster.Add(selectedDataIndex,_data[i].monsterName);
+							_data[i].Selected = (selectedDataIndex == i);
 
+							break;
+						}
+						else if(4 == stack.Count){
+							hashtableMonster.Remove(stack.Peek());
+							_data[stack.Pop()].Selected = false;
+							_data[i].Selected = true;
+							stack.Push(i);
+							hashtableMonster.Add(i,_data[i].monsterName);
 							break;
 						}
 
 					}
-				}
+					else {
+						if(stack.Peek() == i){
+							hashtableMonster.Remove(stack.Peek());
+							_data[stack.Pop()].Selected = false;
+							break;
+						}
+						else{
+							Queue tempQueue = new Queue();
+							while(stack.Peek() != i){
+								tempQueue.Enqueue(stack.Pop());
+							}
+							hashtableMonster.Remove(stack.Peek());
+							_data[stack.Pop()].Selected = false;
+							while(tempQueue.Count > 0){
+								stack.Push((int)tempQueue.Dequeue());
+							}
+							break;
+						}
+					}
+				
+//				else if(_data[i].Selected && monstersEquipped > 0){
+//						if(stack.Peek() != null){
+//							if(stack.Peek() != i){
+//								for(int j = 0; j < _data.Count; j++){
+//									if(stack.Peek() == j){
+//										_data[stack.Pop()].Selected = false;
+//										monstersEquipped--;
+//										break;
+//									}
+//								}
+//							}
+////							while(stack.Peek() != i && stack.Count > 0){
+////								_data[stack.Pop()].Selected = false;
+////								monstersEquipped--;
+////							}
+////							_data[i].Selected = false;
+//
+//							break;
+//						}
+//
+//					}
+//				}
 //				if(!_data[i].Selected && monstersEquipped < 4){
 //
 //					if(selectedDataIndex == i){
@@ -132,6 +183,31 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 //				}
 //				_data[i].Selected = (selectedDataIndex == i);
 			}
+			}
+//			for (var i = 0; i < _data.Count; i++){
+//				if(_data[i].Selected && monstersEquipped > 0){
+//					if(stack.Peek() != null){
+//						if(stack.Peek() != i){
+//							for(int j = 0; j < _data.Count; j++){
+//								if(stack.Peek() == j){
+//									_data[stack.Pop()].Selected = false;
+//									monstersEquipped--;
+//									break;
+//								}
+//							}
+//						}
+//						//							while(stack.Peek() != i && stack.Count > 0){
+//						//								_data[stack.Pop()].Selected = false;
+//						//								monstersEquipped--;
+//						//							}
+//						//							_data[i].Selected = false;
+//						
+//						break;
+//					}
+//					
+//				}
+//			
+//			}
 		}
 	}
 

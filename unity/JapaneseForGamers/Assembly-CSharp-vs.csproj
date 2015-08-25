@@ -115,6 +115,7 @@
      <Compile Include="Assets\Scripts\WordMaze\Flood.cs" />
      <Compile Include="Assets\Scripts\WordMaze\GetF.cs" />
      <Compile Include="Assets\Scripts\WordMaze\MovementEnergy.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\ButtonController.cs" />
      <Compile Include="Assets\SelectMonsterPopup\InventoryCellView.cs" />
      <Compile Include="Assets\SelectMonsterPopup\InventoryData.cs" />
      <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableData.cs" />

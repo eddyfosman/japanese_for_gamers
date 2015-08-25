@@ -31,6 +31,11 @@ public class MonsterManager : MonoBehaviour {
 //		MoveMonsterIn ();
 	}
 
+	public void LoadMonster(string monsterName){
+		visualMonster.sprite = Resources.Load ("Sprites/" + monsterName,typeof(Sprite)) as Sprite;
+		Debug.Log (monsterName);
+	}
+
 	public void MoveMonsterIn(){
 		behindMonsterPanel.gameObject.SetActive (true);
 		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",0f,"y",-1.9f,"z",initPos.z,"time",2f,"oncomplete","MoveMonsterOut","oncompletetarget",gameObject));

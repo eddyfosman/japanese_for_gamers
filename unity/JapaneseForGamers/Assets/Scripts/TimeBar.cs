@@ -19,6 +19,9 @@ public class TimeBar : MonoBehaviour {
 	public GameObject statusDialog;
 	private StatusDialogScript statusDialogScript;
 
+	public GameObject buttonController;
+	private ButtonController buttonControllerScript;
+
 	public float speed;
 	public Image visualTime;
 	public RectTransform timeBarTransform;
@@ -105,6 +108,7 @@ public class TimeBar : MonoBehaviour {
 		playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
 		questionManagerScript = quesManager.GetComponent<QuestionManager>();
 		statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
+		buttonControllerScript = buttonController.GetComponent<ButtonController> ();
 		cachedY = timeBarTransform.position.y;
 		maxXValue = timeBarTransform.position.x;
 		minXValue = timeBarTransform.position.x - timeBarTransform.rect.width;
@@ -116,7 +120,7 @@ public class TimeBar : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(!onCD && currentTime > 0 && !questionFadeScript.onCD && !monsterFadeScript.onCD && !statusDialogScript.onCD){
+		if(!onCD && currentTime > 0 && !questionFadeScript.onCD && !monsterFadeScript.onCD && !statusDialogScript.onCD && !buttonControllerScript.onCD){
 			StartCoroutine(CoolDownTime());
 			CurrentTime -= 1;
 //			Debug.Log("Thoi GIAN CON LAI LA: " + CurrentTime);
