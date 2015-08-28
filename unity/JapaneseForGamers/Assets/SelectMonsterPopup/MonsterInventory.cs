@@ -39,6 +39,7 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 		listCellIndex = new List<int> ();
 		vScroller.Delegate = this;
 		Reload ();
+
 	}
 
 	private void Reload(){
@@ -70,9 +71,7 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 	private void CellViewSelected(EnhancedScrollerCellView cellView){
 		if(cellView != null){
 			var selectedDataIndex = (cellView as InventoryCellView).DataIndex;
-//			if(listCellIndex.Count < 4){
-//				listCellIndex.Add(selectedDataIndex);
-//			}
+
 			
 			// loop through each item in the data list and turn
 			// on or off the selection state. This is done so that
@@ -80,9 +79,7 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 			// ones are added.
 			for (var i = 0; i < _data.Count; i++)
 			{
-//				for(var j = 0; j < listCellIndex.Count; j++){
-//					_data[i].Selected = (selectedDataIndex == i && selectedDataIndex == j);
-//				}
+
 				if(selectedDataIndex == i){
 					if(!_data[i].Selected ){
 						if(stack.Count < 4){
@@ -121,93 +118,10 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 							break;
 						}
 					}
-				
-//				else if(_data[i].Selected && monstersEquipped > 0){
-//						if(stack.Peek() != null){
-//							if(stack.Peek() != i){
-//								for(int j = 0; j < _data.Count; j++){
-//									if(stack.Peek() == j){
-//										_data[stack.Pop()].Selected = false;
-//										monstersEquipped--;
-//										break;
-//									}
-//								}
-//							}
-////							while(stack.Peek() != i && stack.Count > 0){
-////								_data[stack.Pop()].Selected = false;
-////								monstersEquipped--;
-////							}
-////							_data[i].Selected = false;
-//
-//							break;
-//						}
-//
-//					}
-//				}
-//				if(!_data[i].Selected && monstersEquipped < 4){
-//
-//					if(selectedDataIndex == i){
-//						Debug.Log(_data[i].monsterName);
-//						stack.Push(selectedDataIndex);
-//						monstersEquipped++;
-//						_data[i].Selected = (selectedDataIndex == i);
-//						break;
-//					}
-//
-//				}
-//				else if(_data[i].Selected && monstersEquipped > 0){
-//					if(stack.Peek() != null){
-//
-//
-//						if(selectedDataIndex == i){
-//							if(stack.Peek() == i){
-//								_data[i].Selected = false;
-//								monstersEquipped--;
-//								stack.Pop();
-//								break;
-//							}
-//							else if(stack.Peek() != i){
-//								_data[stack.Peek()].Selected = false;
-//								monstersEquipped--;
-//								stack.Pop();
-//								break;
-//							}
-//						}
-//						
-//						
-//					}
-//
-//
-//
-//
-//				}
-//				_data[i].Selected = (selectedDataIndex == i);
+	
+				}
 			}
-			}
-//			for (var i = 0; i < _data.Count; i++){
-//				if(_data[i].Selected && monstersEquipped > 0){
-//					if(stack.Peek() != null){
-//						if(stack.Peek() != i){
-//							for(int j = 0; j < _data.Count; j++){
-//								if(stack.Peek() == j){
-//									_data[stack.Pop()].Selected = false;
-//									monstersEquipped--;
-//									break;
-//								}
-//							}
-//						}
-//						//							while(stack.Peek() != i && stack.Count > 0){
-//						//								_data[stack.Pop()].Selected = false;
-//						//								monstersEquipped--;
-//						//							}
-//						//							_data[i].Selected = false;
-//						
-//						break;
-//					}
-//					
-//				}
-//			
-//			}
+
 		}
 	}
 

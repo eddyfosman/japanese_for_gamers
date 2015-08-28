@@ -53,11 +53,7 @@ public class ButtonController : MonoBehaviour {
 
 	}
 
-//	IEnumerator AddName(){
-//		while(){
-//
-//		}
-//	}
+
 
 	// Update is called once per frame
 	void Update () {
