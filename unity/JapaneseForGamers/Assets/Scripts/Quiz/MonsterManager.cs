@@ -19,6 +19,7 @@ public class MonsterManager : MonoBehaviour {
 	Sprite imageA;
 	public GameObject questionManager;
 	QuestionManager questionMangerScript;
+
 	// Use this for initialization
 	void Start () {
 		questionMangerScript = questionManager.GetComponent<QuestionManager>();
@@ -38,12 +39,12 @@ public class MonsterManager : MonoBehaviour {
 
 	public void MoveMonsterIn(){
 		behindMonsterPanel.gameObject.SetActive (true);
-		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",0f,"y",-1.9f,"z",initPos.z,"time",2f,"oncomplete","MoveMonsterOut","oncompletetarget",gameObject));
+		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",0f,"y",0f,"z",initPos.z,"time",2f,"oncomplete","MoveMonsterOut","oncompletetarget",gameObject));
 		Debug.Log (visualMonster.transform.position);
 	}
 
 	public void MoveMonsterOut(){
-		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",-initPos.x,"y",-1.9f,"z",initPos.z,"time",1f,"oncomplete","InformQuestionManager","oncompletetarget",gameObject));
+		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",-initPos.x,"y",initPos.y,"z",initPos.z,"time",1f,"oncomplete","InformQuestionManager","oncompletetarget",gameObject));
 	}
 
 	void InformQuestionManager(){

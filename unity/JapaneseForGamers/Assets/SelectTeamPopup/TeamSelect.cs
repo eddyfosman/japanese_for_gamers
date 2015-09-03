@@ -21,6 +21,8 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 
 	public GameObject selectTeamPopup;
 	public GameObject selectMonsterPopup;
+	public GameObject selectMonsterPopupGO;
+	private MonsterInventory monsterInventoryScript;
 
 	public Button editBtn;
 
@@ -29,6 +31,7 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 	}
 
 	void Start(){
+		monsterInventoryScript = selectMonsterPopupGO.GetComponent<MonsterInventory> ();
 		vScroller.Delegate = this;
 		Reload ();
 		editBtn.GetComponent<Selectable>().interactable = false;
@@ -67,11 +70,17 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 	public void HideSelectTeamPopup(){
 		for(var i = 0; i < _data.Count; i++){
 			if(_data[i].Selected){
-				_data[i].monsterName1
+				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName1);
+				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName2);
+				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName3);
+				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName4);
+				break;
+
 			}
 		}
 		selectTeamPopup.SetActive(false);
 		selectMonsterPopup.SetActive(true);
+		monsterInventoryScript.Reload ();
 	}
 
 	private void CellViewSelected(EnhancedScrollerCellView cellView){

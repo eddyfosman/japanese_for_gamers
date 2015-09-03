@@ -508,7 +508,8 @@ public class QuestionManager : MonoBehaviour
 		{
 				for (int i = 0; i < answerText.Length; i++) {
 						if (answerText [i].GetComponent<Text> ().text != qb.rightAnswer) {
-								answerText [i].transform.parent.gameObject.SetActive (false);
+//								answerText [i].transform.parent.gameObject.SetActive (false);
+								answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup>().alpha = 0.3f;
 						}
 				}
 		}
@@ -517,8 +518,8 @@ public class QuestionManager : MonoBehaviour
 		{
 				for (int i = 0; i < answerText.Length; i++) {
 
-						answerText [i].transform.parent.gameObject.SetActive (true);
-
+//						answerText [i].transform.parent.gameObject.SetActive (true);
+						answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
 				}
 		}
 
@@ -629,6 +630,7 @@ public class QuestionManager : MonoBehaviour
 						yield return null;
 				}
 		monsterManagerScript.MoveMonsterIn ();
+		isMonsterMoveOut = false;
 		StartCoroutine (MovingMonsterCoolDown ());
 				
 		}

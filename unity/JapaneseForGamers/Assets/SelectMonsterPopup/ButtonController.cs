@@ -8,7 +8,7 @@ public class ButtonController : MonoBehaviour {
 	public GameObject selectMonsterPopupGO;
 	public Button proceedBtn;
 	public GameObject monsterSelectPopup;
-	private MonsterInventory monsterInventoryScript;
+	private MonsterInventory2 monsterInventoryScript;
 	public bool onCD;
 	private bool once = false;
 	private bool shuffeld = false;
@@ -18,7 +18,7 @@ public class ButtonController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		monsterInventoryScript = monsterSelectPopup.GetComponent<MonsterInventory> ();
+		monsterInventoryScript = monsterSelectPopup.GetComponent<MonsterInventory2> ();
 		onCD = true;
 		shuffeld = false;
 	}

@@ -13,7 +13,10 @@ public class TeamCellView : EnhancedScrollerCellView {
 	public Image image2;
 	public Image image3;
 	public Image image4;
-	
+
+	public GameObject selectMonsterPopupGO;
+
+
 	public Color selectedColor;
 	public Color unSelectedColor;
 	
@@ -42,6 +45,7 @@ public class TeamCellView : EnhancedScrollerCellView {
 		if(!_data.Created){
 			notCreatedImage.gameObject.SetActive(true);
 			teamContainer.SetActive(false);
+//			selectMonsterPopupGO.GetComponent<MonsterInventory>().Reload();
 		}
 		
 		_data.selectedChanged -= SelectedChanged;

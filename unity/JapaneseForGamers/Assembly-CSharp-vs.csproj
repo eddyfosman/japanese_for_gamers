@@ -117,11 +117,14 @@
      <Compile Include="Assets\Scripts\WordMaze\MovementEnergy.cs" />
      <Compile Include="Assets\SelectMonsterPopup\ButtonController.cs" />
      <Compile Include="Assets\SelectMonsterPopup\InventoryCellView.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\InventoryCellView2.cs" />
      <Compile Include="Assets\SelectMonsterPopup\InventoryData.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\InventoryData2.cs" />
      <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableData.cs" />
      <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableList.cs" />
      <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableListItem.cs" />
      <Compile Include="Assets\SelectMonsterPopup\MonsterInventory.cs" />
+     <Compile Include="Assets\SelectMonsterPopup\MonsterInventory2.cs" />
      <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScroller.cs" />
      <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScrollerCellView.cs" />
      <Compile Include="Assets\SelectMonsterPopup\Plugins\IEnhancedScrollerDelegate.cs" />
