@@ -96,8 +96,10 @@
      <Compile Include="Assets\Scripts\Puzzle.cs" />
      <Compile Include="Assets\Scripts\QuestionFadeScript.cs" />
      <Compile Include="Assets\Scripts\QuestionManager.cs" />
+     <Compile Include="Assets\Scripts\Quiz\EffectManager.cs" />
      <Compile Include="Assets\Scripts\Quiz\EnemyHealthBar.cs" />
      <Compile Include="Assets\Scripts\Quiz\FadeAwayVisualDamage.cs" />
+     <Compile Include="Assets\Scripts\Quiz\MonsterEquip.cs" />
      <Compile Include="Assets\Scripts\Quiz\MonsterFadeScript.cs" />
      <Compile Include="Assets\Scripts\Quiz\MonsterManager.cs" />
      <Compile Include="Assets\Scripts\Rope.cs" />

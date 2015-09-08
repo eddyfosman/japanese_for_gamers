@@ -16,10 +16,10 @@
 		"selected":"false",
 		"created":"true",
 		"monsters":[
-			{"id":"1","name":"monster5"},
-			{"id":"2","name":"monster6"},
-			{"id":"3","name":"monster7"},
-			{"id":"4","name":"monster8"}
+			{"id":"5","name":"monster5"},
+			{"id":"6","name":"monster6"},
+			{"id":"7","name":"monster7"},
+			{"id":"8","name":"monster8"}
 			]
 		}
 		,
@@ -28,10 +28,10 @@
 		"selected":"false",
 		"created":"true",
 		"monsters":[
-			{"id":"1","name":"monster3"},
-			{"id":"2","name":"monster7"},
-			{"id":"3","name":"monster1"},
-			{"id":"4","name":"monster2"}
+			{"id":"3","name":"monster3"},
+			{"id":"7","name":"monster7"},
+			{"id":"1","name":"monster1"},
+			{"id":"2","name":"monster2"}
 			]
 		}
 		,
@@ -40,10 +40,10 @@
 		"selected":"false",
 		"created":"false",
 		"monsters":[
-			{"id":"1","name":""},
-			{"id":"2","name":""},
-			{"id":"3","name":""},
-			{"id":"4","name":""}
+			{"id":"","name":""},
+			{"id":"","name":""},
+			{"id":"","name":""},
+			{"id":"","name":""}
 			]
 		}
 		,
@@ -52,10 +52,10 @@
 		"selected":"false",
 		"created":"false",
 		"monsters":[
-			{"id":"1","name":""},
-			{"id":"2","name":""},
-			{"id":"3","name":""},
-			{"id":"4","name":""}
+			{"id":"","name":""},
+			{"id":"","name":""},
+			{"id":"","name":""},
+			{"id":"","name":""}
 			]
 		}
 	]

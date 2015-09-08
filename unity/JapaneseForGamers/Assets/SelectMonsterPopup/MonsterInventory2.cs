@@ -51,7 +51,7 @@ public class MonsterInventory2 : MonoBehaviour, IEnhancedScrollerDelegate{
 	void Start(){
 		listCellIndex = new List<int> ();
 		vScroller.Delegate = this;
-		Reload ();
+		Reload (true);
 
 	}
 
@@ -59,7 +59,11 @@ public class MonsterInventory2 : MonoBehaviour, IEnhancedScrollerDelegate{
 		isFirstPos = val;
 	}
 
-	public void Reload(){
+	public void ResetListMonsterSelected(){
+		listMonsterSelected.Clear ();
+	}
+
+	public void Reload(bool val){
 
 		jsonMonsterFile = Resources.Load ("monsters") as TextAsset;
 		jsonMonsters = JsonMapper.ToObject (jsonMonsterFile.text);
@@ -75,8 +79,9 @@ public class MonsterInventory2 : MonoBehaviour, IEnhancedScrollerDelegate{
 		for(int i = 0; i < jsonMonsters["monsters"].Count; i+=2){
 			if(i + 1 < jsonMonsters["monsters"].Count){
 				_data.Add(new InventoryData2(){
-					
+					id = jsonMonsters["monsters"][i]["id"].ToString(),
 					monsterName = jsonMonsters["monsters"][i]["image"].ToString(),
+					id2 = jsonMonsters["monsters"][i + 1]["id"].ToString(),
 					monsterName2 = jsonMonsters["monsters"][i+1]["image"].ToString()
 						
 				});
@@ -85,21 +90,33 @@ public class MonsterInventory2 : MonoBehaviour, IEnhancedScrollerDelegate{
 		}
 
 		vScroller.ReloadData();
-		if(listMonsterSelected.Count != 0){
+		if(listMonsterSelected.Count != 0 && val){
 			ReloadMonsterSelected ();
 		}
 
 	}
 
 	private void ReloadMonsterSelected(){
+		InventoryCellView2 inventory = new InventoryCellView2 ();
 		for(int i = 0; i < _data.Count; i++){
 			for(int j = 0; j < listMonsterSelected.Count; j++){
 				if(_data[i].monsterName == listMonsterSelected[j]){
-					stack.Push(i);
+					inventory.ReturnStack.Push(_data[i].id);
+//					stack.Push(i);
 					_data[i].Selected = true;
-					hashtableMonster.Add(i,_data[i].monsterName);
+					inventory.ReturnHashTable.Add(_data[i].id,_data[i].monsterName);
+//					hashtableMonster.Add(i,_data[i].monsterName);
 
-					break;
+
+				}
+				if(_data[i].monsterName2 == listMonsterSelected[j]){
+					inventory.ReturnStack.Push(_data[i].id2);
+					//					stack.Push(i);
+					_data[i].Selected2 = true;
+					inventory.ReturnHashTable.Add(_data[i].id2,_data[i].monsterName2);
+					//					hashtableMonster.Add(i,_data[i].monsterName);
+					
+
 				}
 			}
 		}

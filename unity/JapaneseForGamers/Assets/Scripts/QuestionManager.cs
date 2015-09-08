@@ -236,19 +236,22 @@ public class QuestionManager : MonoBehaviour
 		public GameObject soundManager;
 		List<WordInfo> listWordInfo = new List<WordInfo> ();
 		AudioSource audioSource;
-	public GameObject monsterManager;
-	MonsterManager monsterManagerScript;
-	public bool isMonsterMoveOut = false;
-	FadeAwayVisualDamage fadeAwayVisualDamageScript;
-	public Text prefabTextUI;
-	Text charGO;
+		public GameObject monsterManager;
+		MonsterManager monsterManagerScript;
+		public bool isMonsterMoveOut = false;
+		FadeAwayVisualDamage fadeAwayVisualDamageScript;
+		public Text prefabTextUI;
+		Text charGO;
+		public GameObject effectManagerGO;
+		private EffectManager effectManagerScript;
 
 		void Start ()
 		{
-		monsterManagerScript = monsterManager.GetComponent<MonsterManager>();
-		fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
-		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
-		visualDamage.gameObject.SetActive (false);
+				effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
+				monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
+				fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
+				monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
+				visualDamage.gameObject.SetActive (false);
 				audioSource = soundManager.GetComponent<AudioSource> ();
 				monsterImg = GameObject.FindGameObjectWithTag ("Monster");
 				imageScript = monsterImg.GetComponent<Image> ();
@@ -509,7 +512,7 @@ public class QuestionManager : MonoBehaviour
 				for (int i = 0; i < answerText.Length; i++) {
 						if (answerText [i].GetComponent<Text> ().text != qb.rightAnswer) {
 //								answerText [i].transform.parent.gameObject.SetActive (false);
-								answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup>().alpha = 0.3f;
+								answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup> ().alpha = 0.3f;
 						}
 				}
 		}
@@ -519,7 +522,7 @@ public class QuestionManager : MonoBehaviour
 				for (int i = 0; i < answerText.Length; i++) {
 
 //						answerText [i].transform.parent.gameObject.SetActive (true);
-						answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
+						answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup> ().alpha = 1f;
 				}
 		}
 
@@ -629,68 +632,77 @@ public class QuestionManager : MonoBehaviour
 				while (audioSource.isPlaying) {
 						yield return null;
 				}
-		monsterManagerScript.MoveMonsterIn ();
-		isMonsterMoveOut = false;
-		StartCoroutine (MovingMonsterCoolDown ());
+				monsterManagerScript.MoveMonsterIn ();
+				isMonsterMoveOut = false;
+				StartCoroutine (MovingMonsterCoolDown ());
 				
 		}
 
-	IEnumerator MovingMonsterCoolDown(){
-		while(!isMonsterMoveOut){
-			yield return null;
+		IEnumerator MovingMonsterCoolDown ()
+		{
+				while (!isMonsterMoveOut) {
+						yield return null;
+				}
+				ShowParticleWhenNotAnswer (chargeGO);
+				InvokeFunctionsRightAnswer ();
+				Debug.Log ("CHAY HIEU UNG!");
 		}
-		ShowParticleWhenNotAnswer (chargeGO);
-		InvokeFunctionsRightAnswer ();
-		Debug.Log ("CHAY HIEU UNG!");
-	}
 		
-	void FadeAwayDamage(){
-		fadeAwayVisualDamageScript.FadeAwayDamage ();
-	}
-
-	void CreateTextForVisualDamage(){
-
-	}
-
-	void DisplayDamage(){
-		visualDamage.gameObject.SetActive (true);
-		Vector3 tempVector3 = GameObject.FindGameObjectWithTag ("Monster").transform.position;
-		visualDamage.gameObject.transform.position = tempVector3;
-//		visualDamage.GetComponent<RectTransform> ().offsetMax = new Vector2 (visualDamage.GetComponent<RectTransform> ().offsetMax.x + monsterGameObject.GetComponent<RectTransform> ().rect.width / 2, visualDamage.GetComponent<RectTransform> ().offsetMax.y);
-		visualDamage.text = "DISPLAYED DAMAGE!!!";
-		char[] copiedChar = visualDamage.text.ToCharArray ();
-		if(copiedChar != null){
-			for(int i = 0; i<copiedChar.Length; i++){
-				charGO = Instantiate (prefabTextUI, visualDamage.transform.position, visualDamage.transform.rotation) as Text;
-				charGO.text = copiedChar[i].ToString();
-				charGO.transform.SetParent(visualDamage.transform);
-				charGO.transform.localScale = new Vector3(1f,1f,1f);
-
-//				charGO.GetComponent<RectTransform>().position
-
-				charGO.GetComponent<RectTransform>().position = new Vector3(chargeGO.transform.position.x + i*0.1f,chargeGO.transform.position.y,chargeGO.transform.position.z);
-				Debug.Log(chargeGO.transform.position);
-			}
+		void FadeAwayDamage ()
+		{
+				fadeAwayVisualDamageScript.FadeAwayDamage ();
 		}
 
-		fadeAwayVisualDamageScript.ShowDamage ();
+		void CreateTextForVisualDamage ()
+		{
+
+		}
+
+		void DisplayDamage ()
+		{
+				visualDamage.gameObject.SetActive (true);
+				Vector3 tempVector3 = GameObject.FindGameObjectWithTag ("Monster").transform.position;
+				visualDamage.gameObject.transform.position = tempVector3;
+//		visualDamage.GetComponent<RectTransform> ().offsetMax = new Vector2 (visualDamage.GetComponent<RectTransform> ().offsetMax.x + monsterGameObject.GetComponent<RectTransform> ().rect.width / 2, visualDamage.GetComponent<RectTransform> ().offsetMax.y);
+				visualDamage.text = "DISPLAYED DAMAGE!!!";
+
+				// doan code phia duoi tao ra cac doi tuong chu de co the sap xep tao chu len xuong
+//		char[] copiedChar = visualDamage.text.ToCharArray ();
+//		if(copiedChar != null){
+//			for(int i = 0; i<copiedChar.Length; i++){
+//				charGO = Instantiate (prefabTextUI, visualDamage.transform.position, visualDamage.transform.rotation) as Text;
+//				charGO.text = copiedChar[i].ToString();
+//				charGO.transform.SetParent(visualDamage.transform);
+//				charGO.transform.localScale = new Vector3(1f,1f,1f);
+//
+////				charGO.GetComponent<RectTransform>().position
+//
+//				charGO.GetComponent<RectTransform>().position = new Vector3(chargeGO.transform.position.x + i*0.1f,chargeGO.transform.position.y,chargeGO.transform.position.z);
+//				Debug.Log(chargeGO.transform.position);
+//			}
+//		}
+
+				fadeAwayVisualDamageScript.ShowDamage ();
 //		ScaleBigger ();
 //		iTween.ScaleFrom (visualDamage.gameObject, iTween.Hash ("x",1f,"y",1f,"time",1f,"easetype","easeOutBack","oncomplete","FadeAwayDamage"));
-		iTween.MoveTo (visualDamage.gameObject, iTween.Hash ("x",visualDamage.transform.position.x,"y",visualDamage.transform.position.y + 2f,"z",visualDamage.transform.position.z,"time",1f,"easetype","easeOutBack","oncomplete","FadeAwayDamage"));
+				iTween.MoveTo (visualDamage.gameObject, iTween.Hash ("x", visualDamage.transform.position.x, "y", visualDamage.transform.position.y + 2f, "z", visualDamage.transform.position.z, "time", 1f, "easetype", "easeOutBack", "oncomplete", "FadeAwayDamage"));
 //		iTween.ColorTo (visualDamage.GetComponent<Text>().gameObject, iTween.Hash ("a",0f,"time",2f));
-	}
+		}
 
-	void ScaleBigger(){
-		iTween.ValueTo (visualDamage.gameObject, iTween.Hash ("from",new Vector2(0.4f,0.4f),"to",new Vector2(0.8f,0.8f),"easetype","easeOutBack","time",0.2f,"onupdate","ScaleVisualDamage"));
-	}
+		void ScaleBigger ()
+		{
+				iTween.ValueTo (visualDamage.gameObject, iTween.Hash ("from", new Vector2 (0.4f, 0.4f), "to", new Vector2 (0.8f, 0.8f), "easetype", "easeOutBack", "time", 0.2f, "onupdate", "ScaleVisualDamage"));
+		}
 	
-	void ScaleNormal(){
+		void ScaleNormal ()
+		{
 		
-	}
+		}
 	
-	void ScaleVisualDamage(Vector2 scaleV2){
-		visualDamage.GetComponent<RectTransform>().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
-	}
+		void ScaleVisualDamage (Vector2 scaleV2)
+		{
+				visualDamage.GetComponent<RectTransform> ().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
+		}
 
 		public void CheckAnswerA ()
 		{
@@ -699,9 +711,11 @@ public class QuestionManager : MonoBehaviour
 				if (answerA.text == qb.rightAnswer) {
 						audioSource.Play ();
 						StartCoroutine (AudioCoolDown ());
-			monsterManagerScript.LoadMonster(answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerA.transform.parent.name);
+						monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (answerA.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);
+
+						effectManagerScript.AddEffectIntoList(answerA.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
+			Debug.Log (answerA.transform.parent.name);
 //			DisplayDamage();
 						questionFadeScript.SetButtonInteractiableFalse ();
 //						ShowParticleWhenNotAnswer (chargeGO);
@@ -772,9 +786,10 @@ public class QuestionManager : MonoBehaviour
 				if (answerB.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
-			monsterManagerScript.LoadMonster(answerB.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerB.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerB.transform.parent.name);
+						monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (answerB.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);						Debug.Log (answerB.transform.parent.name);
+
+			effectManagerScript.AddEffectIntoList(answerB.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
 //			DisplayDamage();
 						StartCoroutine (AudioCoolDown ());
 //						ShowParticleWhenNotAnswer (chargeGO);
@@ -798,9 +813,11 @@ public class QuestionManager : MonoBehaviour
 				if (answerC.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
-			monsterManagerScript.LoadMonster(answerC.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerC.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerC.transform.parent.name);
+						monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (answerC.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);
+
+			effectManagerScript.AddEffectIntoList(answerC.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
+			Debug.Log (answerC.transform.parent.name);
 //			DisplayDamage();
 						StartCoroutine (AudioCoolDown ());
 //						ShowParticleWhenNotAnswer (chargeGO);
@@ -824,9 +841,11 @@ public class QuestionManager : MonoBehaviour
 				if (answerD.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
-			monsterManagerScript.LoadMonster(answerD.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerD.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-			Debug.Log(answerD.transform.parent.name);
+						monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (answerD.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);						
+			Debug.Log (answerD.transform.parent.name);
+
+			effectManagerScript.AddEffectIntoList(answerD.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
 //			DisplayDamage();
 						StartCoroutine (AudioCoolDown ());
 //						ShowParticleWhenNotAnswer (chargeGO);

@@ -4,8 +4,9 @@ using System.Collections;
 //public delegate void SelectedChangedDelegate(bool val);
 
 public class InventoryData2 {
-
+	public string id;
 	public string monsterName;
+	public string id2;
 	public string monsterName2;
 
 	public SelectedChangedDelegate selectedChanged;

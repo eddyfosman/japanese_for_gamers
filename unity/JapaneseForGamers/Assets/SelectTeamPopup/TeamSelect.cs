@@ -22,7 +22,7 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 	public GameObject selectTeamPopup;
 	public GameObject selectMonsterPopup;
 	public GameObject selectMonsterPopupGO;
-	private MonsterInventory monsterInventoryScript;
+	private MonsterInventory2 monsterInventoryScript2;
 
 	public Button editBtn;
 
@@ -31,7 +31,7 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 	}
 
 	void Start(){
-		monsterInventoryScript = selectMonsterPopupGO.GetComponent<MonsterInventory> ();
+		monsterInventoryScript2 = selectMonsterPopupGO.GetComponent<MonsterInventory2> ();
 		vScroller.Delegate = this;
 		Reload ();
 		editBtn.GetComponent<Selectable>().interactable = false;
@@ -70,17 +70,21 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 	public void HideSelectTeamPopup(){
 		for(var i = 0; i < _data.Count; i++){
 			if(_data[i].Selected){
-				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName1);
-				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName2);
-				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName3);
-				monsterInventoryScript.listMonsterSelected.Add(_data[i].monsterName4);
+				monsterInventoryScript2.listMonsterSelected.Add(_data[i].monsterName1);
+				monsterInventoryScript2.listMonsterSelected.Add(_data[i].monsterName2);
+				monsterInventoryScript2.listMonsterSelected.Add(_data[i].monsterName3);
+				monsterInventoryScript2.listMonsterSelected.Add(_data[i].monsterName4);
 				break;
 
 			}
 		}
-		selectTeamPopup.SetActive(false);
-		selectMonsterPopup.SetActive(true);
-		monsterInventoryScript.Reload ();
+		selectTeamPopup.GetComponent<CanvasGroup>().alpha = 0;
+		selectTeamPopup.GetComponent<CanvasGroup>().interactable = false;
+		selectTeamPopup.GetComponent<CanvasGroup> ().blocksRaycasts = false;
+		selectMonsterPopup.GetComponent<CanvasGroup>().alpha = 1;
+		selectMonsterPopup.GetComponent<CanvasGroup>().interactable = true;
+		selectMonsterPopup.GetComponent<CanvasGroup>().blocksRaycasts = true;
+		monsterInventoryScript2.Reload (true);
 	}
 
 	private void CellViewSelected(EnhancedScrollerCellView cellView){
@@ -91,8 +95,12 @@ public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {
 			{
 				if(i == selectedDataIndex){
 					if(!_data[i].Created){
-						selectTeamPopup.SetActive(false);
-						selectMonsterPopup.SetActive(true);
+						selectTeamPopup.GetComponent<CanvasGroup>().alpha = 0;
+						selectTeamPopup.GetComponent<CanvasGroup>().interactable = false;
+						selectTeamPopup.GetComponent<CanvasGroup> ().blocksRaycasts = false;
+						selectMonsterPopup.GetComponent<CanvasGroup>().alpha = 1;
+						selectMonsterPopup.GetComponent<CanvasGroup>().interactable = true;
+						selectMonsterPopup.GetComponent<CanvasGroup>().blocksRaycasts = true;
 						editBtn.GetComponent<Selectable>().interactable = false;
 					}
 					else if(_data[i].Created){

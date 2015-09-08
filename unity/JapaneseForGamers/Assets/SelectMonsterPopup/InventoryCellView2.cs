@@ -60,7 +60,31 @@ public class InventoryCellView2 : EnhancedScrollerCellView {
 		bgrImage2.color = (selected ? selectedColor : unSelectedColor);
 	}
 
-	public static Stack stack = new Stack();
+	public int StackCount{
+		get{
+			return stack.Count;
+		}
+	}
+
+	public Stack ReturnStack{
+		get{
+			return stack;
+		}
+	}
+
+	public Hashtable ReturnHashTable{
+		get{
+			return hashtable;
+		}
+	}
+
+	public void ResetStackAndHashtable(){
+		stack.Clear ();
+		hashtable.Clear ();
+	}
+
+	static Stack stack = new Stack();
+	static Hashtable hashtable = new Hashtable();
 //	public static bool first = false;
 
 	public void OnSelected(){
@@ -75,7 +99,8 @@ public class InventoryCellView2 : EnhancedScrollerCellView {
 				if(stack.Count < 4){
 					Debug.Log(stack.Count);
 					_data.Selected = true;
-					stack.Push(_data.monsterName);
+					stack.Push(_data.id);
+					hashtable.Add(_data.id,_data.monsterName);
 					Debug.Log(stack.Count);
 				}
 			}
@@ -84,16 +109,17 @@ public class InventoryCellView2 : EnhancedScrollerCellView {
 					Debug.Log("STACK BANG KHOONG");
 					return;
 				}
-				if(stack.Peek() == _data.monsterName){
-					stack.Pop();
+				if(stack.Peek() == _data.id){
+					hashtable.Remove(stack.Pop());
+
 					_data.Selected = false;
 				}
 				else{
 					Queue tempQueue = new Queue();
-					while(stack.Peek() != _data.monsterName){
+					while(stack.Peek() != _data.id){
 						tempQueue.Enqueue(stack.Pop());
 					}
-					stack.Pop();
+					hashtable.Remove(stack.Pop());
 					_data.Selected = false;
 					while(tempQueue.Count > 0){
 						stack.Push((string)tempQueue.Dequeue());
@@ -118,7 +144,8 @@ public class InventoryCellView2 : EnhancedScrollerCellView {
 				if(stack.Count < 4){
 					Debug.Log(stack.Count);
 					_data.Selected2 = true;
-					stack.Push(_data.monsterName2);
+					stack.Push(_data.id2);
+					hashtable.Add(_data.id2,_data.monsterName2);
 					Debug.Log(stack.Count);
 				}
 			}
@@ -127,16 +154,16 @@ public class InventoryCellView2 : EnhancedScrollerCellView {
 					Debug.Log("STACK BANG KHOONG");
 					return;
 				}
-				if(stack.Peek() == _data.monsterName2){
-					stack.Pop();
+				if(stack.Peek() == _data.id2){
+					hashtable.Remove(stack.Pop());
 					_data.Selected2 = false;
 				}
 				else{
 					Queue tempQueue = new Queue();
-					while(stack.Peek() != _data.monsterName2){
+					while(stack.Peek() != _data.id2){
 						tempQueue.Enqueue(stack.Pop());
 					}
-					stack.Pop();
+					hashtable.Remove(stack.Pop());
 					_data.Selected2 = false;
 					while(tempQueue.Count > 0){
 						stack.Push((string)tempQueue.Dequeue());

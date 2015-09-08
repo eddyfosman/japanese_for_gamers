@@ -45,7 +45,7 @@ public class TeamCellView : EnhancedScrollerCellView {
 		if(!_data.Created){
 			notCreatedImage.gameObject.SetActive(true);
 			teamContainer.SetActive(false);
-//			selectMonsterPopupGO.GetComponent<MonsterInventory>().Reload();
+//			selectMonsterPopupGO.GetComponent<MonsterInventory2>().Reload();
 		}
 		
 		_data.selectedChanged -= SelectedChanged;
