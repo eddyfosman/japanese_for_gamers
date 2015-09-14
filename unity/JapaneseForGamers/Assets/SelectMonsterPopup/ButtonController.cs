@@ -81,12 +81,14 @@ public class ButtonController : MonoBehaviour {
 					MonsterEquip mq = visualMonsterEquipped[i].gameObject.AddComponent<MonsterEquip>();
 					mq.ID = jsonMonsters["monsters"][j]["id"].ToString();
 					mq.Image = jsonMonsters["monsters"][j]["image"].ToString();
+					mq.PosX = float.Parse(jsonMonsters["monsters"][j]["posx"].ToString());
+					mq.PosY = float.Parse(jsonMonsters["monsters"][j]["posy"].ToString());
 					mq.AddValue("atk",jsonMonsters["monsters"][j]["bonus"][0]["atk"].ToString());
 					mq.AddValue("def",jsonMonsters["monsters"][j]["bonus"][0]["def"].ToString());
 					mq.AddValue("hp",jsonMonsters["monsters"][j]["bonus"][0]["hp"].ToString());
 					mq.EffectProperty.Turn = int.Parse(jsonMonsters["monsters"][j]["effect"][0]["turn"].ToString());
 					mq.EffectProperty.Apply = jsonMonsters["monsters"][j]["effect"][0]["apply"].ToString();
-					mq.EffectProperty.Value= int.Parse(jsonMonsters["monsters"][j]["effect"][0]["value"].ToString());
+					mq.EffectProperty.Value = int.Parse(jsonMonsters["monsters"][j]["effect"][0]["value"].ToString());
 					mq.EffectProperty.Type = jsonMonsters["monsters"][j]["effect"][0]["type"].ToString();
 				}
 

@@ -222,6 +222,8 @@ public class QuestionManager : MonoBehaviour
 		public GameObject slashGO;
 		public GameObject thunderGO;
 		public GameObject chargeGO;
+		public GameObject regenGO;
+		ParticleSystem regenParticle;
 		ParticleSystem chargeParticle;
 		ParticleSystem thunderParticle;
 		ParticleSystem particle;
@@ -244,9 +246,14 @@ public class QuestionManager : MonoBehaviour
 		Text charGO;
 		public GameObject effectManagerGO;
 		private EffectManager effectManagerScript;
+		public GameObject visualEffectInform;
+		private VisualEffectInform visualEffectInformScript;
+		
+		
 
 		void Start ()
 		{
+				visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform>();
 				effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
 				monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
 				fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
@@ -260,6 +267,7 @@ public class QuestionManager : MonoBehaviour
 				deadParticle = deadGO.GetComponent<ParticleSystem> ();
 				chargeParticle = chargeGO.GetComponent<ParticleSystem> ();
 				thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
+				regenParticle = regenGO.GetComponent<ParticleSystem>();
 				particle = slashGO.GetComponent<ParticleSystem> ();
 				Screen.orientation = ScreenOrientation.Portrait;
 				buttonASelectable = buttonA.GetComponent<Selectable> ();
@@ -312,6 +320,10 @@ public class QuestionManager : MonoBehaviour
 				return File.Exists (Application.persistentDataPath + "/" + name);
 
 		}
+		
+	void SetParticleGO(GameObject particleGO, bool val){
+		particleGO.SetActive (val);
+	}
 
 		public void Read ()
 		{
@@ -617,7 +629,7 @@ public class QuestionManager : MonoBehaviour
 				list.Add (qb.answerC);
 				list.Add (qb.answerD);
 				audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
-				Debug.Log ("TAI SAO SO 8 KHONG CO AM TNANH: " + qb.onSound);
+//				Debug.Log ("TAI SAO SO 8 KHONG CO AM TNANH: " + qb.onSound);
 				Shuffle (list);
 			
 				answerA.text = list [0];
@@ -627,12 +639,12 @@ public class QuestionManager : MonoBehaviour
 			
 		}
 		
-		IEnumerator AudioCoolDown ()
+		IEnumerator AudioCoolDown (MonsterEquip mq)
 		{
 				while (audioSource.isPlaying) {
 						yield return null;
 				}
-				monsterManagerScript.MoveMonsterIn ();
+				monsterManagerScript.MoveMonsterIn (mq);
 				isMonsterMoveOut = false;
 				StartCoroutine (MovingMonsterCoolDown ());
 				
@@ -704,34 +716,6 @@ public class QuestionManager : MonoBehaviour
 				visualDamage.GetComponent<RectTransform> ().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
 		}
 
-		public void CheckAnswerA ()
-		{
-				textClickedButton = answerA.text;
-				ShowOnlyRightAnswerButton ();
-				if (answerA.text == qb.rightAnswer) {
-						audioSource.Play ();
-						StartCoroutine (AudioCoolDown ());
-						monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (answerA.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);
-
-						effectManagerScript.AddEffectIntoList(answerA.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
-			Debug.Log (answerA.transform.parent.name);
-//			DisplayDamage();
-						questionFadeScript.SetButtonInteractiableFalse ();
-//						ShowParticleWhenNotAnswer (chargeGO);
-//						InvokeFunctionsRightAnswer ();
-						//						enemyHealthBarScript.Damage ();
-//						ResetTimeBar ();
-//						ShowAllAnswerButton ();
-				} else {
-						questionFadeScript.SetButtonInteractiableFalse ();
-						playerHealthBarScript.Damage ();
-						ShowWrongAnswerParticle ();
-						
-						
-				}
-		}
-
 		void EnableAttackedEffect ()
 		{
 				attackedEffectScript.enabled = true;
@@ -742,6 +726,11 @@ public class QuestionManager : MonoBehaviour
 
 		}
 
+		void SetRegenParticleFalse(){
+			regenGO.SetActive (false);
+		visualEffectInformScript.FadeOutVisualEffect();
+		}
+
 		void DisableAttackedEffect ()
 		{
 				attackedEffectScript.enabled = false;
@@ -749,6 +738,15 @@ public class QuestionManager : MonoBehaviour
 				monsterImg.GetComponent<iTween> ().enabled = false;
 		}
 
+		void ExecutedFunctionsAfterStunEffect(){
+
+			HideQuestion ();
+			ResetTimeBar ();
+			ShowAllAnswerButton ();
+			ShowQuestion ();
+
+		}
+		
 		void InvokeFunctionsRightAnswer ()
 		{
 				Invoke ("HideQuestion", chargeParticle.duration);
@@ -779,26 +777,89 @@ public class QuestionManager : MonoBehaviour
 				chargeGO.SetActive (false);
 		}
 
+	void FadeOutVisualEffect(){
+		visualEffectInformScript.FadeOutVisualEffect ();
+		ExecutedFunctionsAfterStunEffect ();
+	}
+
+		public void CheckAnswerA ()
+		{
+				MonsterEquip monsterEquip = answerA.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+				textClickedButton = answerA.text;
+				ShowOnlyRightAnswerButton ();
+				if (answerA.text == qb.rightAnswer) {
+						audioSource.Play ();
+						if(effectManagerScript.IsEffectAdded()){
+							effectManagerScript.ApplyEffect("stun");
+							visualEffectInformScript.SetSprite("stun");
+							visualEffectInformScript.FadeInVisualEffect();
+				Invoke("FadeOutVisualEffect",1f);
+						}
+						else{
+				StartCoroutine (AudioCoolDown (monsterEquip));
+
+						}
+						monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+				Debug.Log (monsterEquip.EffectProperty.Apply);
+//			if(effectManagerScript.IsEffectAdded()){
+//				Debug.Log("CONG MAU NE!!!");
+//				effectManagerScript.ApplyEffect();
+//				SetParticleGO(regenGO,true);
+//				Invoke("SetRegenParticleFalse", regenParticle.duration);
+//
+//			}
+						
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						Debug.Log (answerA.transform.parent.name);
+				
+						questionFadeScript.SetButtonInteractiableFalse ();
+				
+				} else {
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
+						questionFadeScript.SetButtonInteractiableFalse ();
+						
+						playerHealthBarScript.Damage ();
+						ShowWrongAnswerParticle ();
+				
+				
+				}
+		}
+
 		public void CheckAnswerB ()
 		{
+		MonsterEquip monsterEquip = answerB.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 				textClickedButton = answerB.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerB.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
 						monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (answerB.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);						Debug.Log (answerB.transform.parent.name);
+			Debug.Log (monsterEquip.EffectProperty.Apply);
+						Debug.Log (answerB.transform.parent.name);
+//			if(effectManagerScript.IsEffectAdded()){
+//				Debug.Log("CONG MAU NE!!!");
+//				effectManagerScript.ApplyEffect();
+//				SetParticleGO(regenGO,true);
+//				Invoke("SetRegenParticleFalse", regenParticle.duration);
+//			}
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 
-			effectManagerScript.AddEffectIntoList(answerB.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
-//			DisplayDamage();
-						StartCoroutine (AudioCoolDown ());
-//						ShowParticleWhenNotAnswer (chargeGO);
-//						InvokeFunctionsRightAnswer ();
-//						enemyHealthBarScript.Damage ();
-//						ResetTimeBar ();
-//						ShowAllAnswerButton ();
+			if(effectManagerScript.IsEffectAdded()){
+				effectManagerScript.ApplyEffect("stun");
+				visualEffectInformScript.SetSprite("stun");
+				visualEffectInformScript.FadeInVisualEffect();
+				Invoke("FadeOutVisualEffect",1f);
+			}
+			else{
+				StartCoroutine (AudioCoolDown (monsterEquip));
+				
+			}
 				} else {
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
+						
 						playerHealthBarScript.Damage ();
 						ShowWrongAnswerParticle ();
 						
@@ -808,25 +869,38 @@ public class QuestionManager : MonoBehaviour
 		
 		public void CheckAnswerC ()
 		{
+		MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 				textClickedButton = answerC.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerC.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
 						monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (answerC.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);
+			Debug.Log (monsterEquip.EffectProperty.Apply);
+//			if(effectManagerScript.IsEffectAdded()){
+//				Debug.Log("CONG MAU NE!!!");
+//				effectManagerScript.ApplyEffect();
+//				SetParticleGO(regenGO,true);
+//				Invoke("SetRegenParticleFalse", regenParticle.duration);
+//			}
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						Debug.Log (answerC.transform.parent.name);
 
-			effectManagerScript.AddEffectIntoList(answerC.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
-			Debug.Log (answerC.transform.parent.name);
-//			DisplayDamage();
-						StartCoroutine (AudioCoolDown ());
-//						ShowParticleWhenNotAnswer (chargeGO);
-//						InvokeFunctionsRightAnswer ();
-//						enemyHealthBarScript.Damage ();
-//						ResetTimeBar ();
-//						ShowAllAnswerButton ();
+			if(effectManagerScript.IsEffectAdded()){
+				effectManagerScript.ApplyEffect("stun");
+				visualEffectInformScript.SetSprite("stun");
+				visualEffectInformScript.FadeInVisualEffect();
+				Invoke("FadeOutVisualEffect",1f);
+			}
+			else{
+				StartCoroutine (AudioCoolDown (monsterEquip));
+				
+			}
 				} else {
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
+						
 						playerHealthBarScript.Damage ();
 						ShowWrongAnswerParticle ();
 						
@@ -836,26 +910,38 @@ public class QuestionManager : MonoBehaviour
 		
 		public void CheckAnswerD ()
 		{
+		MonsterEquip monsterEquip = answerD.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 				textClickedButton = answerD.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerD.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
 						monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (answerD.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty.Apply);						
-			Debug.Log (answerD.transform.parent.name);
+			Debug.Log (monsterEquip.EffectProperty.Apply);						
+						Debug.Log (answerD.transform.parent.name);
+//			if(effectManagerScript.IsEffectAdded()){
+//				Debug.Log("CONG MAU NE!!!");
+//				effectManagerScript.ApplyEffect();
+//				SetParticleGO(regenGO,true);
+//				Invoke("SetRegenParticleFalse", regenParticle.duration);
+//			}
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 
-			effectManagerScript.AddEffectIntoList(answerD.transform.parent.FindChild("Image").GetComponent<MonsterEquip>().EffectProperty);
-//			DisplayDamage();
-						StartCoroutine (AudioCoolDown ());
-//						ShowParticleWhenNotAnswer (chargeGO);
-//						InvokeFunctionsRightAnswer ();
-//						enemyHealthBarScript.Damage ();
+			if(effectManagerScript.IsEffectAdded()){
+				effectManagerScript.ApplyEffect("stun");
+				visualEffectInformScript.SetSprite("stun");
+				visualEffectInformScript.FadeInVisualEffect();
+				Invoke("FadeOutVisualEffect",1f);
+			}
+			else{
+				StartCoroutine (AudioCoolDown (monsterEquip));
 				
-//						ResetTimeBar ();
-//						ShowAllAnswerButton ();
+			}
 				} else {
+			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
+						
 						playerHealthBarScript.Damage ();
 						ShowWrongAnswerParticle ();
 						
@@ -867,6 +953,14 @@ public class QuestionManager : MonoBehaviour
 		void ResetTimeBar ()
 		{
 				timeBarScript.ResetTimeBar ();
+				if(effectManagerScript.IsEffectAdded()){
+					Debug.Log("CONG MAU NE!!!");
+					effectManagerScript.ApplyEffect("regen");
+					visualEffectInformScript.SetSprite("regen");
+					visualEffectInformScript.FadeInVisualEffect();
+					SetParticleGO(regenGO,true);
+					Invoke("SetRegenParticleFalse", regenParticle.duration);
+				}
 		}
 
 		void SetParticleFalse ()

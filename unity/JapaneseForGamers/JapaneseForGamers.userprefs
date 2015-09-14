@@ -2,14 +2,17 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\QuestionManager.cs">
     <Files>
-      <File FileName="Assets\SelectMonsterPopup\ButtonController.cs" Line="84" Column="35" />
-      <File FileName="Assets\Scripts\Quiz\MonsterEquip.cs" Line="1" Column="1" />
-      <File FileName="Assets\Plugins\Pixelplacement\iTween\iTween.cs" Line="1" Column="1" />
-      <File FileName="Assets\SelectMonsterPopup\MonsterInventory2.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\QuestionManager.cs" Line="934" Column="38" />
       <File FileName="Assets\MockupUI\Resources\monstersequip.json" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\QuestionManager.cs" Line="848" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\MonsterManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\EffectManager.cs" Line="6" Column="9" />
+      <File FileName="Assets\Scripts\Quiz\RegenScript.cs" Line="36" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\EffectManager.cs" Line="22" Column="27" />
+      <File FileName="Assets\SelectMonsterPopup\Plugins\EnhancedScroller.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerHealthBar.cs" Line="1" Column="1" />
+      <File FileName="Assets\Plugins\Pixelplacement\iTween\iTween.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\VisualEffectInform.cs" Line="42" Column="29" />
+      <File FileName="Assets\Scripts\Quiz\MonsterEquip.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\StunScript.cs" Line="5" Column="18" />
+      <File FileName="Assets\Scripts\QuestionFadeScript.cs" Line="39" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

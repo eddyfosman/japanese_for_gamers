@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class MonsterFadeScript : MonoBehaviour {
-
+	
 	public CanvasGroup fadeCanvasGroup;
-
-
+	
+	
 	public bool onCD;
 	
 	public IEnumerator FadeToBlack(float speed)
@@ -17,19 +17,19 @@ public class MonsterFadeScript : MonoBehaviour {
 			
 			yield return null;
 		}
-
-//		onCD = true;
+		
+		//		onCD = true;
 		onCD = false;
 	}
-
+	
 	// Use this for initialization
 	void Start () {
 		StartCoroutine (FadeToBlack(0.5f));
-//		onCD = true;
+		//		onCD = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-//		onCD = true;
+		//		onCD = true;
 	}
 }
