@@ -89,7 +89,6 @@ public class PlayerHealthBar : MonoBehaviour {
 			}
 			playerHealthTransform.GetComponent<RectTransform> ().offsetMax = new Vector2 (tempXValue, 0);
 			playerHealthTransform.GetComponent<RectTransform> ().offsetMin = new Vector2 (tempXValue, 0);
-			Debug.Log("TEMPXVALUE LA: " + tempXValue);
 			yield return null;
 		}
 	}

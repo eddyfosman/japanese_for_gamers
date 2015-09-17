@@ -1,0 +1,94 @@
+{
+	"kanjis":[
+		{
+		   "id":"11",
+		   "writing":"母",
+		   "meaning":"mother",
+		   "on":"me",
+		   "kun":"haha",
+		   "onsound":"Sounds/one",
+		   "kunsound":"Sounds/one"
+		},
+		{
+		   "id":"12",
+		   "writing":"父",
+		   "meaning":"father",
+		   "on":"bo",
+		   "kun":"chichi",
+		   "onsound":"Sounds/two",
+		   "kunsound":"Sounds/two"
+		},
+		{
+		   "id":"13",
+		   "writing":"姉妹",
+		   "meaning":"sisters",
+		   "on":"chi em",
+		   "kun":"shimai",
+		   "onsound":"Sounds/three",
+		   "kunsound":"Sounds/three"
+		},
+		{
+		   "id":"14",
+		   "writing":"兄",
+		   "meaning":"older brother",
+		   "on":"anh lon",
+		   "kun":"ani",
+		   "onsound":"Sounds/four",
+		   "kunsound":"Sounds/four"
+		},
+		{
+		   "id":"15",
+		   "writing":"姉",
+		   "meaning":"older sister",
+		   "on":"chi lon",
+		   "kun":"ane",
+		   "onsound":"Sounds/five",
+		   "kunsound":"Sounds/five"
+		},
+		{
+		   "id":"16",
+		   "writing":"弟",
+		   "meaning":"younger brother",
+		   "on":"em trai",
+		   "kun":"otouto",
+		   "onsound":"Sounds/six",
+		   "kunsound":"Sounds/six"
+		},
+		{
+		   "id":"17",
+		   "writing":"妹",
+		   "meaning":"younger sister",
+		   "on":"em gai",
+		   "kun":"imouto",
+		   "onsound":"Sounds/seven",
+		   "kunsound":"Sounds/seven"
+		},
+		{
+		   "id":"18",
+		   "writing":"家内",
+		   "meaning":"wife",
+		   "on":"vo",
+		   "kun":"kanai",
+		   "onsound":"Sounds/eight",
+		   "kunsound":"Sounds/eight"
+		},
+		{
+		   "id":"19",
+		   "writing":"夫",
+		   "meaning":"husband",
+		   "on":"chong",
+		   "kun":"otto",
+		   "onsound":"Sounds/nine",
+		   "kunsound":"Sounds/nine"
+		},
+		{
+		   "id":"20",
+		   "writing":"祖母",
+		   "meaning":"grandmother",
+		   "on":"ba",
+		   "kun":"sobo",
+		   "onsound":"Sounds/ten",
+		   "kunsound":"Sounds/ten"
+		}
+	]
+}

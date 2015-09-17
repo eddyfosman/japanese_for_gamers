@@ -16,7 +16,17 @@ public class EffectManager : MonoBehaviour {
 	private List<Effect> effectList;
 
 	private bool isRegenAdded = false;
+	public bool IsRegenAdded{
+		get{
+			return isRegenAdded;
+		}
+	}
 	private bool isStunAdded = false;
+	public bool IsStunAdded{
+		get{
+			return isStunAdded;
+		}
+	}
 	public bool IsEffectAdded(){
 
 			return (isRegenAdded || isStunAdded);
@@ -37,6 +47,11 @@ public class EffectManager : MonoBehaviour {
 			}
 			if(effect.Type == "stun" && !isStunAdded){
 				effectList.Add(effect);
+//				Debug.Log("ADD STUN!!!!!!!!!!");
+//				if(onStunEnd != null){
+//					Debug.Log("CHAY DELEGATE ONSTUNEND");
+//					onStunEnd(effect.Turn.ToString());
+//				}
 				isStunAdded = true;
 			}
 			if(effect.Type == "regen" && isRegenAdded){

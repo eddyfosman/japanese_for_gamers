@@ -5,255 +5,92 @@ using UnityEngine.UI;
 using System.IO;
 using LitJson;
 
-public class PlayerData
-{
-		int level;
-
-		public int Level {
-				set;
-				get;
-		}
-
-		long hp;
-
-		public long Hp {
-				set;
-				get;
-		}
-
-		long atk;
-
-		public long Atk {
-				set;
-				get;
-		}
-
-		long def;
-
-		public long Def {
-				set;
-				get;
-		}
-
-		long agi;
-
-		public long Agi {
-				set;
-				get;
-		}
-
-		long luk;
-
-		public long Luk {
-				set;
-				get;
-		}
-
-		int currentExp;
-
-		public int CurrentExp {
-				set;
-				get;
-		}
-
-		int nextLevelExp;
-
-		public int NextLevelExp {
-				set;
-				get;
-		}
-
-		int bonusPoint;
-
-		public int BonusPoint {
-				set;
-				get;
-		}
-}
-
-public class MonsterBean
-{
-		int id;
-
-		public int ID {
-				get;
-				set;
-		}
-
-		string name;
-
-		public string Name {
-				get;
-				set;
-		}
-
-		int level;
-
-		public int Level {
-				get;
-				set;
-		}
-
-		long hp;
-
-		public long Hp {
-				get;
-				set;
-		}
-
-		long atk;
-
-		public long Atk {
-				get;
-				set;
-		}
-
-		long def;
-
-		public long Def {
-				get;
-				set;
-		}
-
-		int exp;
-
-		public int Exp {
-				get;
-				set;
-		}
-
-		string image;
-
-		public string Image {
-				get;
-				set;
-		}
-	
-	
-}
-
-public class KanjiBean
-{
-		int id;
-
-		public int ID {
-				get;
-				set;
-		}
-
-		string writing;
-
-		public string Writing {
-				get;
-				set;
-		}
-
-		string meaning;
-
-		public string Meaning {
-				get;
-				set;
-		}
-
-		string on;
-
-		public string OnReading {
-				get;
-				set;
-		}
-
-		string kun;
-
-		public string KunReading {
-				get;
-				set;
-		}
-
-		string onSound;
-
-		public string OnSound{ get; set; }
-
-		string kunSound;
-
-		public string KunSound{ get; set; }
-	
-}
 
 public class QuestionManager : MonoBehaviour
 {
 
 		public Text visualDamage;
-		private GameObject[] answerText;
 		public Button buttonA;
 		public Button buttonB;
 		public Button buttonC;
 		public Button buttonD;
-		private Selectable buttonASelectable;
-		private Selectable buttonBSelectable;
-		private Selectable buttonCSelectable;
-		private Selectable buttonDSelectable;
 		public GameObject statusDialog;
-		private StatusDialogScript statusDialogScript;
 		public GameObject questionPanel;
-		private CanvasGroup questionCanvasGroup;
-		private QuestionFadeScript questionFadeScript;
 		public GameObject monsterPanel;
-		private CanvasGroup monsterCanvasGroup;
-		private MonsterFadeScript monsterFadeScript;
-//		public Text test;
 		public Text question;
 		public Text answerA;
 		public Text answerB;
 		public Text answerC;
 		public Text answerD;
-		private QuestionBean qb ;
 		public GameObject monsterGameObject;
-		private Image monsterImage;
 		public GameObject playerHealthBar;
-		private PlayerHealthBar playerHealthBarScript;
 		public GameObject timeBar;
-		private TimeBar timeBarScript;
 		public GameObject enemyHealthBar;
-		private EnemyHealthBar enemyHealthBarScript;
-		int monsterID = 0;
-		private PlayerData player;
-		private MonsterBean monster;
-		private int monsterExp;
 		public GameObject slashGO;
 		public GameObject thunderGO;
 		public GameObject chargeGO;
 		public GameObject regenGO;
-		ParticleSystem regenParticle;
-		ParticleSystem chargeParticle;
-		ParticleSystem thunderParticle;
-		ParticleSystem particle;
-		string textClickedButton;
-		Vector3 thunderParticlePos;
 		public GameObject deadGO;
-		ParticleSystem deadParticle;
-		GameObject monsterImg;
-		AttackedEffect attackedEffectScript;
-		iTween itweenScript;
-		Image imageScript;
 		public GameObject soundManager;
-		List<WordInfo> listWordInfo = new List<WordInfo> ();
-		AudioSource audioSource;
 		public GameObject monsterManager;
-		MonsterManager monsterManagerScript;
 		public bool isMonsterMoveOut = false;
-		FadeAwayVisualDamage fadeAwayVisualDamageScript;
 		public Text prefabTextUI;
-		Text charGO;
 		public GameObject effectManagerGO;
-		private EffectManager effectManagerScript;
 		public GameObject visualEffectInform;
-		private VisualEffectInform visualEffectInformScript;
+
+		private GameObject[] answerText;
+		private Selectable buttonASelectable;
+		private Selectable buttonBSelectable;
+		private Selectable buttonCSelectable;
+		private Selectable buttonDSelectable;
+		private StatusDialogScript statusDialogScript;
+		private CanvasGroup questionCanvasGroup;
+		private QuestionFadeScript questionFadeScript;
+		private CanvasGroup monsterCanvasGroup;
+		private MonsterFadeScript monsterFadeScript;
+
+		private QuestionBean qb ;
+		private Image monsterImage;
+		private PlayerHealthBar playerHealthBarScript;
+		private TimeBar timeBarScript;
+		private EnemyHealthBar enemyHealthBarScript;
+	private int monsterID = 0;
+		private PlayerData player;
+		private MonsterBean monster;
+		private int monsterExp;
 		
+	private ParticleSystem regenParticle;
+	private ParticleSystem chargeParticle;
+	private ParticleSystem thunderParticle;
+	private ParticleSystem particle;
+	private string textClickedButton;
+	private Vector3 thunderParticlePos;
+	private ParticleSystem deadParticle;
+	private GameObject monsterImg;
+	private AttackedEffect attackedEffectScript;
+	private iTween itweenScript;
+	private Image imageScript;
+	private List<WordInfo> listWordInfo = new List<WordInfo> ();
+	private AudioSource audioSource;
+	private MonsterManager monsterManagerScript;
+	private FadeAwayVisualDamage fadeAwayVisualDamageScript;
+	private Text charGO;
+		private EffectManager effectManagerScript;
+		private VisualEffectInform visualEffectInformScript;
+		private bool isPlayerPhase = false;
+		private TextAsset jsonFile;
+	private TextAsset jsonFileMonsterKanji;
+	public List<KanjiBean> kanjiList;
+	public List<MonsterBean> monsterList;
+	public List<QuestionBean> textToRead = new List<QuestionBean> ();
+	public List<QuestionBean> textToReadMonster = new List<QuestionBean>();
+	public List<KanjiBean> kanjiListMonster;
+
 		
 
 		void Start ()
 		{
-				visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform>();
+				visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform> ();
 				effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
 				monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
 				fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
@@ -267,7 +104,7 @@ public class QuestionManager : MonoBehaviour
 				deadParticle = deadGO.GetComponent<ParticleSystem> ();
 				chargeParticle = chargeGO.GetComponent<ParticleSystem> ();
 				thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
-				regenParticle = regenGO.GetComponent<ParticleSystem>();
+				regenParticle = regenGO.GetComponent<ParticleSystem> ();
 				particle = slashGO.GetComponent<ParticleSystem> ();
 				Screen.orientation = ScreenOrientation.Portrait;
 				buttonASelectable = buttonA.GetComponent<Selectable> ();
@@ -297,7 +134,7 @@ public class QuestionManager : MonoBehaviour
 		}
 	
 		// Update is called once per frame
-		void Update ()
+	private void Update ()
 		{
 				if (!questionFadeScript.onCD && !monsterFadeScript.onCD) {
 			
@@ -314,22 +151,91 @@ public class QuestionManager : MonoBehaviour
 				}
 		}
 		
-		bool isFileExisted (string name)
+	
+
+	private bool isFileExisted (string name)
 		{
 				string str = "{";
 				return File.Exists (Application.persistentDataPath + "/" + name);
 
 		}
 		
-	void SetParticleGO(GameObject particleGO, bool val){
-		particleGO.SetActive (val);
+	private void SetParticleGO (GameObject particleGO, bool val)
+		{
+				particleGO.SetActive (val);
+		}
+
+	private void GetMonsterDataFromFile(){
+		jsonFile = Resources.Load ("data2") as TextAsset;
+		jsonFileMonsterKanji = Resources.Load ("monsterKanji") as TextAsset;
 	}
 
-		public void Read ()
-		{
+	private void LoadAllKanji(JsonData jsonData, List<KanjiBean> list){
+		for (int i = 0; i<jsonData["kanjis"].Count; i++) {
+			KanjiBean kanji;
+			kanji = new KanjiBean ();
+			kanji.ID = System.Convert.ToInt16 (jsonData ["kanjis"] [i] ["id"].ToString ());
+			kanji.Writing = jsonData ["kanjis"] [i] ["writing"].ToString ();
+			kanji.Meaning = jsonData ["kanjis"] [i] ["meaning"].ToString ();
+			kanji.OnReading = jsonData ["kanjis"] [i] ["on"].ToString ();
+			kanji.KunReading = jsonData ["kanjis"] [i] ["kun"].ToString ();
+			kanji.OnSound = jsonData ["kanjis"] [i] ["onsound"].ToString ();
+			kanji.KunSound = jsonData ["kanjis"] [i] ["kunsound"].ToString ();
+			
+			
+			list.Add (kanji);
+		}
+	}
+
+	private void LoadMonsterData(JsonData jsonData, List<MonsterBean> monsterList){
+		for (int i = 0; i < jsonData["monsters"].Count; i++) {
+			monster = new MonsterBean ();
+			monster.ID = System.Convert.ToInt16 (jsonData ["monsters"] [i] ["id"].ToString ());
+			monster.Name = jsonData ["monsters"] [i] ["name"].ToString ();
+			monster.Level = System.Convert.ToInt16 (jsonData ["monsters"] [i] ["level"].ToString ());
+			monster.Hp = System.Convert.ToInt64 (jsonData ["monsters"] [i] ["hp"].ToString ());
+			monster.Atk = System.Convert.ToInt64 (jsonData ["monsters"] [i] ["atk"].ToString ());
+			monster.Def = System.Convert.ToInt64 (jsonData ["monsters"] [i] ["def"].ToString ());
+			monster.Exp = System.Convert.ToInt16 (jsonData ["monsters"] [i] ["exp"].ToString ());
+			monster.Image = jsonData ["monsters"] [i] ["image"].ToString ();
+			
+			monsterList.Add (monster);
+		}
+	}
+
+	private void LoadQuestionIntoText(List<KanjiBean> list, List<QuestionBean> list2){
+		for (int i = 0; i < list.Count; i++) {
+			QuestionBean qb = new QuestionBean ();
+			qb.question = list [i].Writing;
+			qb.rightAnswer = list [i].Meaning;
+			qb.answerA = list [i].Meaning;
+			qb.onSound = list [i].OnSound;
+			qb.kunSound = list [i].KunSound;
+			KanjiBean kanjiWord = new KanjiBean ();
+			kanjiWord = GetRandomKanji ();
+			while (kanjiWord.Meaning == qb.answerA) {
+				kanjiWord = GetRandomKanji ();
+			}
+			qb.answerB = kanjiWord.Meaning;
+			kanjiWord = GetRandomKanji ();
+			while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB) {
+				kanjiWord = GetRandomKanji ();
+			}
+			qb.answerC = kanjiWord.Meaning;
+			kanjiWord = GetRandomKanji ();
+			while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB || kanjiWord.Meaning == qb.answerC) {
+				kanjiWord = GetRandomKanji ();
+			}
+			qb.answerD = kanjiWord.Meaning;
+			list2.Add (qb);
+		}
+	}
+	
+	public void Read ()
+	{
 		
-				if (Application.platform == RuntimePlatform.Android) {
-						string jsonPlayerDataFile = "";
+		if (Application.platform == RuntimePlatform.Android) {
+			string jsonPlayerDataFile = "";
 						Debug.Log ("DANG O TRONG ANDROID NE");
 						while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
 								Debug.Log ("File khong ton tai!");
@@ -342,18 +248,17 @@ public class QuestionManager : MonoBehaviour
 						}
 						jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
 						JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile);
-
-//						test.text = jsonPlayerData ["player"] [0] ["hp"].ToString ();
-						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
+			GetMonsterDataFromFile();
+//						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
 						TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
 						JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
+			JsonData jsonMonsterKanjis = JsonMapper.ToObject(jsonFileMonsterKanji.text);
 						JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
 
-						KanjiBean kanji;
 
-
-						kanjiList = new List<KanjiBean> ();
-						monsterList = new List<MonsterBean> ();
+			kanjiListMonster = new List<KanjiBean>();
+			kanjiList = new List<KanjiBean> ();
+			monsterList = new List<MonsterBean> ();
 
 						player = new PlayerData ();
 						Debug.Log ("Cai nay chay truoc hay sau656756765!");
@@ -368,81 +273,34 @@ public class QuestionManager : MonoBehaviour
 						player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
 			
-						for (int i = 0; i < jsonMonster["monsters"].Count; i++) {
-								monster = new MonsterBean ();
-								monster.ID = System.Convert.ToInt16 (jsonMonster ["monsters"] [i] ["id"].ToString ());
-								monster.Name = jsonMonster ["monsters"] [i] ["name"].ToString ();
-								monster.Level = System.Convert.ToInt16 (jsonMonster ["monsters"] [i] ["level"].ToString ());
-								monster.Hp = System.Convert.ToInt64 (jsonMonster ["monsters"] [i] ["hp"].ToString ());
-								monster.Atk = System.Convert.ToInt64 (jsonMonster ["monsters"] [i] ["atk"].ToString ());
-								monster.Def = System.Convert.ToInt64 (jsonMonster ["monsters"] [i] ["def"].ToString ());
-								monster.Exp = System.Convert.ToInt16 (jsonMonster ["monsters"] [i] ["exp"].ToString ());
-								monster.Image = jsonMonster ["monsters"] [i] ["image"].ToString ();
-				
-								monsterList.Add (monster);
-						}
+
+			LoadMonsterData(jsonMonster, monsterList);
 			
-			
-						for (int i = 0; i<jsonKanjis["kanjis"].Count; i++) {
-				
-								kanji = new KanjiBean ();
-								kanji.ID = System.Convert.ToInt16 (jsonKanjis ["kanjis"] [i] ["id"].ToString ());
-								kanji.Writing = jsonKanjis ["kanjis"] [i] ["writing"].ToString ();
-								kanji.Meaning = jsonKanjis ["kanjis"] [i] ["meaning"].ToString ();
-								kanji.OnReading = jsonKanjis ["kanjis"] [i] ["on"].ToString ();
-								kanji.KunReading = jsonKanjis ["kanjis"] [i] ["kun"].ToString ();
-								kanji.OnSound = jsonKanjis ["kanjis"] [i] ["onsound"].ToString ();
-								kanji.KunSound = jsonKanjis ["kanjis"] [i] ["kunsound"].ToString ();
-				
-				
-								kanjiList.Add (kanji);
-						}
-			
-			
-						for (int i = 0; i < kanjiList.Count; i++) {
-								QuestionBean qb = new QuestionBean ();
-								qb.question = kanjiList [i].Writing;
-								qb.rightAnswer = kanjiList [i].Meaning;
-								qb.answerA = kanjiList [i].Meaning;
-								qb.onSound = kanjiList [i].OnSound;
-								qb.kunSound = kanjiList [i].KunSound;
-								KanjiBean kanjiWord = new KanjiBean ();
-								kanjiWord = GetRandomKanji ();
-								while (kanjiWord.Meaning == qb.answerA) {
-										kanjiWord = GetRandomKanji ();
-								}
-								qb.answerB = kanjiWord.Meaning;
-								kanjiWord = GetRandomKanji ();
-								while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB) {
-										kanjiWord = GetRandomKanji ();
-								}
-								qb.answerC = kanjiWord.Meaning;
-								kanjiWord = GetRandomKanji ();
-								while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB || kanjiWord.Meaning == qb.answerC) {
-										kanjiWord = GetRandomKanji ();
-								}
-								qb.answerD = kanjiWord.Meaning;
-								textToRead.Add (qb);
-						}
+			LoadAllKanji(jsonKanjis, kanjiList);
+
+			LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
+
+			LoadQuestionIntoText(kanjiList, textToRead);
+		
+
 
 
 				} else {
 
-
-						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
+			GetMonsterDataFromFile();
+//						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
 						TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
 						TextAsset jsonPlayerDataFile = Resources.Load ("PlayerData") as TextAsset;
 
+			JsonData jsonMonsterKanjis = JsonMapper.ToObject(jsonFileMonsterKanji.text);
 
-						JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
+			JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
 						JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
 						JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile.text);
 
-						KanjiBean kanji;
 
 
 						player = new PlayerData ();
-//						Debug.Log ("Cai nay chay truoc hay sau!");
 						player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
 						player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
 						player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
@@ -453,67 +311,17 @@ public class QuestionManager : MonoBehaviour
 						player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
 						player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
-						kanjiList = new List<KanjiBean> ();
+			kanjiListMonster = new List<KanjiBean>();
+
+			kanjiList = new List<KanjiBean> ();
 						monsterList = new List<MonsterBean> ();
 
-						for (int i = 0; i < jsonMonster["monsters"].Count; i++) {
-								monster = new MonsterBean ();
-								monster.ID = System.Convert.ToInt16 (jsonMonster ["monsters"] [i] ["id"].ToString ());
-								monster.Name = jsonMonster ["monsters"] [i] ["name"].ToString ();
-								monster.Level = System.Convert.ToInt16 (jsonMonster ["monsters"] [i] ["level"].ToString ());
-								monster.Hp = System.Convert.ToInt64 (jsonMonster ["monsters"] [i] ["hp"].ToString ());
-								monster.Atk = System.Convert.ToInt64 (jsonMonster ["monsters"] [i] ["atk"].ToString ());
-								monster.Def = System.Convert.ToInt64 (jsonMonster ["monsters"] [i] ["def"].ToString ());
-								monster.Exp = System.Convert.ToInt16 (jsonMonster ["monsters"] [i] ["exp"].ToString ());
-								monster.Image = jsonMonster ["monsters"] [i] ["image"].ToString ();
 
-								monsterList.Add (monster);
-						}
+			LoadMonsterData(jsonMonster, monsterList);
 
+			LoadAllKanji(jsonKanjis, kanjiList);
 
-						for (int i = 0; i<jsonKanjis["kanjis"].Count; i++) {
-
-								kanji = new KanjiBean ();
-								kanji.ID = System.Convert.ToInt16 (jsonKanjis ["kanjis"] [i] ["id"].ToString ());
-								kanji.Writing = jsonKanjis ["kanjis"] [i] ["writing"].ToString ();
-								kanji.Meaning = jsonKanjis ["kanjis"] [i] ["meaning"].ToString ();
-								kanji.OnReading = jsonKanjis ["kanjis"] [i] ["on"].ToString ();
-								kanji.KunReading = jsonKanjis ["kanjis"] [i] ["kun"].ToString ();
-								kanji.OnSound = jsonKanjis ["kanjis"] [i] ["onsound"].ToString ();
-								kanji.KunSound = jsonKanjis ["kanjis"] [i] ["kunsound"].ToString ();
-
-				
-								kanjiList.Add (kanji);
-						}
-
-
-						for (int i = 0; i < kanjiList.Count; i++) {
-								QuestionBean qb = new QuestionBean ();
-								qb.question = kanjiList [i].Writing;
-								qb.rightAnswer = kanjiList [i].Meaning;
-								qb.answerA = kanjiList [i].Meaning;
-								qb.onSound = kanjiList [i].OnSound;
-								qb.kunSound = kanjiList [i].KunSound;
-
-
-								KanjiBean kanjiWord = new KanjiBean ();
-								kanjiWord = GetRandomKanji ();
-								while (kanjiWord.Meaning == qb.answerA) {
-										kanjiWord = GetRandomKanji ();
-								}
-								qb.answerB = kanjiWord.Meaning;
-								kanjiWord = GetRandomKanji ();
-								while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB) {
-										kanjiWord = GetRandomKanji ();
-								}
-								qb.answerC = kanjiWord.Meaning;
-								kanjiWord = GetRandomKanji ();
-								while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB || kanjiWord.Meaning == qb.answerC) {
-										kanjiWord = GetRandomKanji ();
-								}
-								qb.answerD = kanjiWord.Meaning;
-								textToRead.Add (qb);
-						}
+			LoadQuestionIntoText(kanjiList, textToRead);
 
 				}
 
@@ -533,8 +341,8 @@ public class QuestionManager : MonoBehaviour
 		{
 				for (int i = 0; i < answerText.Length; i++) {
 
-//						answerText [i].transform.parent.gameObject.SetActive (true);
 						answerText [i].transform.parent.gameObject.GetComponent<CanvasGroup> ().alpha = 1f;
+
 				}
 		}
 
@@ -568,9 +376,7 @@ public class QuestionManager : MonoBehaviour
 				public int wrong = 0;
 		}
 		
-		public List<KanjiBean> kanjiList;
-		public List<MonsterBean> monsterList;
-		public List<QuestionBean> textToRead = new List<QuestionBean> ();
+		
 		
 		public QuestionBean GetRandomQuestion ()
 		{
@@ -629,7 +435,6 @@ public class QuestionManager : MonoBehaviour
 				list.Add (qb.answerC);
 				list.Add (qb.answerD);
 				audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
-//				Debug.Log ("TAI SAO SO 8 KHONG CO AM TNANH: " + qb.onSound);
 				Shuffle (list);
 			
 				answerA.text = list [0];
@@ -639,7 +444,7 @@ public class QuestionManager : MonoBehaviour
 			
 		}
 		
-		IEnumerator AudioCoolDown (MonsterEquip mq)
+	private IEnumerator AudioCoolDown (MonsterEquip mq)
 		{
 				while (audioSource.isPlaying) {
 						yield return null;
@@ -650,7 +455,7 @@ public class QuestionManager : MonoBehaviour
 				
 		}
 
-		IEnumerator MovingMonsterCoolDown ()
+	private IEnumerator MovingMonsterCoolDown ()
 		{
 				while (!isMonsterMoveOut) {
 						yield return null;
@@ -660,17 +465,17 @@ public class QuestionManager : MonoBehaviour
 				Debug.Log ("CHAY HIEU UNG!");
 		}
 		
-		void FadeAwayDamage ()
+	private void FadeAwayDamage ()
 		{
 				fadeAwayVisualDamageScript.FadeAwayDamage ();
 		}
 
-		void CreateTextForVisualDamage ()
+	private void CreateTextForVisualDamage ()
 		{
 
 		}
 
-		void DisplayDamage ()
+	private void DisplayDamage ()
 		{
 				visualDamage.gameObject.SetActive (true);
 				Vector3 tempVector3 = GameObject.FindGameObjectWithTag ("Monster").transform.position;
@@ -695,28 +500,17 @@ public class QuestionManager : MonoBehaviour
 //		}
 
 				fadeAwayVisualDamageScript.ShowDamage ();
-//		ScaleBigger ();
-//		iTween.ScaleFrom (visualDamage.gameObject, iTween.Hash ("x",1f,"y",1f,"time",1f,"easetype","easeOutBack","oncomplete","FadeAwayDamage"));
 				iTween.MoveTo (visualDamage.gameObject, iTween.Hash ("x", visualDamage.transform.position.x, "y", visualDamage.transform.position.y + 2f, "z", visualDamage.transform.position.z, "time", 1f, "easetype", "easeOutBack", "oncomplete", "FadeAwayDamage"));
-//		iTween.ColorTo (visualDamage.GetComponent<Text>().gameObject, iTween.Hash ("a",0f,"time",2f));
 		}
 
-		void ScaleBigger ()
-		{
-				iTween.ValueTo (visualDamage.gameObject, iTween.Hash ("from", new Vector2 (0.4f, 0.4f), "to", new Vector2 (0.8f, 0.8f), "easetype", "easeOutBack", "time", 0.2f, "onupdate", "ScaleVisualDamage"));
-		}
-	
-		void ScaleNormal ()
-		{
 		
-		}
 	
-		void ScaleVisualDamage (Vector2 scaleV2)
+	private void ScaleVisualDamage (Vector2 scaleV2)
 		{
 				visualDamage.GetComponent<RectTransform> ().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
 		}
 
-		void EnableAttackedEffect ()
+	private void EnableAttackedEffect ()
 		{
 				attackedEffectScript.enabled = true;
 				imageScript.color = new Color32 (203, 165, 165, 255);
@@ -726,28 +520,30 @@ public class QuestionManager : MonoBehaviour
 
 		}
 
-		void SetRegenParticleFalse(){
-			regenGO.SetActive (false);
-		visualEffectInformScript.FadeOutVisualEffect();
+	private void SetRegenParticleFalse ()
+		{
+				regenGO.SetActive (false);
+				visualEffectInformScript.FadeOutVisualEffect ();
 		}
 
-		void DisableAttackedEffect ()
+	private void DisableAttackedEffect ()
 		{
 				attackedEffectScript.enabled = false;
 				imageScript.color = new Color32 (255, 255, 255, 255);
 				monsterImg.GetComponent<iTween> ().enabled = false;
 		}
 
-		void ExecutedFunctionsAfterStunEffect(){
+	private void ExecutedFunctionsAfterStunEffect ()
+		{
 
-			HideQuestion ();
-			ResetTimeBar ();
-			ShowAllAnswerButton ();
-			ShowQuestion ();
+				HideQuestion ();
+				ResetTimeBar ();
+				ShowAllAnswerButton ();
+				ShowQuestion ();
 
 		}
 		
-		void InvokeFunctionsRightAnswer ()
+	private void InvokeFunctionsRightAnswer ()
 		{
 				Invoke ("HideQuestion", chargeParticle.duration);
 				Invoke ("EnableAttackedEffect", chargeParticle.duration);
@@ -757,12 +553,12 @@ public class QuestionManager : MonoBehaviour
 				Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
 		}
 		
-		void DamageEnemyHealthbar ()
+	private void DamageEnemyHealthbar ()
 		{
 				enemyHealthBarScript.Damage ();
 		}
 
-		void InvokeFunctionsAfterAttackParticle ()
+	private void InvokeFunctionsAfterAttackParticle ()
 		{
 				Invoke ("SetChargeParticleFalse", particle.duration);
 				Invoke ("DisableAttackedEffect", particle.duration);
@@ -772,15 +568,16 @@ public class QuestionManager : MonoBehaviour
 				Invoke ("ShowQuestion", particle.duration);
 		}
 
-		void SetChargeParticleFalse ()
+	private void SetChargeParticleFalse ()
 		{
 				chargeGO.SetActive (false);
 		}
 
-	void FadeOutVisualEffect(){
-		visualEffectInformScript.FadeOutVisualEffect ();
-		ExecutedFunctionsAfterStunEffect ();
-	}
+	private void FadeOutVisualEffect ()
+		{
+				visualEffectInformScript.FadeOutVisualEffect ();
+				ExecutedFunctionsAfterStunEffect ();
+		}
 
 		public void CheckAnswerA ()
 		{
@@ -789,34 +586,26 @@ public class QuestionManager : MonoBehaviour
 				ShowOnlyRightAnswerButton ();
 				if (answerA.text == qb.rightAnswer) {
 						audioSource.Play ();
-						if(effectManagerScript.IsEffectAdded()){
-							effectManagerScript.ApplyEffect("stun");
-							visualEffectInformScript.SetSprite("stun");
-							visualEffectInformScript.FadeInVisualEffect();
-				Invoke("FadeOutVisualEffect",1f);
-						}
-						else{
-				StartCoroutine (AudioCoolDown (monsterEquip));
+						if (effectManagerScript.IsStunAdded) {
+								effectManagerScript.ApplyEffect ("stun");
+								visualEffectInformScript.SetSprite ("stun");
+								visualEffectInformScript.FadeInVisualEffect ();
+								Invoke ("FadeOutVisualEffect", 1f);
+						} else {
+								StartCoroutine (AudioCoolDown (monsterEquip));
 
 						}
 						monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-				Debug.Log (monsterEquip.EffectProperty.Apply);
-//			if(effectManagerScript.IsEffectAdded()){
-//				Debug.Log("CONG MAU NE!!!");
-//				effectManagerScript.ApplyEffect();
-//				SetParticleGO(regenGO,true);
-//				Invoke("SetRegenParticleFalse", regenParticle.duration);
-//
-//			}
+						Debug.Log (monsterEquip.EffectProperty.Apply);
 						
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 						Debug.Log (answerA.transform.parent.name);
 				
 						questionFadeScript.SetButtonInteractiableFalse ();
 				
 				} else {
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
 						
 						playerHealthBarScript.Damage ();
@@ -828,36 +617,30 @@ public class QuestionManager : MonoBehaviour
 
 		public void CheckAnswerB ()
 		{
-		MonsterEquip monsterEquip = answerB.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+				MonsterEquip monsterEquip = answerB.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 				textClickedButton = answerB.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerB.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
 						monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);
+						Debug.Log (monsterEquip.EffectProperty.Apply);
 						Debug.Log (answerB.transform.parent.name);
-//			if(effectManagerScript.IsEffectAdded()){
-//				Debug.Log("CONG MAU NE!!!");
-//				effectManagerScript.ApplyEffect();
-//				SetParticleGO(regenGO,true);
-//				Invoke("SetRegenParticleFalse", regenParticle.duration);
-//			}
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 
-			if(effectManagerScript.IsEffectAdded()){
-				effectManagerScript.ApplyEffect("stun");
-				visualEffectInformScript.SetSprite("stun");
-				visualEffectInformScript.FadeInVisualEffect();
-				Invoke("FadeOutVisualEffect",1f);
-			}
-			else{
-				StartCoroutine (AudioCoolDown (monsterEquip));
+//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+						if (effectManagerScript.IsStunAdded) {
+								effectManagerScript.ApplyEffect ("stun");
+								visualEffectInformScript.SetSprite ("stun");
+								visualEffectInformScript.FadeInVisualEffect ();
+								Invoke ("FadeOutVisualEffect", 1f);
+						} else {
+								StartCoroutine (AudioCoolDown (monsterEquip));
 				
-			}
+						}
 				} else {
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
 						
 						playerHealthBarScript.Damage ();
@@ -869,36 +652,29 @@ public class QuestionManager : MonoBehaviour
 		
 		public void CheckAnswerC ()
 		{
-		MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+				MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 				textClickedButton = answerC.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerC.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
 						monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);
-//			if(effectManagerScript.IsEffectAdded()){
-//				Debug.Log("CONG MAU NE!!!");
-//				effectManagerScript.ApplyEffect();
-//				SetParticleGO(regenGO,true);
-//				Invoke("SetRegenParticleFalse", regenParticle.duration);
-//			}
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						Debug.Log (monsterEquip.EffectProperty.Apply);
+//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 						Debug.Log (answerC.transform.parent.name);
 
-			if(effectManagerScript.IsEffectAdded()){
-				effectManagerScript.ApplyEffect("stun");
-				visualEffectInformScript.SetSprite("stun");
-				visualEffectInformScript.FadeInVisualEffect();
-				Invoke("FadeOutVisualEffect",1f);
-			}
-			else{
-				StartCoroutine (AudioCoolDown (monsterEquip));
+						if (effectManagerScript.IsStunAdded) {
+								effectManagerScript.ApplyEffect ("stun");
+								visualEffectInformScript.SetSprite ("stun");
+								visualEffectInformScript.FadeInVisualEffect ();
+								Invoke ("FadeOutVisualEffect", 1f);
+						} else {
+								StartCoroutine (AudioCoolDown (monsterEquip));
 				
-			}
+						}
 				} else {
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
 						
 						playerHealthBarScript.Damage ();
@@ -910,36 +686,30 @@ public class QuestionManager : MonoBehaviour
 		
 		public void CheckAnswerD ()
 		{
-		MonsterEquip monsterEquip = answerD.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+				MonsterEquip monsterEquip = answerD.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 				textClickedButton = answerD.text;
 				ShowOnlyRightAnswerButton ();
 				if (answerD.text == qb.rightAnswer) {
 						audioSource.Play ();
 						questionFadeScript.SetButtonInteractiableFalse ();
 						monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);						
+						Debug.Log (monsterEquip.EffectProperty.Apply);						
 						Debug.Log (answerD.transform.parent.name);
-//			if(effectManagerScript.IsEffectAdded()){
-//				Debug.Log("CONG MAU NE!!!");
-//				effectManagerScript.ApplyEffect();
-//				SetParticleGO(regenGO,true);
-//				Invoke("SetRegenParticleFalse", regenParticle.duration);
-//			}
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 
-			if(effectManagerScript.IsEffectAdded()){
-				effectManagerScript.ApplyEffect("stun");
-				visualEffectInformScript.SetSprite("stun");
-				visualEffectInformScript.FadeInVisualEffect();
-				Invoke("FadeOutVisualEffect",1f);
-			}
-			else{
-				StartCoroutine (AudioCoolDown (monsterEquip));
+//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+						if (effectManagerScript.IsStunAdded) {
+								effectManagerScript.ApplyEffect ("stun");
+								visualEffectInformScript.SetSprite ("stun");
+								visualEffectInformScript.FadeInVisualEffect ();
+								Invoke ("FadeOutVisualEffect", 1f);
+						} else {
+								StartCoroutine (AudioCoolDown (monsterEquip));
 				
-			}
+						}
 				} else {
-			effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			effectManagerScript.ExecuteOnStunEvent(monsterEquip.EffectProperty);
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 						questionFadeScript.SetButtonInteractiableFalse ();
 						
 						playerHealthBarScript.Damage ();
@@ -950,25 +720,25 @@ public class QuestionManager : MonoBehaviour
 				}
 		}
 		
-		void ResetTimeBar ()
+	private void ResetTimeBar ()
 		{
 				timeBarScript.ResetTimeBar ();
-				if(effectManagerScript.IsEffectAdded()){
-					Debug.Log("CONG MAU NE!!!");
-					effectManagerScript.ApplyEffect("regen");
-					visualEffectInformScript.SetSprite("regen");
-					visualEffectInformScript.FadeInVisualEffect();
-					SetParticleGO(regenGO,true);
-					Invoke("SetRegenParticleFalse", regenParticle.duration);
+				if (effectManagerScript.IsRegenAdded) {
+						Debug.Log ("CONG MAU NE!!!");
+						effectManagerScript.ApplyEffect ("regen");
+						visualEffectInformScript.SetSprite ("regen");
+						visualEffectInformScript.FadeInVisualEffect ();
+						SetParticleGO (regenGO, true);
+						Invoke ("SetRegenParticleFalse", regenParticle.duration);
 				}
 		}
 
-		void SetParticleFalse ()
+	private void SetParticleFalse ()
 		{
 				slashGO.SetActive (false);
 		}
 
-		void ShowWrongAnswerParticle ()
+	private void ShowWrongAnswerParticle ()
 		{
 				for (int i = 0; i < answerText.Length; i++) {
 						if (textClickedButton == answerText [i].GetComponent<Text> ().text) {
@@ -1011,18 +781,18 @@ public class QuestionManager : MonoBehaviour
 				thunderGO.SetActive (false);
 		}
 		
-		void ShowQuestion ()
+	private void ShowQuestion ()
 		{
 				questionFadeScript.ShowQuestion ();
 		}
 
-		void ShowAttackParticle ()
+	private void ShowAttackParticle ()
 		{
 				slashGO.SetActive (true);
 				
 		}
 
-		void HideQuestion ()
+	private void HideQuestion ()
 		{
 				questionFadeScript.HideQuestion ();
 		}

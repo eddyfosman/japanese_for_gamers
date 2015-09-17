@@ -67,8 +67,6 @@ public class MonsterManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		monsterA.gameObject.transform.position = new Vector3 (startPos.x, startPos.y - 0.45f, startPos.z);
-		Debug.Log (monsterA.sprite.bounds.min);
-		Debug.Log (monsterA.gameObject.transform.position);
-		
+
 	}
 }
