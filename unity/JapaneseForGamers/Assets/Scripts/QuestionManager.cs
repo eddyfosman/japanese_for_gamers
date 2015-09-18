@@ -82,7 +82,7 @@ public class QuestionManager : MonoBehaviour
 	private TextAsset jsonFileMonsterKanji;
 	public List<KanjiBean> kanjiList;
 	public List<MonsterBean> monsterList;
-	public List<QuestionBean> textToRead = new List<QuestionBean> ();
+	public List<QuestionBean> textToReadPlayer= new List<QuestionBean> ();
 	public List<QuestionBean> textToReadMonster = new List<QuestionBean>();
 	public List<KanjiBean> kanjiListMonster;
 
@@ -203,7 +203,7 @@ public class QuestionManager : MonoBehaviour
 		}
 	}
 
-	private void LoadQuestionIntoText(List<KanjiBean> list, List<QuestionBean> list2){
+	private void LoadQuestionIntoText(List<KanjiBean> list, List<QuestionBean> list2, bool val){
 		for (int i = 0; i < list.Count; i++) {
 			QuestionBean qb = new QuestionBean ();
 			qb.question = list [i].Writing;
@@ -212,19 +212,19 @@ public class QuestionManager : MonoBehaviour
 			qb.onSound = list [i].OnSound;
 			qb.kunSound = list [i].KunSound;
 			KanjiBean kanjiWord = new KanjiBean ();
-			kanjiWord = GetRandomKanji ();
+			kanjiWord = GetRandomKanji (val);
 			while (kanjiWord.Meaning == qb.answerA) {
-				kanjiWord = GetRandomKanji ();
+				kanjiWord = GetRandomKanji (val);
 			}
 			qb.answerB = kanjiWord.Meaning;
-			kanjiWord = GetRandomKanji ();
+			kanjiWord = GetRandomKanji (val);
 			while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB) {
-				kanjiWord = GetRandomKanji ();
+				kanjiWord = GetRandomKanji (val);
 			}
 			qb.answerC = kanjiWord.Meaning;
-			kanjiWord = GetRandomKanji ();
+			kanjiWord = GetRandomKanji (val);
 			while (kanjiWord.Meaning == qb.answerA || kanjiWord.Meaning == qb.answerB || kanjiWord.Meaning == qb.answerC) {
-				kanjiWord = GetRandomKanji ();
+				kanjiWord = GetRandomKanji (val);
 			}
 			qb.answerD = kanjiWord.Meaning;
 			list2.Add (qb);
@@ -234,43 +234,44 @@ public class QuestionManager : MonoBehaviour
 	public void Read ()
 	{
 		
-		if (Application.platform == RuntimePlatform.Android) {
+		if (Application.platform == RuntimePlatform.Android) 
+		{
 			string jsonPlayerDataFile = "";
-						Debug.Log ("DANG O TRONG ANDROID NE");
-						while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
-								Debug.Log ("File khong ton tai!");
-								string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":500,\n\t\t\t\"def\":100,\n\t\t\t\"agi\":100,\n\t\t\t\"luk\":100,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
-								Debug.Log (str);
+			Debug.Log ("DANG O TRONG ANDROID NE");
+			while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
+				Debug.Log ("File khong ton tai!");
+				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":500,\n\t\t\t\"def\":100,\n\t\t\t\"agi\":100,\n\t\t\t\"luk\":100,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
+				Debug.Log (str);
 
-								File.WriteAllText (Application.persistentDataPath + "/" + "PlayerData.json", str);
-			
-								
-						}
-						jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
-						JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile);
+				File.WriteAllText (Application.persistentDataPath + "/" + "PlayerData.json", str);
+
+					
+			}
+			jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
+			JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile);
 			GetMonsterDataFromFile();
-//						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
-						TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
-						JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
+	//						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
+			TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
+			JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
 			JsonData jsonMonsterKanjis = JsonMapper.ToObject(jsonFileMonsterKanji.text);
-						JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
+			JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
 
 
 			kanjiListMonster = new List<KanjiBean>();
 			kanjiList = new List<KanjiBean> ();
 			monsterList = new List<MonsterBean> ();
 
-						player = new PlayerData ();
-						Debug.Log ("Cai nay chay truoc hay sau656756765!");
-						player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
-						player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
-						player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
-						player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
-						player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
-						player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
-						player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
-						player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
-						player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
+			player = new PlayerData ();
+			Debug.Log ("Cai nay chay truoc hay sau656756765!");
+			player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
+			player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
+			player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
+			player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
+			player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
+			player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
+			player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
+			player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
+			player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
 			
 
@@ -280,52 +281,60 @@ public class QuestionManager : MonoBehaviour
 
 			LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
 
-			LoadQuestionIntoText(kanjiList, textToRead);
+			LoadQuestionIntoText(kanjiList, textToReadPlayer, true);
+
+			LoadQuestionIntoText(kanjiListMonster, textToReadMonster, false);
 		
 
 
 
-				} else {
+		} 
+		else 
+		{
 
 			GetMonsterDataFromFile();
 //						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
-						TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
-						TextAsset jsonPlayerDataFile = Resources.Load ("PlayerData") as TextAsset;
+			TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
+			TextAsset jsonPlayerDataFile = Resources.Load ("PlayerData") as TextAsset;
 
 			JsonData jsonMonsterKanjis = JsonMapper.ToObject(jsonFileMonsterKanji.text);
 
 			JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
-						JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
-						JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile.text);
+			JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
+			JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile.text);
 
 
 
-						player = new PlayerData ();
-						player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
-						player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
-						player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
-						player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
-						player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
-						player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
-						player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
-						player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
-						player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
+			player = new PlayerData ();
+			player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
+			player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
+			player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
+			player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
+			player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
+			player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
+			player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
+			player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
+			player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
 			kanjiListMonster = new List<KanjiBean>();
 
 			kanjiList = new List<KanjiBean> ();
-						monsterList = new List<MonsterBean> ();
+			monsterList = new List<MonsterBean> ();
 
 
 			LoadMonsterData(jsonMonster, monsterList);
 
 			LoadAllKanji(jsonKanjis, kanjiList);
 
-			LoadQuestionIntoText(kanjiList, textToRead);
+			LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
 
-				}
+			LoadQuestionIntoText(kanjiList, textToReadPlayer, true);
+
+			LoadQuestionIntoText(kanjiListMonster, textToReadMonster, false);
 
 		}
+
+	}
 		
 		public void ShowOnlyRightAnswerButton ()
 		{
@@ -378,112 +387,145 @@ public class QuestionManager : MonoBehaviour
 		
 		
 		
-		public QuestionBean GetRandomQuestion ()
+		public QuestionBean GetRandomQuestion (bool isPlayerPhase)
 		{
-				int q = Random.Range (0, textToRead.Count);
-				return textToRead [q];
-		}
-		
-		public KanjiBean GetRandomKanji ()
-		{
-				int q = Random.Range (0, kanjiList.Count);
-				return kanjiList [q];
-		}
-		
-		private void Shuffle<T> (List<T> list)
-		{
-				int count = list.Count;
-				for (int i = count - 1; i > 0; i--) {
-						int randIndex = Random.Range (0, i);
-						T temp = list [i];
-						list [i] = list [randIndex];
-						list [randIndex] = temp;
+			if (isPlayerPhase)
+			{
+				int q = Random.Range (0, textToReadPlayer.Count);
+				return textToReadPlayer[q];
+			}
+			else
+			{
+				int q = Random.Range(0, textToReadMonster.Count);
+				return textToReadMonster[q];
+			}
 				
-				}
 		}
 		
-		public void GainExp ()
+	public KanjiBean GetRandomKanji (bool val)
+	{
+		if (val)
 		{
-				player.CurrentExp += monsterExp;
-				if (player.CurrentExp >= player.NextLevelExp) {
-						player.Level += 1;
-						player.BonusPoint += 5;
-						Debug.Log ("Cong level mot lan!");
-						statusDialogScript.ShowStatusDialog ();
-				
-				}
+			int q = Random.Range (0, kanjiList.Count);
+			return kanjiList [q];
 		}
-		
-		public void SetMonster ()
+		else
 		{
-				monster = monsterList [monsterID];
-				enemyHealthBarScript.maxHealth = monster.Hp;
-				monsterExp = monster.Exp;
-				monsterImage.sprite = Resources.Load<Sprite> (monster.Image);
-				monsterCanvasGroup.alpha = 1f;
-				StartCoroutine (monsterFadeScript.FadeToBlack (0.5f));
-				monsterID++;
+			int q = Random.Range (0, kanjiListMonster.Count);
+			return kanjiListMonster [q];
 		}
+			
+	}
 		
-		public void SetQuestion ()
-		{		
-				qb = GetRandomQuestion ();
-				question.text = qb.question;
-				List<string> list = new List<string> ();
-				list.Add (qb.answerA);
-				list.Add (qb.answerB);
-				list.Add (qb.answerC);
-				list.Add (qb.answerD);
-				audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
-				Shuffle (list);
-			
-				answerA.text = list [0];
-				answerB.text = list [1];
-				answerC.text = list [2];
-				answerD.text = list [3];
-			
+	private void Shuffle<T> (List<T> list)
+	{
+		int count = list.Count;
+		for (int i = count - 1; i > 0; i--) {
+			int randIndex = Random.Range (0, i);
+			T temp = list [i];
+			list [i] = list [randIndex];
+			list [randIndex] = temp;
+		
 		}
+	}
+		
+	public void GainExp ()
+	{
+		player.CurrentExp += monsterExp;
+		if (player.CurrentExp >= player.NextLevelExp) 
+		{
+			player.Level += 1;
+			player.BonusPoint += 5;
+			Debug.Log ("Cong level mot lan!");
+			statusDialogScript.ShowStatusDialog ();
+		
+		}
+	}
+		
+	private bool CalculateHideEffect()
+	{
+		int q = Random.Range (0, 100);
+		Debug.Log ("GIA TRI RANDOM LA: " + q);
+		if (q < 90)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public void SetMonster ()
+	{
+		monster = monsterList [monsterID];
+		enemyHealthBarScript.maxHealth = monster.Hp;
+		monsterExp = monster.Exp;
+		monsterImage.sprite = Resources.Load<Sprite> (monster.Image);
+		monsterCanvasGroup.alpha = 1f;
+		StartCoroutine (monsterFadeScript.FadeToBlack (0.5f));
+		monsterID++;
+	}
+		
+	public void SetQuestion ()
+	{		
+		qb = GetRandomQuestion (isPlayerPhase);
+		question.text = qb.question;
+		List<string> list = new List<string> ();
+		list.Add (qb.answerA);
+		list.Add (qb.answerB);
+		list.Add (qb.answerC);
+		list.Add (qb.answerD);
+		audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
+		Shuffle (list);
+	
+		answerA.text = list [0];
+		answerB.text = list [1];
+		answerC.text = list [2];
+		answerD.text = list [3];
+		isPlayerPhase = !isPlayerPhase;
+		
+	}
 		
 	private IEnumerator AudioCoolDown (MonsterEquip mq)
+	{
+		while (audioSource.isPlaying) 
 		{
-				while (audioSource.isPlaying) {
-						yield return null;
-				}
-				monsterManagerScript.MoveMonsterIn (mq);
-				isMonsterMoveOut = false;
-				StartCoroutine (MovingMonsterCoolDown ());
-				
+			yield return null;
 		}
+		monsterManagerScript.MoveMonsterIn (mq);
+		isMonsterMoveOut = false;
+		StartCoroutine (MovingMonsterCoolDown ());
+			
+	}
 
 	private IEnumerator MovingMonsterCoolDown ()
+	{
+		while (!isMonsterMoveOut) 
 		{
-				while (!isMonsterMoveOut) {
-						yield return null;
-				}
-				ShowParticleWhenNotAnswer (chargeGO);
-				InvokeFunctionsRightAnswer ();
-				Debug.Log ("CHAY HIEU UNG!");
+			yield return null;
 		}
+		ShowParticleWhenNotAnswer (chargeGO);
+		InvokeFunctionsRightAnswer ();
+		Debug.Log ("CHAY HIEU UNG!");
+	}
 		
 	private void FadeAwayDamage ()
-		{
-				fadeAwayVisualDamageScript.FadeAwayDamage ();
-		}
+	{
+		fadeAwayVisualDamageScript.FadeAwayDamage ();
+	}
 
 	private void CreateTextForVisualDamage ()
-		{
+	{
 
-		}
+	}
 
 	private void DisplayDamage ()
-		{
-				visualDamage.gameObject.SetActive (true);
-				Vector3 tempVector3 = GameObject.FindGameObjectWithTag ("Monster").transform.position;
-				visualDamage.gameObject.transform.position = tempVector3;
+	{
+		visualDamage.gameObject.SetActive (true);
+		Vector3 tempVector3 = GameObject.FindGameObjectWithTag ("Monster").transform.position;
+		visualDamage.gameObject.transform.position = tempVector3;
 //		visualDamage.GetComponent<RectTransform> ().offsetMax = new Vector2 (visualDamage.GetComponent<RectTransform> ().offsetMax.x + monsterGameObject.GetComponent<RectTransform> ().rect.width / 2, visualDamage.GetComponent<RectTransform> ().offsetMax.y);
-				visualDamage.text = "DISPLAYED DAMAGE!!!";
+		visualDamage.text = "DISPLAYED DAMAGE!!!";
 
-				// doan code phia duoi tao ra cac doi tuong chu de co the sap xep tao chu len xuong
+		// doan code phia duoi tao ra cac doi tuong chu de co the sap xep tao chu len xuong
 //		char[] copiedChar = visualDamage.text.ToCharArray ();
 //		if(copiedChar != null){
 //			for(int i = 0; i<copiedChar.Length; i++){
@@ -499,303 +541,351 @@ public class QuestionManager : MonoBehaviour
 //			}
 //		}
 
-				fadeAwayVisualDamageScript.ShowDamage ();
-				iTween.MoveTo (visualDamage.gameObject, iTween.Hash ("x", visualDamage.transform.position.x, "y", visualDamage.transform.position.y + 2f, "z", visualDamage.transform.position.z, "time", 1f, "easetype", "easeOutBack", "oncomplete", "FadeAwayDamage"));
-		}
+		fadeAwayVisualDamageScript.ShowDamage ();
+		iTween.MoveTo (visualDamage.gameObject, iTween.Hash ("x", visualDamage.transform.position.x, "y", visualDamage.transform.position.y + 2f, "z", visualDamage.transform.position.z, "time", 1f, "easetype", "easeOutBack", "oncomplete", "FadeAwayDamage"));
+	}
 
 		
 	
 	private void ScaleVisualDamage (Vector2 scaleV2)
-		{
-				visualDamage.GetComponent<RectTransform> ().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
-		}
+	{
+		visualDamage.GetComponent<RectTransform> ().localScale = new Vector3 (scaleV2.x, scaleV2.y, visualDamage.transform.localScale.z);
+	}
 
 	private void EnableAttackedEffect ()
-		{
-				attackedEffectScript.enabled = true;
-				imageScript.color = new Color32 (203, 165, 165, 255);
-				if (monsterImg.GetComponent<iTween> () != null) {
-						monsterImg.GetComponent<iTween> ().enabled = true;
-				}
-
+	{
+		attackedEffectScript.enabled = true;
+		imageScript.color = new Color32 (203, 165, 165, 255);
+		if (monsterImg.GetComponent<iTween> () != null) {
+			monsterImg.GetComponent<iTween> ().enabled = true;
 		}
+
+	}
 
 	private void SetRegenParticleFalse ()
-		{
-				regenGO.SetActive (false);
-				visualEffectInformScript.FadeOutVisualEffect ();
-		}
+	{
+		regenGO.SetActive (false);
+		visualEffectInformScript.FadeOutVisualEffect ();
+	}
 
 	private void DisableAttackedEffect ()
-		{
-				attackedEffectScript.enabled = false;
-				imageScript.color = new Color32 (255, 255, 255, 255);
-				monsterImg.GetComponent<iTween> ().enabled = false;
-		}
+	{
+		attackedEffectScript.enabled = false;
+		imageScript.color = new Color32 (255, 255, 255, 255);
+		monsterImg.GetComponent<iTween> ().enabled = false;
+	}
 
 	private void ExecutedFunctionsAfterStunEffect ()
-		{
+	{
 
-				HideQuestion ();
-				ResetTimeBar ();
-				ShowAllAnswerButton ();
-				ShowQuestion ();
+		HideQuestion ();
+		ResetTimeBar ();
+		ShowAllAnswerButton ();
+		ShowQuestion ();
 
-		}
+	}
 		
 	private void InvokeFunctionsRightAnswer ()
-		{
-				Invoke ("HideQuestion", chargeParticle.duration);
-				Invoke ("EnableAttackedEffect", chargeParticle.duration);
-				Invoke ("DisplayDamage", chargeParticle.duration);
-				Invoke ("ShowAttackParticle", chargeParticle.duration);
-				Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
-				Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
-		}
+	{
+		Invoke ("HideQuestion", chargeParticle.duration);
+		Invoke ("EnableAttackedEffect", chargeParticle.duration);
+		Invoke ("DisplayDamage", chargeParticle.duration);
+		Invoke ("ShowAttackParticle", chargeParticle.duration);
+		Invoke ("DamageEnemyHealthbar", chargeParticle.duration);
+		Invoke ("InvokeFunctionsAfterAttackParticle", chargeParticle.duration);
+	}
 		
 	private void DamageEnemyHealthbar ()
-		{
-				enemyHealthBarScript.Damage ();
-		}
+	{
+		enemyHealthBarScript.Damage ();
+	}
 
 	private void InvokeFunctionsAfterAttackParticle ()
-		{
-				Invoke ("SetChargeParticleFalse", particle.duration);
-				Invoke ("DisableAttackedEffect", particle.duration);
-				Invoke ("SetParticleFalse", particle.duration);
-				Invoke ("ResetTimeBar", particle.duration);
-				Invoke ("ShowAllAnswerButton", particle.duration);
-				Invoke ("ShowQuestion", particle.duration);
-		}
+	{
+		Invoke ("SetChargeParticleFalse", particle.duration);
+		Invoke ("DisableAttackedEffect", particle.duration);
+		Invoke ("SetParticleFalse", particle.duration);
+		Invoke ("ResetTimeBar", particle.duration);
+		Invoke ("ShowAllAnswerButton", particle.duration);
+		Invoke ("ShowQuestion", particle.duration);
+	}
 
 	private void SetChargeParticleFalse ()
-		{
-				chargeGO.SetActive (false);
-		}
+	{
+		chargeGO.SetActive (false);
+	}
 
 	private void FadeOutVisualEffect ()
-		{
-				visualEffectInformScript.FadeOutVisualEffect ();
-				ExecutedFunctionsAfterStunEffect ();
-		}
+	{
+		visualEffectInformScript.FadeOutVisualEffect ();
+		ExecutedFunctionsAfterStunEffect ();
+	}
 
-		public void CheckAnswerA ()
-		{
-				MonsterEquip monsterEquip = answerA.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-				textClickedButton = answerA.text;
-				ShowOnlyRightAnswerButton ();
-				if (answerA.text == qb.rightAnswer) {
-						audioSource.Play ();
-						if (effectManagerScript.IsStunAdded) {
-								effectManagerScript.ApplyEffect ("stun");
-								visualEffectInformScript.SetSprite ("stun");
-								visualEffectInformScript.FadeInVisualEffect ();
-								Invoke ("FadeOutVisualEffect", 1f);
-						} else {
-								StartCoroutine (AudioCoolDown (monsterEquip));
+	public void CheckAnswerA ()
+	{
+		MonsterEquip monsterEquip = answerA.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+		textClickedButton = answerA.text;
+		ShowOnlyRightAnswerButton ();
+		if (answerA.text == qb.rightAnswer) {
+			audioSource.Play ();
+			if (effectManagerScript.IsStunAdded) {
+				effectManagerScript.ApplyEffect ("stun");
+				visualEffectInformScript.SetSprite ("stun");
+				visualEffectInformScript.FadeInVisualEffect ();
+				Invoke ("FadeOutVisualEffect", 1f);
+			}
+			else 
+			{
+				StartCoroutine (AudioCoolDown (monsterEquip));
 
-						}
-						monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-						Debug.Log (monsterEquip.EffectProperty.Apply);
-						
+			}
+			monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (monsterEquip.EffectProperty.Apply);
+			
 //						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						Debug.Log (answerA.transform.parent.name);
-				
-						questionFadeScript.SetButtonInteractiableFalse ();
-				
-				} else {
-						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
-						questionFadeScript.SetButtonInteractiableFalse ();
-						
-						playerHealthBarScript.Damage ();
-						ShowWrongAnswerParticle ();
-				
-				
-				}
-		}
-
-		public void CheckAnswerB ()
-		{
-				MonsterEquip monsterEquip = answerB.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-				textClickedButton = answerB.text;
-				ShowOnlyRightAnswerButton ();
-				if (answerB.text == qb.rightAnswer) {
-						audioSource.Play ();
-						questionFadeScript.SetButtonInteractiableFalse ();
-						monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-						Debug.Log (monsterEquip.EffectProperty.Apply);
-						Debug.Log (answerB.transform.parent.name);
-
-//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-
-						if (effectManagerScript.IsStunAdded) {
-								effectManagerScript.ApplyEffect ("stun");
-								visualEffectInformScript.SetSprite ("stun");
-								visualEffectInformScript.FadeInVisualEffect ();
-								Invoke ("FadeOutVisualEffect", 1f);
-						} else {
-								StartCoroutine (AudioCoolDown (monsterEquip));
-				
-						}
-				} else {
-						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
-						questionFadeScript.SetButtonInteractiableFalse ();
-						
-						playerHealthBarScript.Damage ();
-						ShowWrongAnswerParticle ();
-						
-						
-				}
-		}
+			Debug.Log (answerA.transform.parent.name);
+	
+			questionFadeScript.SetButtonInteractiableFalse ();
 		
-		public void CheckAnswerC ()
+		} 
+		else 
 		{
-				MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-				textClickedButton = answerC.text;
-				ShowOnlyRightAnswerButton ();
-				if (answerC.text == qb.rightAnswer) {
-						audioSource.Play ();
-						questionFadeScript.SetButtonInteractiableFalse ();
-						monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-						Debug.Log (monsterEquip.EffectProperty.Apply);
-//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						Debug.Log (answerC.transform.parent.name);
+			if (!isPlayerPhase)
+			{
 
-						if (effectManagerScript.IsStunAdded) {
-								effectManagerScript.ApplyEffect ("stun");
-								visualEffectInformScript.SetSprite ("stun");
-								visualEffectInformScript.FadeInVisualEffect ();
-								Invoke ("FadeOutVisualEffect", 1f);
-						} else {
-								StartCoroutine (AudioCoolDown (monsterEquip));
-				
-						}
-				} else {
-						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
-						questionFadeScript.SetButtonInteractiableFalse ();
-						
-						playerHealthBarScript.Damage ();
-						ShowWrongAnswerParticle ();
-						
-						
+			}
+			else
+			{
+				if (CalculateHideEffect())
+				{
+					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 				}
-		}
+			}
+			questionFadeScript.SetButtonInteractiableFalse ();
+			
+			playerHealthBarScript.Damage ();
+			ShowWrongAnswerParticle ();
 		
-		public void CheckAnswerD ()
-		{
-				MonsterEquip monsterEquip = answerD.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-				textClickedButton = answerD.text;
-				ShowOnlyRightAnswerButton ();
-				if (answerD.text == qb.rightAnswer) {
-						audioSource.Play ();
-						questionFadeScript.SetButtonInteractiableFalse ();
-						monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-						Debug.Log (monsterEquip.EffectProperty.Apply);						
-						Debug.Log (answerD.transform.parent.name);
+		
+		}
+	}
+
+	public void CheckAnswerB ()
+	{
+		MonsterEquip monsterEquip = answerB.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+		textClickedButton = answerB.text;
+		ShowOnlyRightAnswerButton ();
+		if (answerB.text == qb.rightAnswer) {
+			audioSource.Play ();
+			questionFadeScript.SetButtonInteractiableFalse ();
+			monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (monsterEquip.EffectProperty.Apply);
+			Debug.Log (answerB.transform.parent.name);
 
 //						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 
-						if (effectManagerScript.IsStunAdded) {
-								effectManagerScript.ApplyEffect ("stun");
-								visualEffectInformScript.SetSprite ("stun");
-								visualEffectInformScript.FadeInVisualEffect ();
-								Invoke ("FadeOutVisualEffect", 1f);
-						} else {
-								StartCoroutine (AudioCoolDown (monsterEquip));
+			if (effectManagerScript.IsStunAdded) {
+				effectManagerScript.ApplyEffect ("stun");
+				visualEffectInformScript.SetSprite ("stun");
+				visualEffectInformScript.FadeInVisualEffect ();
+				Invoke ("FadeOutVisualEffect", 1f);
+			} else {
+				StartCoroutine (AudioCoolDown (monsterEquip));
+	
+			}
+		} 
+		else 
+		{
+			if (!isPlayerPhase)
+			{
 				
-						}
-				} else {
-						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
-						questionFadeScript.SetButtonInteractiableFalse ();
-						
-						playerHealthBarScript.Damage ();
-						ShowWrongAnswerParticle ();
-						
-
-						
+			}
+			else
+			{
+				if (CalculateHideEffect())
+				{
+					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 				}
+			}
+			questionFadeScript.SetButtonInteractiableFalse ();
+			
+			playerHealthBarScript.Damage ();
+			ShowWrongAnswerParticle ();
+				
+				
 		}
+	}
+		
+	public void CheckAnswerC ()
+	{
+		MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+		textClickedButton = answerC.text;
+		ShowOnlyRightAnswerButton ();
+		if (answerC.text == qb.rightAnswer) {
+			audioSource.Play ();
+			questionFadeScript.SetButtonInteractiableFalse ();
+			monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (monsterEquip.EffectProperty.Apply);
+//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			Debug.Log (answerC.transform.parent.name);
+
+			if (effectManagerScript.IsStunAdded) {
+				effectManagerScript.ApplyEffect ("stun");
+				visualEffectInformScript.SetSprite ("stun");
+				visualEffectInformScript.FadeInVisualEffect ();
+				Invoke ("FadeOutVisualEffect", 1f);
+			} else {
+				StartCoroutine (AudioCoolDown (monsterEquip));
+	
+			}
+		} else {
+			if (!isPlayerPhase)
+			{
+				
+			}
+			else
+			{
+				if (CalculateHideEffect())
+				{
+					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+				}
+			}
+			questionFadeScript.SetButtonInteractiableFalse ();
+			
+			playerHealthBarScript.Damage ();
+			ShowWrongAnswerParticle ();
+				
+				
+		}
+	}
+		
+	public void CheckAnswerD ()
+	{
+		MonsterEquip monsterEquip = answerD.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
+		textClickedButton = answerD.text;
+		ShowOnlyRightAnswerButton ();
+		if (answerD.text == qb.rightAnswer) {
+			audioSource.Play ();
+			questionFadeScript.SetButtonInteractiableFalse ();
+			monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+			Debug.Log (monsterEquip.EffectProperty.Apply);						
+			Debug.Log (answerD.transform.parent.name);
+
+//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+			if (effectManagerScript.IsStunAdded) {
+				effectManagerScript.ApplyEffect ("stun");
+				visualEffectInformScript.SetSprite ("stun");
+				visualEffectInformScript.FadeInVisualEffect ();
+				Invoke ("FadeOutVisualEffect", 1f);
+			} else {
+				StartCoroutine (AudioCoolDown (monsterEquip));
+	
+			}
+		} 
+		else 
+		{
+			if (!isPlayerPhase)
+			{
+				
+			}
+			else
+			{
+				if (CalculateHideEffect())
+				{
+					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+				}
+			}
+			questionFadeScript.SetButtonInteractiableFalse ();
+			
+			playerHealthBarScript.Damage ();
+			ShowWrongAnswerParticle ();
+				
+
+				
+		}
+	}
 		
 	private void ResetTimeBar ()
-		{
-				timeBarScript.ResetTimeBar ();
-				if (effectManagerScript.IsRegenAdded) {
-						Debug.Log ("CONG MAU NE!!!");
-						effectManagerScript.ApplyEffect ("regen");
-						visualEffectInformScript.SetSprite ("regen");
-						visualEffectInformScript.FadeInVisualEffect ();
-						SetParticleGO (regenGO, true);
-						Invoke ("SetRegenParticleFalse", regenParticle.duration);
-				}
+	{
+		timeBarScript.ResetTimeBar ();
+		if (effectManagerScript.IsRegenAdded) {
+			Debug.Log ("CONG MAU NE!!!");
+			effectManagerScript.ApplyEffect ("regen");
+			visualEffectInformScript.SetSprite ("regen");
+			visualEffectInformScript.FadeInVisualEffect ();
+			SetParticleGO (regenGO, true);
+			Invoke ("SetRegenParticleFalse", regenParticle.duration);
 		}
+	}
 
 	private void SetParticleFalse ()
-		{
-				slashGO.SetActive (false);
-		}
+	{
+		slashGO.SetActive (false);
+	}
 
 	private void ShowWrongAnswerParticle ()
-		{
-				for (int i = 0; i < answerText.Length; i++) {
-						if (textClickedButton == answerText [i].GetComponent<Text> ().text) {
-								thunderParticlePos = answerText [i].transform.parent.transform.position;
-								thunderParticle.transform.position = thunderParticlePos;
-						}
+	{
+		for (int i = 0; i < answerText.Length; i++) {
+			if (textClickedButton == answerText [i].GetComponent<Text> ().text) {
+				thunderParticlePos = answerText [i].transform.parent.transform.position;
+				thunderParticle.transform.position = thunderParticlePos;
+			}
 
-				}
-				thunderGO.SetActive (true);
-				Invoke ("ShowQuestion", CompareParticleDuration ());
-				
-				Invoke ("ResetTimeBar", CompareParticleDuration ());
-				Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
-				Invoke ("SetThunderParticleFalse", CompareParticleDuration ());
 		}
+		thunderGO.SetActive (true);
+		Invoke ("ShowQuestion", CompareParticleDuration ());
+		
+		Invoke ("ResetTimeBar", CompareParticleDuration ());
+		Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
+		Invoke ("SetThunderParticleFalse", CompareParticleDuration ());
+	}
 
-		public void ShowParticleWhenNotAnswer (GameObject particleGO)
-		{
-				for (int i = 0; i < answerText.Length; i++) {
-						if (qb.rightAnswer == answerText [i].GetComponent<Text> ().text) {
-								thunderParticlePos = answerText [i].transform.parent.transform.position;
-								particleGO.transform.position = thunderParticlePos;
-						}
-			
-				}
-				particleGO.SetActive (true);
+	public void ShowParticleWhenNotAnswer (GameObject particleGO)
+	{
+		for (int i = 0; i < answerText.Length; i++) {
+			if (qb.rightAnswer == answerText [i].GetComponent<Text> ().text) {
+				thunderParticlePos = answerText [i].transform.parent.transform.position;
+				particleGO.transform.position = thunderParticlePos;
+			}
+	
 		}
+		particleGO.SetActive (true);
+	}
 
-		public float CompareParticleDuration ()
-		{
-				if (particle.duration > thunderParticle.duration) {
-						return particle.duration;
-				} else {
-						return thunderParticle.duration;		
-				}
+	public float CompareParticleDuration ()
+	{
+		if (particle.duration > thunderParticle.duration) {
+			return particle.duration;
+		} else {
+			return thunderParticle.duration;		
 		}
+	}
 
-		public void SetThunderParticleFalse ()
-		{
-				thunderGO.SetActive (false);
-		}
+	public void SetThunderParticleFalse ()
+	{
+		thunderGO.SetActive (false);
+	}
 		
 	private void ShowQuestion ()
-		{
-				questionFadeScript.ShowQuestion ();
-		}
+	{
+		questionFadeScript.ShowQuestion ();
+	}
 
 	private void ShowAttackParticle ()
-		{
-				slashGO.SetActive (true);
-				
-		}
+	{
+		slashGO.SetActive (true);
+			
+	}
 
 	private void HideQuestion ()
-		{
-				questionFadeScript.HideQuestion ();
-		}
+	{
+		questionFadeScript.HideQuestion ();
+	}
 		
 		
 	
