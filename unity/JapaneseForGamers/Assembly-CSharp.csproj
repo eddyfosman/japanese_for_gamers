@@ -95,6 +95,7 @@
      <Compile Include="Assets\Scripts\Puzzle.cs" />
      <Compile Include="Assets\Scripts\QuestionFadeScript.cs" />
      <Compile Include="Assets\Scripts\QuestionManager.cs" />
+     <Compile Include="Assets\Scripts\Quiz\AtkBuffScript.cs" />
      <Compile Include="Assets\Scripts\Quiz\AttackedEffect.cs" />
      <Compile Include="Assets\Scripts\Quiz\EffectManager.cs" />
      <Compile Include="Assets\Scripts\Quiz\EnemyHealthBar.cs" />

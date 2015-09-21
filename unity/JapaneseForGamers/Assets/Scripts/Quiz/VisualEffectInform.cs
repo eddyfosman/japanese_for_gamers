@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class VisualEffectInform : MonoBehaviour {
 	public Sprite regenIcon;
 	public Sprite stunIcon;
+	public Sprite atkBuffIcon;
 
 	public Image regen;
 

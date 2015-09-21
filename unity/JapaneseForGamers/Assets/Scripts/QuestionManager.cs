@@ -9,56 +9,58 @@ using LitJson;
 public class QuestionManager : MonoBehaviour
 {
 
-		public Text visualDamage;
-		public Button buttonA;
-		public Button buttonB;
-		public Button buttonC;
-		public Button buttonD;
-		public GameObject statusDialog;
-		public GameObject questionPanel;
-		public GameObject monsterPanel;
-		public Text question;
-		public Text answerA;
-		public Text answerB;
-		public Text answerC;
-		public Text answerD;
-		public GameObject monsterGameObject;
-		public GameObject playerHealthBar;
-		public GameObject timeBar;
-		public GameObject enemyHealthBar;
-		public GameObject slashGO;
-		public GameObject thunderGO;
-		public GameObject chargeGO;
-		public GameObject regenGO;
-		public GameObject deadGO;
-		public GameObject soundManager;
-		public GameObject monsterManager;
-		public bool isMonsterMoveOut = false;
-		public Text prefabTextUI;
-		public GameObject effectManagerGO;
-		public GameObject visualEffectInform;
+	public Text visualDamage;
+	public Button buttonA;
+	public Button buttonB;
+	public Button buttonC;
+	public Button buttonD;
+	public GameObject statusDialog;
+	public GameObject questionPanel;
+	public GameObject monsterPanel;
+	public Text question;
+	public Text answerA;
+	public Text answerB;
+	public Text answerC;
+	public Text answerD;
+	public GameObject monsterGameObject;
+	public GameObject playerHealthBar;
+	public GameObject timeBar;
+	public GameObject enemyHealthBar;
+	public GameObject slashGO;
+	public GameObject thunderGO;
+	public GameObject chargeGO;
+	public GameObject regenGO;
+	public GameObject deadGO;
+	public GameObject atkBuffGO;
+	public GameObject soundManager;
+	public GameObject monsterManager;
+	public bool isMonsterMoveOut = false;
+	public Text prefabTextUI;
+	public GameObject effectManagerGO;
+	public GameObject visualEffectInform;
 
-		private GameObject[] answerText;
-		private Selectable buttonASelectable;
-		private Selectable buttonBSelectable;
-		private Selectable buttonCSelectable;
-		private Selectable buttonDSelectable;
-		private StatusDialogScript statusDialogScript;
-		private CanvasGroup questionCanvasGroup;
-		private QuestionFadeScript questionFadeScript;
-		private CanvasGroup monsterCanvasGroup;
-		private MonsterFadeScript monsterFadeScript;
+	private GameObject[] answerText;
+	private Selectable buttonASelectable;
+	private Selectable buttonBSelectable;
+	private Selectable buttonCSelectable;
+	private Selectable buttonDSelectable;
+	private StatusDialogScript statusDialogScript;
+	private CanvasGroup questionCanvasGroup;
+	private QuestionFadeScript questionFadeScript;
+	private CanvasGroup monsterCanvasGroup;
+	private MonsterFadeScript monsterFadeScript;
 
-		private QuestionBean qb ;
-		private Image monsterImage;
-		private PlayerHealthBar playerHealthBarScript;
-		private TimeBar timeBarScript;
-		private EnemyHealthBar enemyHealthBarScript;
+	private QuestionBean qb ;
+	private Image monsterImage;
+	private PlayerHealthBar playerHealthBarScript;
+	private TimeBar timeBarScript;
+	private EnemyHealthBar enemyHealthBarScript;
 	private int monsterID = 0;
-		private PlayerData player;
-		private MonsterBean monster;
-		private int monsterExp;
+	private PlayerData player;
+	private MonsterBean monster;
+	private int monsterExp;
 		
+	private ParticleSystem atkBuffParticle;
 	private ParticleSystem regenParticle;
 	private ParticleSystem chargeParticle;
 	private ParticleSystem thunderParticle;
@@ -75,11 +77,20 @@ public class QuestionManager : MonoBehaviour
 	private MonsterManager monsterManagerScript;
 	private FadeAwayVisualDamage fadeAwayVisualDamageScript;
 	private Text charGO;
-		private EffectManager effectManagerScript;
-		private VisualEffectInform visualEffectInformScript;
-		private bool isPlayerPhase = false;
-		private TextAsset jsonFile;
+	private EffectManager effectManagerScript;
+	private VisualEffectInform visualEffectInformScript;
+	public bool isPause = false;
+
+	private bool isPlayerPhase = false;
+	public bool IsPlayerPhase
+	{
+		set { isPlayerPhase = value; }
+		get { return isPlayerPhase; }
+	}
+
+	private TextAsset jsonFile;
 	private TextAsset jsonFileMonsterKanji;
+
 	public List<KanjiBean> kanjiList;
 	public List<MonsterBean> monsterList;
 	public List<QuestionBean> textToReadPlayer= new List<QuestionBean> ();
@@ -88,50 +99,52 @@ public class QuestionManager : MonoBehaviour
 
 		
 
-		void Start ()
+	void Start ()
+	{
+		visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform> ();
+		effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
+		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
+		fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
+		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
+		visualDamage.gameObject.SetActive (false);
+		audioSource = soundManager.GetComponent<AudioSource> ();
+		monsterImg = GameObject.FindGameObjectWithTag ("Monster");
+		imageScript = monsterImg.GetComponent<Image> ();
+		attackedEffectScript = monsterImg.GetComponent<AttackedEffect> ();
+		answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
+		deadParticle = deadGO.GetComponent<ParticleSystem> ();
+		chargeParticle = chargeGO.GetComponent<ParticleSystem> ();
+		thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
+		regenParticle = regenGO.GetComponent<ParticleSystem> ();
+		atkBuffParticle = atkBuffGO.GetComponent<ParticleSystem>();
+		particle = slashGO.GetComponent<ParticleSystem> ();
+		Screen.orientation = ScreenOrientation.Portrait;
+		buttonASelectable = buttonA.GetComponent<Selectable> ();
+		buttonBSelectable = buttonB.GetComponent<Selectable> ();
+		buttonCSelectable = buttonC.GetComponent<Selectable> ();
+		buttonDSelectable = buttonD.GetComponent<Selectable> ();
+		statusDialog.SetActive (false);
+		questionCanvasGroup = questionPanel.GetComponent<CanvasGroup> ();
+		monsterCanvasGroup = monsterPanel.GetComponent<CanvasGroup> ();
+		statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
+		questionFadeScript = questionPanel.GetComponent<QuestionFadeScript> ();
+		monsterImage = monsterGameObject.GetComponent<Image> ();
+		monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();
+		playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
+		enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
+		timeBarScript = timeBar.GetComponent<TimeBar> ();
+		Read ();
+		playerHealthBarScript.maxHealth = player.Hp;
+		SetMonster ();
+		SetQuestion ();
+		if (!isFileExisted ("PlayerInfo")) 
 		{
-				visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform> ();
-				effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
-				monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
-				fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
-				monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
-				visualDamage.gameObject.SetActive (false);
-				audioSource = soundManager.GetComponent<AudioSource> ();
-				monsterImg = GameObject.FindGameObjectWithTag ("Monster");
-				imageScript = monsterImg.GetComponent<Image> ();
-				attackedEffectScript = monsterImg.GetComponent<AttackedEffect> ();
-				answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
-				deadParticle = deadGO.GetComponent<ParticleSystem> ();
-				chargeParticle = chargeGO.GetComponent<ParticleSystem> ();
-				thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
-				regenParticle = regenGO.GetComponent<ParticleSystem> ();
-				particle = slashGO.GetComponent<ParticleSystem> ();
-				Screen.orientation = ScreenOrientation.Portrait;
-				buttonASelectable = buttonA.GetComponent<Selectable> ();
-				buttonBSelectable = buttonB.GetComponent<Selectable> ();
-				buttonCSelectable = buttonC.GetComponent<Selectable> ();
-				buttonDSelectable = buttonD.GetComponent<Selectable> ();
-				statusDialog.SetActive (false);
-				questionCanvasGroup = questionPanel.GetComponent<CanvasGroup> ();
-				monsterCanvasGroup = monsterPanel.GetComponent<CanvasGroup> ();
-				statusDialogScript = statusDialog.GetComponent<StatusDialogScript> ();
-				questionFadeScript = questionPanel.GetComponent<QuestionFadeScript> ();
-				monsterImage = monsterGameObject.GetComponent<Image> ();
-				monsterFadeScript = monsterPanel.GetComponent<MonsterFadeScript> ();
-				playerHealthBarScript = playerHealthBar.GetComponent<PlayerHealthBar> ();
-				enemyHealthBarScript = enemyHealthBar.GetComponent<EnemyHealthBar> ();
-				timeBarScript = timeBar.GetComponent<TimeBar> ();
-				Read ();
-				playerHealthBarScript.maxHealth = player.Hp;
-				SetMonster ();
-				SetQuestion ();
-				if (!isFileExisted ("PlayerInfo")) {
-						File.WriteAllText (Application.persistentDataPath + "/" + "PlayerInfo", "");
-				}
-		
-		
-		
+				File.WriteAllText (Application.persistentDataPath + "/" + "PlayerInfo", "");
 		}
+	
+	
+	
+	}
 	
 		// Update is called once per frame
 	private void Update ()
@@ -480,7 +493,8 @@ public class QuestionManager : MonoBehaviour
 		answerB.text = list [1];
 		answerC.text = list [2];
 		answerD.text = list [3];
-		isPlayerPhase = !isPlayerPhase;
+		Debug.Log ("THIET LAP CAU HOI MOI NGAY LAP TUC NE !!!");
+//		isPlayerPhase = !isPlayerPhase;
 		
 	}
 		
@@ -562,6 +576,13 @@ public class QuestionManager : MonoBehaviour
 
 	}
 
+	private void SetAtkBuffParticleFalse()
+	{
+		atkBuffGO.SetActive (false);
+		isPause = false;
+		visualEffectInformScript.FadeOutVisualEffect ();
+	}
+
 	private void SetRegenParticleFalse ()
 	{
 		regenGO.SetActive (false);
@@ -628,6 +649,24 @@ public class QuestionManager : MonoBehaviour
 		ShowOnlyRightAnswerButton ();
 		if (answerA.text == qb.rightAnswer) {
 			audioSource.Play ();
+
+			if (monsterEquip.EffectProperty.Type == "atkBuff")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
+				ShowAtkBuffEffect();
+				
+			}
+
+
+//			if (effectManagerScript.IsAtkBuffAdded)
+//			{
+//				effectManagerScript.ApplyEffect ("atkBuff");
+//				visualEffectInformScript.SetSprite ("atkBuff");
+//				visualEffectInformScript.FadeInVisualEffect ();
+//				Invoke ("FadeOutVisualEffect", 1f);
+//			}
+
 			if (effectManagerScript.IsStunAdded) {
 				effectManagerScript.ApplyEffect ("stun");
 				visualEffectInformScript.SetSprite ("stun");
@@ -640,17 +679,15 @@ public class QuestionManager : MonoBehaviour
 
 			}
 			monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);
-			
+
 //						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			Debug.Log (answerA.transform.parent.name);
 	
 			questionFadeScript.SetButtonInteractiableFalse ();
 		
 		} 
 		else 
 		{
-			if (!isPlayerPhase)
+			if (isPlayerPhase)
 			{
 
 			}
@@ -658,8 +695,11 @@ public class QuestionManager : MonoBehaviour
 			{
 				if (CalculateHideEffect())
 				{
-					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					if (monsterEquip.EffectProperty.Type == "stun")
+					{
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					}
 				}
 			}
 			questionFadeScript.SetButtonInteractiableFalse ();
@@ -680,33 +720,53 @@ public class QuestionManager : MonoBehaviour
 			audioSource.Play ();
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);
-			Debug.Log (answerB.transform.parent.name);
 
 //						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 
-			if (effectManagerScript.IsStunAdded) {
+			if (monsterEquip.EffectProperty.Type == "atkBuff")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
+				ShowAtkBuffEffect();
+				
+			}
+
+//			if (effectManagerScript.IsAtkBuffAdded)
+//			{
+//				effectManagerScript.ApplyEffect ("atkBuff");
+//				visualEffectInformScript.SetSprite ("atkBuff");
+//				visualEffectInformScript.FadeInVisualEffect ();
+//				Invoke ("FadeOutVisualEffect", 1f);
+//			}
+
+			if (effectManagerScript.IsStunAdded) 
+			{
 				effectManagerScript.ApplyEffect ("stun");
 				visualEffectInformScript.SetSprite ("stun");
 				visualEffectInformScript.FadeInVisualEffect ();
 				Invoke ("FadeOutVisualEffect", 1f);
-			} else {
+			} 
+			else 
+			{
 				StartCoroutine (AudioCoolDown (monsterEquip));
 	
 			}
 		} 
 		else 
 		{
-			if (!isPlayerPhase)
+			if (isPlayerPhase)
 			{
-				
+
 			}
 			else
 			{
 				if (CalculateHideEffect())
 				{
-					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					if (monsterEquip.EffectProperty.Type == "stun")
+					{
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					}
 				}
 			}
 			questionFadeScript.SetButtonInteractiableFalse ();
@@ -727,9 +787,23 @@ public class QuestionManager : MonoBehaviour
 			audioSource.Play ();
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);
 //						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			Debug.Log (answerC.transform.parent.name);
+
+			if (monsterEquip.EffectProperty.Type == "atkBuff")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
+				ShowAtkBuffEffect();
+				
+			}
+
+//			if (effectManagerScript.IsAtkBuffAdded)
+//			{
+//				effectManagerScript.ApplyEffect ("atkBuff");
+//				visualEffectInformScript.SetSprite ("atkBuff");
+//				visualEffectInformScript.FadeInVisualEffect ();
+//				Invoke ("FadeOutVisualEffect", 1f);
+//			}
 
 			if (effectManagerScript.IsStunAdded) {
 				effectManagerScript.ApplyEffect ("stun");
@@ -741,16 +815,19 @@ public class QuestionManager : MonoBehaviour
 	
 			}
 		} else {
-			if (!isPlayerPhase)
+			if (isPlayerPhase)
 			{
-				
+
 			}
 			else
 			{
 				if (CalculateHideEffect())
 				{
-					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					if (monsterEquip.EffectProperty.Type == "stun")
+					{
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					}
 				}
 			}
 			questionFadeScript.SetButtonInteractiableFalse ();
@@ -771,10 +848,24 @@ public class QuestionManager : MonoBehaviour
 			audioSource.Play ();
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-			Debug.Log (monsterEquip.EffectProperty.Apply);						
-			Debug.Log (answerD.transform.parent.name);
 
 //						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+			if (monsterEquip.EffectProperty.Type == "atkBuff")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
+				ShowAtkBuffEffect();
+				
+			}
+
+//			if (effectManagerScript.IsAtkBuffAdded)
+//			{
+//				effectManagerScript.ApplyEffect ("atkBuff");
+//				visualEffectInformScript.SetSprite ("atkBuff");
+//				visualEffectInformScript.FadeInVisualEffect ();
+//				Invoke ("FadeOutVisualEffect", 1f);
+//			}
 
 			if (effectManagerScript.IsStunAdded) {
 				effectManagerScript.ApplyEffect ("stun");
@@ -788,16 +879,20 @@ public class QuestionManager : MonoBehaviour
 		} 
 		else 
 		{
-			if (!isPlayerPhase)
+			if (isPlayerPhase)
 			{
-				
+
 			}
 			else
 			{
 				if (CalculateHideEffect())
 				{
-					effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-					effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					if (monsterEquip.EffectProperty.Type == "stun")
+					{
+						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+					}
+
 				}
 			}
 			questionFadeScript.SetButtonInteractiableFalse ();
@@ -807,6 +902,21 @@ public class QuestionManager : MonoBehaviour
 				
 
 				
+		}
+	}
+
+	private void ShowAtkBuffEffect()
+	{
+		Debug.Log("GIA TANG LUC TAN CONG !!!!!");
+		if (effectManagerScript.IsAtkBuffAdded)
+		{
+			Debug.Log("GIA TANG LUC TAN CONG !!!!!");
+			effectManagerScript.ApplyEffect ("atkBuff");
+			visualEffectInformScript.SetSprite ("atkBuff");
+			visualEffectInformScript.FadeInVisualEffect ();
+			SetParticleGO (atkBuffGO, true);
+			isPause = true;
+			Invoke ("SetAtkBuffParticleFalse", atkBuffParticle.duration);
 		}
 	}
 		

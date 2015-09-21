@@ -62,7 +62,10 @@ public class TimeBar : MonoBehaviour {
 	}
 
 	public void ResetTimeBar(){
+		questionManagerScript.IsPlayerPhase = !questionManagerScript.IsPlayerPhase;
 		questionManagerScript.SetQuestion();
+		Debug.Log (questionManagerScript.IsPlayerPhase);
+		Debug.Log (questionManagerScript.IsPlayerPhase);
 		currentTime = maxTime;
 		timeBarTransform.position = new Vector3 (maxXValue, cachedY);
 
@@ -120,7 +123,8 @@ public class TimeBar : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(!onCD && currentTime > 0 && !questionFadeScript.onCD && !monsterFadeScript.onCD && !statusDialogScript.onCD && !buttonControllerScript.onCD){
+		if(!onCD && currentTime > 0 && !questionFadeScript.onCD && !monsterFadeScript.onCD && !statusDialogScript.onCD && !buttonControllerScript.onCD && !questionManagerScript.isPause)
+		{
 			StartCoroutine(CoolDownTime());
 			CurrentTime -= 1;
 //			Debug.Log("Thoi GIAN CON LAI LA: " + CurrentTime);
