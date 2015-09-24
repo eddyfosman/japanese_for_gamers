@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class EffectManager : MonoBehaviour {
 
+	public delegate void OnPoisonEnd (string turn);
+	public static event OnPoisonEnd onPoisonEnd;
+
 	public delegate void OnRegenEnd (string turn);
 	public static event OnRegenEnd onRegenEnd;
 
@@ -13,8 +16,17 @@ public class EffectManager : MonoBehaviour {
 	public delegate void OnAtkBuffEnd (string turn);
 	public static event OnAtkBuffEnd onAtkBuffEnd;
 
+	public delegate void OnAtkBuffStart(int value);
+	public static event OnAtkBuffStart onAtkBuffStart;
+
+	public delegate void OnAtkBuffRemove ();
+	public static event OnAtkBuffRemove onAtkBuffRemove;
+
 	public GameObject playerHealthBarGO;
 	private PlayerHealthBar playerHealthBarScript;
+
+	public GameObject enemyHealthBarGO;
+	private EnemyHealthBar enemyHealthBarScript;
 
 	private List<Effect> effectList;
 
@@ -23,6 +35,13 @@ public class EffectManager : MonoBehaviour {
 	{
 		get { return isAtkBuffAdded; }
 	}
+
+	private bool isPoisonAdded = false;
+	public bool IsPoisonAdded
+	{
+		get { return isPoisonAdded; }
+	}
+
 
 	private bool isRegenAdded = false;
 	public bool IsRegenAdded
@@ -49,6 +68,7 @@ public class EffectManager : MonoBehaviour {
 		{
 			onStunEnd(effect.Turn.ToString());
 		}
+
 	}
 
 	public void ExecuteOnAtkBuffEvent(Effect effect)
@@ -56,6 +76,11 @@ public class EffectManager : MonoBehaviour {
 		if (onAtkBuffEnd != null)
 		{
 			onAtkBuffEnd(effect.Turn.ToString());
+		}
+
+		if (onAtkBuffStart != null)
+		{
+			onAtkBuffStart(effect.Value);
 		}
 	}
 
@@ -68,6 +93,12 @@ public class EffectManager : MonoBehaviour {
 			{
 				effectList.Add(effect);
 				isRegenAdded = true;
+			}
+
+			if (effect.Type == "poison" && !isPoisonAdded)
+			{
+				effectList.Add(effect);
+				isPoisonAdded = true;
 			}
 
 			if (effect.Type == "stun" && !isStunAdded)
@@ -109,6 +140,17 @@ public class EffectManager : MonoBehaviour {
 				for(int i = 0; i < effectList.Count; i++)
 				{
 					if (effectList[i].Type == "atkBuff")
+					{
+						effectList[i].Turn = 3;
+					}
+				}
+			}
+
+			if (effect.Type == "poison" && isPoisonAdded)
+			{
+				for(int i = 0; i < effectList.Count; i++)
+				{
+					if (effectList[i].Type == "poison")
 					{
 						effectList[i].Turn = 3;
 					}
@@ -169,6 +211,32 @@ public class EffectManager : MonoBehaviour {
 				}
 			}
 		}
+		if (effectType == "poison")
+		{
+			for (int i = 0; i < effectList.Count; i++)
+			{
+				if (effectList[i].Type == "poison")
+				{
+					if (effectList[i].Turn > 0)
+					{
+						effectList[i].Turn--; 
+						
+						if (onPoisonEnd != null)
+						{
+							onPoisonEnd(effectList[i].Turn.ToString());
+						}
+						enemyHealthBarScript.Damage(effectList[i].Value);
+					}
+					
+					if (effectList[i].Turn == 0)
+					{
+						effectList.Remove(effectList[i]);
+						isPoisonAdded = false;
+					}
+					
+				}
+			}
+		}
 		if (effectType == "atkBuff")
 		{
 			for(int i = 0; i < effectList.Count; i++)
@@ -178,7 +246,12 @@ public class EffectManager : MonoBehaviour {
 					if (effectList[i].Turn > 0)
 					{
 						effectList[i].Turn--;
-						
+
+						if (onAtkBuffStart != null)
+						{
+							onAtkBuffStart(effectList[i].Value);
+						}
+
 						if (onAtkBuffEnd != null)
 						{
 							onAtkBuffEnd(effectList[i].Turn.ToString());

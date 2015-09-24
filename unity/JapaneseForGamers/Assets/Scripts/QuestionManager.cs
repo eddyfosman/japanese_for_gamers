@@ -494,6 +494,10 @@ public class QuestionManager : MonoBehaviour
 		answerC.text = list [2];
 		answerD.text = list [3];
 		Debug.Log ("THIET LAP CAU HOI MOI NGAY LAP TUC NE !!!");
+		if (effectManagerScript.IsAtkBuffAdded)
+		{
+			effectManagerScript.ApplyEffect ("atkBuff");
+		}
 //		isPlayerPhase = !isPlayerPhase;
 		
 	}

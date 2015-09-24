@@ -24,6 +24,14 @@ public class EnemyHealthBar : MonoBehaviour {
 	private QuestionManager questionManagerScript;
 	private MonsterBean monster;
 	private PlayerData player;
+
+	private float boostDamage = 0;
+	public float BoostDamage
+	{
+		get { return boostDamage; }
+		set { boostDamage = value; }
+	}
+
 	float ratio;
 	float baseDmg;
 	float damage;
@@ -52,29 +60,7 @@ public class EnemyHealthBar : MonoBehaviour {
 		}
 		
 		damage = baseDmg *  Random.Range(0.9f, 1.1f) + (player.Atk / 400) * Random.Range (1, 10) + Random.Range (-2, 2);
-		//		if ratio < 6/91 (roughly .066) : baseDmg = (eneatk*449/480 - mydef/112) / 8
-		//			
-		//			else if R < 30/119 (roughly .252) : baseDmg = eneatk*113/480 - mydef/112
-		//				
-		//				else if R < 10/21 (roughly .476) : baseDmg = eneatk*33/80 - mydef*3/56
-		//				
-		//				else if R < 6/7 (roughly .857) : baseDmg = eneatk*3/4 - mydef*3/14
-		//				
-		//				else: baseDmg = eneatk - mydef*3/7
-		//				
-		//				damage = baseDmg * randomInRange(.9,1.1) + (eneatk/400) * randomInRange(1,10) + randomInRange(-2,2)
-		//				
-		//				if(dmg <= 0)
-		//					
-		//				___ if(myMaxHP < 100){ //How is that even possible???
-		//					
-		//					______ damage = Math.random() * myMaxHP * 0.09 + 1;
-		//					
-		//					___ }else{
-		//			
-		//			______ damage = randomInRange(1,11)
-		//				
-		//			___ }
+		damage = damage + damage * boostDamage;
 	}
 	
 	
@@ -102,20 +88,41 @@ public class EnemyHealthBar : MonoBehaviour {
 		}
 		
 	}
-	
-	
+
+	public void Damage(int damageValue)
+	{
+		CurrentHealth = ((currentHealth - (long)damageValue) < 0 ? 0 : CurrentHealth - (long)damageValue);
+	}
+
+	private void ApplyBoostDamage(int value)
+	{
+		BoostDamage = (float)value / (float)100;
+	}
+
+	private void ResetDamage()
+	{
+		BoostDamage = 0;
+	}
+
 	// Use this for initialization
 	void Start () {
 		questionManagerScript = questionManager.GetComponent<QuestionManager>();
 		monster = questionManagerScript.GetMonsterData ();
-		
+		EffectManager.onAtkBuffStart += ApplyBoostDamage;
+		EffectManager.onAtkBuffRemove += ResetDamage;
 		player = questionManagerScript.GetPlayerData ();
 		cachedY = enemyHealthTranform.position.y;
 		maxXValue = enemyHealthTranform.position.x;
 		minXValue = enemyHealthTranform.position.x - enemyHealthTranform.rect.width;
 		currentHealth = maxHealth;
 	}
-	
+
+	void OnDisable()
+	{
+		EffectManager.onAtkBuffStart -= ApplyBoostDamage;
+		EffectManager.onAtkBuffRemove -= ResetDamage;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		

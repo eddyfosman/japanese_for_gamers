@@ -106,6 +106,7 @@
      <Compile Include="Assets\Scripts\Quiz\MonsterFadeScript.cs" />
      <Compile Include="Assets\Scripts\Quiz\MonsterManager.cs" />
      <Compile Include="Assets\Scripts\Quiz\PlayerData.cs" />
+     <Compile Include="Assets\Scripts\Quiz\PoisonScript.cs" />
      <Compile Include="Assets\Scripts\Quiz\RegenScript.cs" />
      <Compile Include="Assets\Scripts\Quiz\StatusDialogScript.cs" />
      <Compile Include="Assets\Scripts\Quiz\StunScript.cs" />
