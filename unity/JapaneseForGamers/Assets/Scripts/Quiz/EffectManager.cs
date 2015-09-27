@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class EffectManager : MonoBehaviour {
 
+	public GameObject questionPanel;
+	private QuestionManager questionManagerScript;
+
 	public delegate void OnPoisonEnd (string turn);
 	public static event OnPoisonEnd onPoisonEnd;
 
@@ -71,6 +74,15 @@ public class EffectManager : MonoBehaviour {
 
 	}
 
+	public void ExecuteOnPoisonEvent(Effect effect)
+	{
+		if (onPoisonEnd != null)
+		{
+			onPoisonEnd(effect.Turn.ToString());
+		}
+		
+	}
+
 	public void ExecuteOnAtkBuffEvent(Effect effect)
 	{
 		if (onAtkBuffEnd != null)
@@ -92,24 +104,40 @@ public class EffectManager : MonoBehaviour {
 			if (effect.Type == "regen" && !isRegenAdded)
 			{
 				effectList.Add(effect);
+				if (onRegenEnd != null)
+				{
+					onRegenEnd(effect.Turn.ToString());
+				}
 				isRegenAdded = true;
 			}
 
 			if (effect.Type == "poison" && !isPoisonAdded)
 			{
 				effectList.Add(effect);
+				if (onPoisonEnd != null)
+				{
+					onPoisonEnd(effect.Turn.ToString());
+				}
 				isPoisonAdded = true;
 			}
 
 			if (effect.Type == "stun" && !isStunAdded)
 			{
 				effectList.Add(effect);
+				if (onStunEnd != null)
+				{
+					onStunEnd(effect.Turn.ToString());
+				}
 				isStunAdded = true;
 			}
 
 			if(effect.Type == "atkBuff" && !isAtkBuffAdded)
 			{
 				effectList.Add(effect);
+				if (onAtkBuffEnd != null)
+				{
+					onAtkBuffEnd(effect.Turn.ToString());
+				}
 				isAtkBuffAdded = true;
 			}
 
@@ -226,10 +254,12 @@ public class EffectManager : MonoBehaviour {
 							onPoisonEnd(effectList[i].Turn.ToString());
 						}
 						enemyHealthBarScript.Damage(effectList[i].Value);
+						Debug.Log("TRU MAU QUAI NE");
 					}
 					
 					if (effectList[i].Turn == 0)
 					{
+						questionManagerScript.SetPoisonEffectOff();
 						effectList.Remove(effectList[i]);
 						isPoisonAdded = false;
 					}
@@ -270,5 +300,7 @@ public class EffectManager : MonoBehaviour {
 	void Start(){
 		effectList = new List<Effect> ();
 		playerHealthBarScript = playerHealthBarGO.GetComponent<PlayerHealthBar>();
+		enemyHealthBarScript = enemyHealthBarGO.GetComponent<EnemyHealthBar>();
+		questionManagerScript = questionPanel.GetComponent<QuestionManager>();
 	}
 }

@@ -1,18 +1,18 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Quiz\PoisonScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Quiz\QuestionManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\QuestionManager.cs" Line="57" Column="46" />
-      <File FileName="Assets\MockupUI\Resources\monstersequip.json" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\EffectManager.cs" Line="228" Column="27" />
-      <File FileName="Assets\Scripts\PlayerHealthBar.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\EnemyHealthBar.cs" Line="95" Column="3" />
-      <File FileName="Assets\Scripts\Quiz\PoisonScript.cs" Line="13" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\RegenScript.cs" Line="36" Column="3" />
+      <File FileName="Assets\Scripts\Quiz\QuestionManager.cs" Line="1041" Column="4" />
+      <File FileName="Assets\Scripts\Quiz\EffectManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Quiz\TimeBar.cs" Line="86" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\QuestionManager.cs" line="633" />
+      <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\QuestionManager.cs" line="1016" />
+      <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\QuestionManager.cs" line="668" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

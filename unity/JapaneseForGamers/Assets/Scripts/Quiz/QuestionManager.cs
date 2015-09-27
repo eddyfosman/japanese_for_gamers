@@ -32,6 +32,7 @@ public class QuestionManager : MonoBehaviour
 	public GameObject regenGO;
 	public GameObject deadGO;
 	public GameObject atkBuffGO;
+	public GameObject poisonGO;
 	public GameObject soundManager;
 	public GameObject monsterManager;
 	public bool isMonsterMoveOut = false;
@@ -61,6 +62,7 @@ public class QuestionManager : MonoBehaviour
 	private int monsterExp;
 		
 	private ParticleSystem atkBuffParticle;
+	private ParticleSystem poisonParticle;
 	private ParticleSystem regenParticle;
 	private ParticleSystem chargeParticle;
 	private ParticleSystem thunderParticle;
@@ -112,6 +114,7 @@ public class QuestionManager : MonoBehaviour
 		imageScript = monsterImg.GetComponent<Image> ();
 		attackedEffectScript = monsterImg.GetComponent<AttackedEffect> ();
 		answerText = GameObject.FindGameObjectsWithTag ("AnswerText");
+		poisonParticle = poisonGO.GetComponent<ParticleSystem> ();
 		deadParticle = deadGO.GetComponent<ParticleSystem> ();
 		chargeParticle = chargeGO.GetComponent<ParticleSystem> ();
 		thunderParticle = thunderGO.GetComponent<ParticleSystem> ();
@@ -520,7 +523,7 @@ public class QuestionManager : MonoBehaviour
 		{
 			yield return null;
 		}
-		ShowParticleWhenNotAnswer (chargeGO);
+		ShowChargeParticleWhenAnswer (chargeGO);
 		InvokeFunctionsRightAnswer ();
 		Debug.Log ("CHAY HIEU UNG!");
 	}
@@ -640,6 +643,20 @@ public class QuestionManager : MonoBehaviour
 		chargeGO.SetActive (false);
 	}
 
+	private void FadeOutVisualEffect2()
+	{
+
+			visualEffectInformScript.FadeOutVisualEffect ();
+			isPause = false;
+
+
+	}
+
+	public void SetPoisonEffectOff()
+	{
+		poisonGO.SetActive (false);
+	}
+
 	private void FadeOutVisualEffect ()
 	{
 		visualEffectInformScript.FadeOutVisualEffect ();
@@ -654,22 +671,31 @@ public class QuestionManager : MonoBehaviour
 		if (answerA.text == qb.rightAnswer) {
 			audioSource.Play ();
 
-			if (monsterEquip.EffectProperty.Type == "atkBuff")
+			if (monsterEquip.EffectProperty.Type == "poison")
 			{
 				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
+				ShowPoisonEffect();
+
+			}
+
+			if (monsterEquip.EffectProperty.Type == "atkBuff")
+			{
+				Debug.Log("VAO DAY KHONG");
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
+			if (monsterEquip.EffectProperty.Type == "regen")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
 
-//			if (effectManagerScript.IsAtkBuffAdded)
-//			{
-//				effectManagerScript.ApplyEffect ("atkBuff");
-//				visualEffectInformScript.SetSprite ("atkBuff");
-//				visualEffectInformScript.FadeInVisualEffect ();
-//				Invoke ("FadeOutVisualEffect", 1f);
-//			}
+			if (monsterEquip.EffectProperty.Type == "stun")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
+
 
 			if (effectManagerScript.IsStunAdded) {
 				effectManagerScript.ApplyEffect ("stun");
@@ -684,7 +710,6 @@ public class QuestionManager : MonoBehaviour
 			}
 			monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
 
-//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 	
 			questionFadeScript.SetButtonInteractiableFalse ();
 		
@@ -693,7 +718,8 @@ public class QuestionManager : MonoBehaviour
 		{
 			if (isPlayerPhase)
 			{
-
+				questionFadeScript.SetButtonInteractiableFalse ();
+				ShowParticleWhenNotAnswer (deadGO);
 			}
 			else
 			{
@@ -705,12 +731,11 @@ public class QuestionManager : MonoBehaviour
 						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 					}
 				}
+				questionFadeScript.SetButtonInteractiableFalse ();
+				playerHealthBarScript.Damage ();
+				ShowWrongAnswerParticle ();
 			}
-			questionFadeScript.SetButtonInteractiableFalse ();
-			
-			playerHealthBarScript.Damage ();
-			ShowWrongAnswerParticle ();
-		
+
 		
 		}
 	}
@@ -725,23 +750,33 @@ public class QuestionManager : MonoBehaviour
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
 
-//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+			if (monsterEquip.EffectProperty.Type == "poison")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				ShowPoisonEffect();
+				
+			}
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
+				Debug.Log("VAO DAY KHONG");
 				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
-//			if (effectManagerScript.IsAtkBuffAdded)
-//			{
-//				effectManagerScript.ApplyEffect ("atkBuff");
-//				visualEffectInformScript.SetSprite ("atkBuff");
-//				visualEffectInformScript.FadeInVisualEffect ();
-//				Invoke ("FadeOutVisualEffect", 1f);
-//			}
+			if (monsterEquip.EffectProperty.Type == "regen")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
+
+			if (monsterEquip.EffectProperty.Type == "stun")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
+
+
 
 			if (effectManagerScript.IsStunAdded) 
 			{
@@ -760,7 +795,8 @@ public class QuestionManager : MonoBehaviour
 		{
 			if (isPlayerPhase)
 			{
-
+				questionFadeScript.SetButtonInteractiableFalse ();
+				ShowParticleWhenNotAnswer (deadGO);
 			}
 			else
 			{
@@ -772,11 +808,11 @@ public class QuestionManager : MonoBehaviour
 						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 					}
 				}
+				questionFadeScript.SetButtonInteractiableFalse ();
+				playerHealthBarScript.Damage ();
+				ShowWrongAnswerParticle ();
 			}
-			questionFadeScript.SetButtonInteractiableFalse ();
-			
-			playerHealthBarScript.Damage ();
-			ShowWrongAnswerParticle ();
+
 				
 				
 		}
@@ -791,23 +827,31 @@ public class QuestionManager : MonoBehaviour
 			audioSource.Play ();
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
-//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+			if (monsterEquip.EffectProperty.Type == "poison")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				ShowPoisonEffect();
+				
+			}
+
+			if (monsterEquip.EffectProperty.Type == "regen")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
+				Debug.Log("VAO DAY KHONG");
 				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
-//			if (effectManagerScript.IsAtkBuffAdded)
-//			{
-//				effectManagerScript.ApplyEffect ("atkBuff");
-//				visualEffectInformScript.SetSprite ("atkBuff");
-//				visualEffectInformScript.FadeInVisualEffect ();
-//				Invoke ("FadeOutVisualEffect", 1f);
-//			}
+			if (monsterEquip.EffectProperty.Type == "stun")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
 
 			if (effectManagerScript.IsStunAdded) {
 				effectManagerScript.ApplyEffect ("stun");
@@ -821,7 +865,8 @@ public class QuestionManager : MonoBehaviour
 		} else {
 			if (isPlayerPhase)
 			{
-
+				questionFadeScript.SetButtonInteractiableFalse ();
+				ShowParticleWhenNotAnswer (deadGO);
 			}
 			else
 			{
@@ -833,11 +878,11 @@ public class QuestionManager : MonoBehaviour
 						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 					}
 				}
+				questionFadeScript.SetButtonInteractiableFalse ();
+				playerHealthBarScript.Damage ();
+				ShowWrongAnswerParticle ();
 			}
-			questionFadeScript.SetButtonInteractiableFalse ();
-			
-			playerHealthBarScript.Damage ();
-			ShowWrongAnswerParticle ();
+
 				
 				
 		}
@@ -853,23 +898,31 @@ public class QuestionManager : MonoBehaviour
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
 
-//						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+
+			if (monsterEquip.EffectProperty.Type == "poison")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				ShowPoisonEffect();
+				
+			}
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
 				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				effectManagerScript.ExecuteOnAtkBuffEvent (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
-//			if (effectManagerScript.IsAtkBuffAdded)
-//			{
-//				effectManagerScript.ApplyEffect ("atkBuff");
-//				visualEffectInformScript.SetSprite ("atkBuff");
-//				visualEffectInformScript.FadeInVisualEffect ();
-//				Invoke ("FadeOutVisualEffect", 1f);
-//			}
+			if (monsterEquip.EffectProperty.Type == "regen")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+			}
+
+			if (monsterEquip.EffectProperty.Type == "stun")
+			{
+				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+			}
 
 			if (effectManagerScript.IsStunAdded) {
 				effectManagerScript.ApplyEffect ("stun");
@@ -885,7 +938,8 @@ public class QuestionManager : MonoBehaviour
 		{
 			if (isPlayerPhase)
 			{
-
+				questionFadeScript.SetButtonInteractiableFalse ();
+				ShowParticleWhenNotAnswer (deadGO);
 			}
 			else
 			{
@@ -896,16 +950,25 @@ public class QuestionManager : MonoBehaviour
 						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
 					}
-
+					questionFadeScript.SetButtonInteractiableFalse ();
+					playerHealthBarScript.Damage ();
+					ShowWrongAnswerParticle ();
 				}
 			}
-			questionFadeScript.SetButtonInteractiableFalse ();
-			
-			playerHealthBarScript.Damage ();
-			ShowWrongAnswerParticle ();
-				
+		}
+	}
 
-				
+
+	private void ShowPoisonEffect()
+	{
+		if (effectManagerScript.IsPoisonAdded)
+		{
+//			effectManagerScript.ApplyEffect ("poison");
+			visualEffectInformScript.SetSprite ("poison");
+			visualEffectInformScript.FadeInVisualEffect ();
+			SetParticleGO (poisonGO, true);
+			isPause = true;
+			Invoke("FadeOutVisualEffect2", 1f);
 		}
 	}
 
@@ -923,7 +986,9 @@ public class QuestionManager : MonoBehaviour
 			Invoke ("SetAtkBuffParticleFalse", atkBuffParticle.duration);
 		}
 	}
-		
+
+
+
 	private void ResetTimeBar ()
 	{
 		timeBarScript.ResetTimeBar ();
@@ -934,6 +999,11 @@ public class QuestionManager : MonoBehaviour
 			visualEffectInformScript.FadeInVisualEffect ();
 			SetParticleGO (regenGO, true);
 			Invoke ("SetRegenParticleFalse", regenParticle.duration);
+		}
+
+		if (effectManagerScript.IsPoisonAdded) {
+			Debug.Log("CHAY DONG NAY MAY LAN THE HA CAC BAN !!!");
+			effectManagerScript.ApplyEffect ("poison");
 		}
 	}
 
@@ -953,10 +1023,31 @@ public class QuestionManager : MonoBehaviour
 		}
 		thunderGO.SetActive (true);
 		Invoke ("ShowQuestion", CompareParticleDuration ());
-		
 		Invoke ("ResetTimeBar", CompareParticleDuration ());
 		Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
 		Invoke ("SetThunderParticleFalse", CompareParticleDuration ());
+	}
+
+
+	
+	public void ShowChargeParticleWhenAnswer (GameObject particleGO)
+	{
+		for (int i = 0; i < answerText.Length; i++) {
+			if (qb.rightAnswer == answerText [i].GetComponent<Text> ().text) {
+				thunderParticlePos = answerText [i].transform.parent.transform.position;
+				particleGO.transform.position = thunderParticlePos;
+			}
+			
+		}
+		particleGO.SetActive (true);
+		Invoke("SetDeadParticleFalse", CompareParticleDuration());
+		Invoke ("ShowQuestion", CompareParticleDuration ());
+		Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
+	}
+
+	private void SetDeadParticleFalse()
+	{
+		deadGO.SetActive (false);
 	}
 
 	public void ShowParticleWhenNotAnswer (GameObject particleGO)
@@ -969,6 +1060,10 @@ public class QuestionManager : MonoBehaviour
 	
 		}
 		particleGO.SetActive (true);
+		Invoke("SetDeadParticleFalse", CompareParticleDuration());
+		Invoke ("ShowQuestion", CompareParticleDuration ());
+		Invoke ("ResetTimeBar", CompareParticleDuration ());
+		Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
 	}
 
 	public float CompareParticleDuration ()
@@ -1002,14 +1097,4 @@ public class QuestionManager : MonoBehaviour
 	}
 		
 		
-	
-
-
-
-	
-
-	
-
-		// Use this for initialization
-	
 }

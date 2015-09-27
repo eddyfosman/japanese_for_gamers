@@ -11,10 +11,8 @@
 			"hp":"8"}
 			],
 		"effect":[
-			{"type":"poison","apply":"me","value":"30","turn":"3"},
-			{"type":"atkBuff","apply":"me","value":"30","turn":"3"},
-			{"type":"stun","apply":"me","value":"0","turn":"1"},
-			{"type":"regen","apply":"me","value":"100000","turn":"3"}
+			{"type":"poison","apply":"me","value":"30","turn":"3"}
+
 			
 			
 			]
@@ -31,10 +29,7 @@
 			"hp":"8"}
 			],
 		"effect":[
-			{"type":"poison","apply":"me","value":"30","turn":"3"},
-			{"type":"atkBuff","apply":"me","value":"30","turn":"3"},
-			{"type":"stun","apply":"me","value":"0","turn":"1"},
-			{"type":"regen","apply":"me","value":"100000","turn":"3"}
+			{"type":"atkBuff","apply":"me","value":"30","turn":"3"}
 			]
 		
 		}
@@ -50,11 +45,8 @@
 			"hp":"8"}
 			],
 		"effect":[
-			{"type":"poison","apply":"me","value":"30","turn":"3"},
-			{"type":"atkBuff","apply":"me","value":"30","turn":"3"},
-			{"type":"stun","apply":"me","value":"0","turn":"1"},
-			{"type":"regen","apply":"me","value":"100000","turn":"3"}		]
-		
+			{"type":"stun","apply":"me","value":"0","turn":"1"}
+			]
 		},
 		{
 		"id":"4",
@@ -67,9 +59,6 @@
 			"hp":"8"}
 			],
 		"effect":[
-			{"type":"poison","apply":"me","value":"30","turn":"3"},
-			{"type":"atkBuff","apply":"me","value":"30","turn":"3"},
-			{"type":"stun","apply":"me","value":"0","turn":"1"},
 			{"type":"regen","apply":"me","value":"100000","turn":"3"}
 			]
 		

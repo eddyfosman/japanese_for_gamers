@@ -6,6 +6,7 @@ public class VisualEffectInform : MonoBehaviour {
 	public Sprite regenIcon;
 	public Sprite stunIcon;
 	public Sprite atkBuffIcon;
+	public Sprite poisonIcon;
 
 	public Image regen;
 
@@ -41,6 +42,12 @@ public class VisualEffectInform : MonoBehaviour {
 				break;
 			case "stun":
 				regen.sprite = stunIcon;
+				break;
+			case "poison":
+				regen.sprite = poisonIcon;
+				break;
+			case "atkBuff":
+				regen.sprite = atkBuffIcon;
 				break;
 			}
 
