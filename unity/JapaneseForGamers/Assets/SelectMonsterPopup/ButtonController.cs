@@ -12,7 +12,7 @@ public class ButtonController : MonoBehaviour {
 	private MonsterInventory2 monsterInventoryScript;
 	public bool onCD;
 	private bool once = false;
-	private bool shuffeld = false;
+	//private bool shuffeld = false;
 	public Image[] visualMonsterEquipped;
 	private List<string> visualMonsterNameList = new List<string>();
 	private InventoryCellView2 inventory;
@@ -35,7 +35,7 @@ public class ButtonController : MonoBehaviour {
 		
 		monsterInventoryScript = monsterSelectPopup.GetComponent<MonsterInventory2> ();
 		onCD = true;
-		shuffeld = false;
+		//shuffeld = false;
 	}
 
 	public void BackToSelectTeam(){
@@ -62,7 +62,7 @@ public class ButtonController : MonoBehaviour {
 			
 		}
 		Debug.Log ("SHUFFLED");
-		shuffeld = true;
+		//shuffeld = true;
 	}
 
 	public void HideSelectMonsterPopup(){

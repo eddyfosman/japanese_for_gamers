@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class MapController : MonoBehaviour {
 
 	List<Transform> listStroke2 = new List<Transform>();
-	Transform[] listStroke = new Transform[20];
 	public GameObject strokeParent;
 	public int strokeOrder = 1;
 	public bool isLastStroke = false;

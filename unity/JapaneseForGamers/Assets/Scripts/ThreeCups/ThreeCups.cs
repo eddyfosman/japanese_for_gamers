@@ -13,7 +13,7 @@ public class ThreeCups : MonoBehaviour {
 	int firstCup;
 	Vector3 firstPos;
 	GameObject ball;
-	bool once = false;
+	//bool once = false;
 	bool isCupUp = false;
 	GameObject tempCup;
 	bool isChangingCup = false;

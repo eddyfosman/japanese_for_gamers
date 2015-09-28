@@ -5,15 +5,15 @@ public class Floating : MonoBehaviour {
 
 	public float FloatStrenght;
 	public float RandomRotationStrenght;
-	bool didFinish = true;
-	bool didReverseFinish = true;
-	bool didWait = false;
-	bool isRotating = false;
+    //bool didFinish = true;
+    //bool didReverseFinish = true;
+    //bool didWait = false;
+    bool isRotating = false;
 	Vector3 rotation;
-	float degree = 100f;
-	float angle;
-	bool didRandom = false;
-	float random;
+    //float degree = 100f;
+    //float angle;
+    //bool didRandom = false;
+    float random;
 
 //	IEnumerator Woobling(){
 //		didFinish = false;
@@ -28,10 +28,10 @@ public class Floating : MonoBehaviour {
 //	}
 
 	IEnumerator Delay(){
-		didWait = true;
+		//didWait = true;
 		transform.rotation = Quaternion.Euler (Mathf.Lerp(100f, 80f, Time.time), 180f ,360f);
 		yield return new WaitForSeconds (1f);
-		didWait = false;
+		//didWait = false;
 
 	}
 
@@ -68,7 +68,7 @@ public class Floating : MonoBehaviour {
 		else if(isRotating){
 //			transform.rotation = Quaternion.Euler (Mathf.Lerp(100f, 90f, Time.time), 180f ,360f);
 			random = Random.Range(80, 120);
-		angle = Mathf.LerpAngle(transform.rotation.x, random, Time.deltaTime);
+		//angle = Mathf.LerpAngle(transform.rotation.x, random, Time.deltaTime);
 		transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(random,180f, 360f), Time.deltaTime);
 			Invoke("DoThis", 3f);
 		}

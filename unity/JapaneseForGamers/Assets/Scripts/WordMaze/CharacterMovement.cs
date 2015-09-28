@@ -46,7 +46,7 @@ public class CharacterMovement : MonoBehaviour {
 	void Update () {
 	
 		float inputX = Input.GetAxis ("Horizontal");
-		float inputY = Input.GetAxis ("Vertical");
+		//float inputY = Input.GetAxis ("Vertical");
 
 		if(inputX < 0){
 			anim.SetFloat ("SpeedX", -1f);

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using EnhancedUI.EnhancedScroller;
 using System.Collections;
 using LitJson;
-using UnityEngine.UI;
 
 
 public class TeamSelect : MonoBehaviour,IEnhancedScrollerDelegate {

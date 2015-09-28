@@ -4,14 +4,12 @@ using System.Collections;
 public class KanjiWord : MonoBehaviour {
 	public bool isMoveable = false;
 
-	float speedMultiplier;
 	public float SpeedMultiplier{ get; set;}
 
-	float delay;
 	public float TimeDelay{ get; set;}
 
-	float direction;
-	public float Direction{ get; set;}
+    float direction;
+    public float Direction{ get; set;}
 
 	float invokeTime;
 	public float InvokeTime{ get; set;}

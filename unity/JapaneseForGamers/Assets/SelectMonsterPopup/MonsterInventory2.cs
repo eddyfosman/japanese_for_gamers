@@ -32,9 +32,8 @@ public class MonsterInventory2 : MonoBehaviour, IEnhancedScrollerDelegate{
 
 	public EnhancedScroller vScroller;
 
-	private List<int> listCellIndex;
+	//private List<int> listCellIndex;
 
-	private bool isFirstPos;
 
 	public int StackCount{
 		get{
@@ -49,15 +48,12 @@ public class MonsterInventory2 : MonoBehaviour, IEnhancedScrollerDelegate{
 	}
 
 	void Start(){
-		listCellIndex = new List<int> ();
+		//listCellIndex = new List<int> ();
 		vScroller.Delegate = this;
 		Reload (true);
 
 	}
 
-	public void WhichPosition(bool val){
-		isFirstPos = val;
-	}
 
 	public void ResetListMonsterSelected(){
 		listMonsterSelected.Clear ();

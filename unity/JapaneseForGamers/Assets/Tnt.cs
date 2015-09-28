@@ -4,19 +4,16 @@ using System.Collections;
 public class Tnt : MonoBehaviour {
 
 	public GameObject explosion;
-	Animator exploAnimator;
 	Rope ropeScript;
 
 	void InstantiateExplosion(){
 		GameObject exploGo = Instantiate (explosion) as GameObject;
 		exploGo.transform.position = transform.position;
-//		exploAnimator.SetTrigger ("Explode");
 		Destroy (exploGo, 1f);
 	}
 
 	// Use this for initialization
 	void Start () {
-		exploAnimator = explosion.GetComponent<Animator>();
 		ropeScript = GameObject.FindGameObjectWithTag("Hand").GetComponent<Rope>();
 	}
 

@@ -11,7 +11,7 @@ public class MonsterInventory : MonoBehaviour, IEnhancedScrollerDelegate{
 	TextAsset jsonMonsterFile;
 	JsonData jsonMonsters;
 
-	static int monstersEquipped = 0;
+	//static int monstersEquipped = 0;
 
 	static Stack<int> stack = new Stack<int>();
 

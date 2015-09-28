@@ -149,7 +149,7 @@ public class PaddleScript : MonoBehaviour {
 	void OnCollisionEnter(Collision col){
 		foreach(ContactPoint contact in col.contacts){
 			if(contact.thisCollider == GetComponent<Collider>()){
-				float english = contact.point.x - transform.position.x;
+				//float english = contact.point.x - transform.position.x;
 //				if((-0.5f >= english && -0.3f < english) || (0.5f <= english && 0.3f > english)){
 //					contact.otherCollider.GetComponent<Rigidbody>().AddForce(300f * english, 200f, 0);
 //				}

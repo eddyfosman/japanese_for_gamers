@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FairyFly : MonoBehaviour {
 
-	float wanderRadius = -1f;
+	//float wanderRadius = -1f;
 	Vector2 destination;
 	Rope ropeScript;
 	public bool didFairyArrive = false;

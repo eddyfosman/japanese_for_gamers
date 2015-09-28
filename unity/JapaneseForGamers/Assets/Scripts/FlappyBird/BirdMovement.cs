@@ -44,7 +44,7 @@ public class BirdMovement : MonoBehaviour {
 //			transform.rotation = Quaternion.Euler(0, 0, 0);
 		}
 		else{
-			float angle = Mathf.Lerp(0, -90, -GetComponent<Rigidbody2D>().velocity.y / 3f);
+			//float angle = Mathf.Lerp(0, -90, -GetComponent<Rigidbody2D>().velocity.y / 3f);
 //			transform.rotation = Quaternion.Euler(0, 0, angle);
 		}
 

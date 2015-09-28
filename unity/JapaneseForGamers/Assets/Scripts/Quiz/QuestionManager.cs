@@ -22,6 +22,9 @@ public class QuestionManager : MonoBehaviour
 	public Text answerB;
 	public Text answerC;
 	public Text answerD;
+    public GameObject effectPrefab;
+    public GameObject visualEffectContainer;
+    public GameObject visualEffectMonsterContainer;
 	public GameObject monsterGameObject;
 	public GameObject playerHealthBar;
 	public GameObject timeBar;
@@ -40,6 +43,7 @@ public class QuestionManager : MonoBehaviour
 	public GameObject effectManagerGO;
 	public GameObject visualEffectInform;
 
+    private GameObject effectGO;
 	private GameObject[] answerText;
 	private Selectable buttonASelectable;
 	private Selectable buttonBSelectable;
@@ -603,7 +607,7 @@ public class QuestionManager : MonoBehaviour
 		monsterImg.GetComponent<iTween> ().enabled = false;
 	}
 
-	private void ExecutedFunctionsAfterStunEffect ()
+	private void ExecutedFunctionsAfterEvadeEffect ()
 	{
 
 		HideQuestion ();
@@ -660,7 +664,7 @@ public class QuestionManager : MonoBehaviour
 	private void FadeOutVisualEffect ()
 	{
 		visualEffectInformScript.FadeOutVisualEffect ();
-		ExecutedFunctionsAfterStunEffect ();
+		ExecutedFunctionsAfterEvadeEffect ();
 	}
 
 	public void CheckAnswerA ()
@@ -673,6 +677,25 @@ public class QuestionManager : MonoBehaviour
 
 			if (monsterEquip.EffectProperty.Type == "poison")
 			{
+                if (!effectManagerScript.IsPoisonAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("poison");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
 				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowPoisonEffect();
 
@@ -680,26 +703,82 @@ public class QuestionManager : MonoBehaviour
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
-				Debug.Log("VAO DAY KHONG");
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsAtkBuffAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("atkBuff");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
 			if (monsterEquip.EffectProperty.Type == "regen")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsRegenAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("regen");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
-			if (monsterEquip.EffectProperty.Type == "stun")
+			if (monsterEquip.EffectProperty.Type == "evade")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsEvadeAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                   
+                    effectGO.GetComponent<EffectScript>().SetEffectType("evade");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
 
-			if (effectManagerScript.IsStunAdded) {
-				effectManagerScript.ApplyEffect ("stun");
-				visualEffectInformScript.SetSprite ("stun");
+			if (effectManagerScript.IsEvadeAdded) {
+				effectManagerScript.ApplyEffect ("evade");
+				visualEffectInformScript.SetSprite ("evade");
 				visualEffectInformScript.FadeInVisualEffect ();
 				Invoke ("FadeOutVisualEffect", 1f);
 			}
@@ -708,10 +787,10 @@ public class QuestionManager : MonoBehaviour
 				StartCoroutine (AudioCoolDown (monsterEquip));
 
 			}
-			monsterManagerScript.LoadMonster (answerA.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
+            monsterManagerScript.LoadMonster(answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
 
-	
-			questionFadeScript.SetButtonInteractiableFalse ();
+
+            questionFadeScript.SetButtonInteractiableFalse ();
 		
 		} 
 		else 
@@ -725,10 +804,10 @@ public class QuestionManager : MonoBehaviour
 			{
 				if (CalculateHideEffect())
 				{
-					if (monsterEquip.EffectProperty.Type == "stun")
+					if (monsterEquip.EffectProperty.Type == "evade")
 					{
 						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnEvadeEvent (monsterEquip.EffectProperty);
 					}
 				}
 				questionFadeScript.SetButtonInteractiableFalse ();
@@ -753,35 +832,110 @@ public class QuestionManager : MonoBehaviour
 
 			if (monsterEquip.EffectProperty.Type == "poison")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsPoisonAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                   
+                    effectGO.GetComponent<EffectScript>().SetEffectType("poison");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowPoisonEffect();
 				
 			}
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
-				Debug.Log("VAO DAY KHONG");
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsAtkBuffAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("atkBuff");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
 			if (monsterEquip.EffectProperty.Type == "regen")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsRegenAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("regen");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
-			if (monsterEquip.EffectProperty.Type == "stun")
+			if (monsterEquip.EffectProperty.Type == "evade")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsEvadeAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("evade");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
 
 
-			if (effectManagerScript.IsStunAdded) 
+			if (effectManagerScript.IsEvadeAdded) 
 			{
-				effectManagerScript.ApplyEffect ("stun");
-				visualEffectInformScript.SetSprite ("stun");
+				effectManagerScript.ApplyEffect ("evade");
+				visualEffectInformScript.SetSprite ("evade");
 				visualEffectInformScript.FadeInVisualEffect ();
 				Invoke ("FadeOutVisualEffect", 1f);
 			} 
@@ -802,10 +956,10 @@ public class QuestionManager : MonoBehaviour
 			{
 				if (CalculateHideEffect())
 				{
-					if (monsterEquip.EffectProperty.Type == "stun")
+					if (monsterEquip.EffectProperty.Type == "evade")
 					{
 						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnEvadeEvent (monsterEquip.EffectProperty);
 					}
 				}
 				questionFadeScript.SetButtonInteractiableFalse ();
@@ -830,32 +984,107 @@ public class QuestionManager : MonoBehaviour
 
 			if (monsterEquip.EffectProperty.Type == "poison")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsPoisonAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("poison");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowPoisonEffect();
 				
 			}
 
 			if (monsterEquip.EffectProperty.Type == "regen")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsRegenAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("regen");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
-				Debug.Log("VAO DAY KHONG");
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsAtkBuffAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("atkBuff");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
-			if (monsterEquip.EffectProperty.Type == "stun")
+			if (monsterEquip.EffectProperty.Type == "evade")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsEvadeAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("evade");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
-			if (effectManagerScript.IsStunAdded) {
-				effectManagerScript.ApplyEffect ("stun");
-				visualEffectInformScript.SetSprite ("stun");
+			if (effectManagerScript.IsEvadeAdded) {
+				effectManagerScript.ApplyEffect ("evade");
+				visualEffectInformScript.SetSprite ("evade");
 				visualEffectInformScript.FadeInVisualEffect ();
 				Invoke ("FadeOutVisualEffect", 1f);
 			} else {
@@ -872,10 +1101,10 @@ public class QuestionManager : MonoBehaviour
 			{
 				if (CalculateHideEffect())
 				{
-					if (monsterEquip.EffectProperty.Type == "stun")
+					if (monsterEquip.EffectProperty.Type == "evade")
 					{
 						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnEvadeEvent (monsterEquip.EffectProperty);
 					}
 				}
 				questionFadeScript.SetButtonInteractiableFalse ();
@@ -901,32 +1130,108 @@ public class QuestionManager : MonoBehaviour
 
 			if (monsterEquip.EffectProperty.Type == "poison")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsPoisonAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("poison");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowPoisonEffect();
 				
 			}
 
 			if (monsterEquip.EffectProperty.Type == "atkBuff")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsAtkBuffAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                   
+                    effectGO.GetComponent<EffectScript>().SetEffectType("atkBuff");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 				ShowAtkBuffEffect();
 				
 			}
 
 			if (monsterEquip.EffectProperty.Type == "regen")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsRegenAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                    
+                    effectGO.GetComponent<EffectScript>().SetEffectType("regen");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
 			}
 
-			if (monsterEquip.EffectProperty.Type == "stun")
+			if (monsterEquip.EffectProperty.Type == "evade")
 			{
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+                if (!effectManagerScript.IsEvadeAdded)
+                {
+                    effectGO = Instantiate(effectPrefab) as GameObject;
+                   
+                    effectGO.GetComponent<EffectScript>().SetEffectType("evade");
+                    if (monsterEquip.EffectProperty.Apply == "me")
+                    {
+                        foreach (Transform child in visualEffectContainer.transform)
+                        {
+                            if (child.transform.childCount == 0)
+                            {
+                                effectGO.transform.SetParent(child.transform);
+                                RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                                effectGORect.localPosition = Vector3.zero;
+                                effectGORect.localScale = Vector3.one;
+                            }
+                        }
+                    }
+                }
+                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
+				effectManagerScript.ExecuteOnEvadeEvent (monsterEquip.EffectProperty);
 			}
 
-			if (effectManagerScript.IsStunAdded) {
-				effectManagerScript.ApplyEffect ("stun");
-				visualEffectInformScript.SetSprite ("stun");
+			if (effectManagerScript.IsEvadeAdded) {
+				effectManagerScript.ApplyEffect ("evade");
+				visualEffectInformScript.SetSprite ("evade");
 				visualEffectInformScript.FadeInVisualEffect ();
 				Invoke ("FadeOutVisualEffect", 1f);
 			} else {
@@ -945,10 +1250,10 @@ public class QuestionManager : MonoBehaviour
 			{
 				if (CalculateHideEffect())
 				{
-					if (monsterEquip.EffectProperty.Type == "stun")
+					if (monsterEquip.EffectProperty.Type == "evade")
 					{
 						effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-						effectManagerScript.ExecuteOnStunEvent (monsterEquip.EffectProperty);
+						effectManagerScript.ExecuteOnEvadeEvent (monsterEquip.EffectProperty);
 					}
 					questionFadeScript.SetButtonInteractiableFalse ();
 					playerHealthBarScript.Damage ();

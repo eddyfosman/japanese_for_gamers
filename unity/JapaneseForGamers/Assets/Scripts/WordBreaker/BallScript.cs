@@ -3,7 +3,7 @@ using System.Collections;
 
 
 public class BallScript : MonoBehaviour {
-	int superBallTime = 0;
+	//int superBallTime = 0;
 	bool isFirstLaunch = false;
 	Vector3 mousePos;
 	bool didLaunch = false;

@@ -169,7 +169,8 @@ public class StatusDialogScript : MonoBehaviour {
 	void Update () {
 		onCD = true;
 		return;
-		if(onCD){
+		if (onCD)
+        {
 			if(!onChange){
 				RetrievPlayerData ();
 			}

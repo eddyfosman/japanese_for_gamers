@@ -13,8 +13,8 @@ public class EffectManager : MonoBehaviour {
 	public delegate void OnRegenEnd (string turn);
 	public static event OnRegenEnd onRegenEnd;
 
-	public delegate void OnStunEnd (string turn);
-	public static event OnStunEnd onStunEnd;
+	public delegate void OnEvadeEnd (string turn);
+	public static event OnEvadeEnd onEvadeEnd;
 
 	public delegate void OnAtkBuffEnd (string turn);
 	public static event OnAtkBuffEnd onAtkBuffEnd;
@@ -32,6 +32,7 @@ public class EffectManager : MonoBehaviour {
 	private EnemyHealthBar enemyHealthBarScript;
 
 	private List<Effect> effectList;
+    private List<Effect> effectListMonster;
 
 	private bool isAtkBuffAdded = false;
 	public bool IsAtkBuffAdded
@@ -52,24 +53,24 @@ public class EffectManager : MonoBehaviour {
 		get { return isRegenAdded; }
 	}
 
-	private bool isStunAdded = false;
-	public bool IsStunAdded
+	private bool isEvadeAdded = false;
+	public bool IsEvadeAdded
 	{
-		get { return isStunAdded; }
+		get { return isEvadeAdded; }
 	}
 
 	public bool IsEffectAdded()
 	{
 
-			return (isRegenAdded || isStunAdded);
+			return (isRegenAdded || isEvadeAdded);
 
 	}
 
-	public void ExecuteOnStunEvent(Effect effect)
+	public void ExecuteOnEvadeEvent(Effect effect)
 	{
-		if (onStunEnd != null)
+		if (onEvadeEnd != null)
 		{
-			onStunEnd(effect.Turn.ToString());
+			onEvadeEnd(effect.Turn.ToString());
 		}
 
 	}
@@ -121,14 +122,14 @@ public class EffectManager : MonoBehaviour {
 				isPoisonAdded = true;
 			}
 
-			if (effect.Type == "stun" && !isStunAdded)
+			if (effect.Type == "evade" && !isEvadeAdded)
 			{
 				effectList.Add(effect);
-				if (onStunEnd != null)
+				if (onEvadeEnd != null)
 				{
-					onStunEnd(effect.Turn.ToString());
+					onEvadeEnd(effect.Turn.ToString());
 				}
-				isStunAdded = true;
+				isEvadeAdded = true;
 			}
 
 			if(effect.Type == "atkBuff" && !isAtkBuffAdded)
@@ -152,11 +153,11 @@ public class EffectManager : MonoBehaviour {
 				}
 			}
 
-			if (effect.Type == "stun" && isStunAdded)
+			if (effect.Type == "evade" && isEvadeAdded)
 			{
 				for(int i = 0; i < effectList.Count; i++)
 				{
-					if (effectList[i].Type == "stun")
+					if (effectList[i].Type == "evade")
 					{
 						effectList[i].Turn = 1;
 					}
@@ -216,25 +217,25 @@ public class EffectManager : MonoBehaviour {
 				}
 			}
 		}
-		if (effectType == "stun")
+		if (effectType == "evade")
 		{
 			for(int i = 0; i < effectList.Count; i++)
 			{
-				if (effectList[i].Type == "stun")
+				if (effectList[i].Type == "evade")
 				{
 					if (effectList[i].Turn > 0)
 					{
 						effectList[i].Turn--;
 
-						if (onStunEnd != null)
+						if (onEvadeEnd != null)
 						{
-							onStunEnd(effectList[i].Turn.ToString());
+							onEvadeEnd(effectList[i].Turn.ToString());
 						}
 					}
 					if (effectList[i].Turn == 0)
 					{
 						effectList.Remove(effectList[i]);
-						isStunAdded = false;
+						isEvadeAdded = false;
 					}
 				}
 			}
@@ -298,7 +299,8 @@ public class EffectManager : MonoBehaviour {
 	}
 	
 	void Start(){
-		effectList = new List<Effect> ();
+		effectList = new List<Effect>();
+        effectListMonster = new List<Effect>();
 		playerHealthBarScript = playerHealthBarGO.GetComponent<PlayerHealthBar>();
 		enemyHealthBarScript = enemyHealthBarGO.GetComponent<EnemyHealthBar>();
 		questionManagerScript = questionPanel.GetComponent<QuestionManager>();

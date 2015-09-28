@@ -97,7 +97,7 @@ public class Rope : MonoBehaviour {
 
 			
 
-			float i3 = GameObject.Find("Staff").transform.localScale.y;
+			//float i3 = GameObject.Find("Staff").transform.localScale.y;
 
 			gocQuay = gameObject.transform.eulerAngles.z;
 
