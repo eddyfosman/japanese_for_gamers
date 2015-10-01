@@ -74,7 +74,7 @@ public class TimeBar : MonoBehaviour {
 	IEnumerator CoolDownTime(){
 		onCD = true;
 		yield return new WaitForSeconds (coolDown);
-		onCD = false;
+        onCD = false;
 	}
 
 	void ShowParticleWhenNotAnswer(){
@@ -127,7 +127,6 @@ public class TimeBar : MonoBehaviour {
 		{
 			StartCoroutine(CoolDownTime());
 			CurrentTime -= 1;
-//			Debug.Log("Thoi GIAN CON LAI LA: " + CurrentTime);
 			if(currentTime == 0){
 
 				ShowParticleWhenNotAnswer();

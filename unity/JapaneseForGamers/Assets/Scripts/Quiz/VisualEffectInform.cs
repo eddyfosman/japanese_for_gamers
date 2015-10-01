@@ -7,6 +7,8 @@ public class VisualEffectInform : MonoBehaviour {
 	public Sprite stunIcon;
 	public Sprite atkBuffIcon;
 	public Sprite poisonIcon;
+    public GameObject answerButtonsPanel;
+    private CanvasGroup answerButtonCanvasGroup;
 
 	public Image regen;
 
@@ -15,6 +17,7 @@ public class VisualEffectInform : MonoBehaviour {
 	IEnumerator FadeInCanvas(){
 		while(canvasGroup.alpha < 0.5f){
 			canvasGroup.alpha += 0.02f;
+            answerButtonCanvasGroup.alpha -= 0.04f;
 			yield return null;
 		}
 	}
@@ -22,7 +25,8 @@ public class VisualEffectInform : MonoBehaviour {
 	IEnumerator FadeOutCanvas(){
 		while(canvasGroup.alpha > 0){
 			canvasGroup.alpha -= 0.1f;
-			yield return null;
+            answerButtonCanvasGroup.alpha += 0.2f;
+            yield return null;
 		}
 	}
 
@@ -57,6 +61,7 @@ public class VisualEffectInform : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		canvasGroup = gameObject.GetComponent<CanvasGroup>();
+        answerButtonCanvasGroup = answerButtonsPanel.GetComponent<CanvasGroup>();
 		canvasGroup.blocksRaycasts = false;
 		canvasGroup.interactable = false;
 	}

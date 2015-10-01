@@ -25,7 +25,16 @@ public class EffectManager : MonoBehaviour {
 	public delegate void OnAtkBuffRemove ();
 	public static event OnAtkBuffRemove onAtkBuffRemove;
 
-	public GameObject playerHealthBarGO;
+    public delegate void OnPoisonRemove();
+    public static event OnPoisonRemove onPoisonRemove;
+
+    public delegate void OnRegenRemove();
+    public static event OnRegenRemove onRegenRemove;
+
+    public delegate void OnEvadeRemove();
+    public static event OnEvadeRemove onEvadeRemove;
+
+    public GameObject playerHealthBarGO;
 	private PlayerHealthBar playerHealthBarScript;
 
 	public GameObject enemyHealthBarGO;
@@ -211,7 +220,11 @@ public class EffectManager : MonoBehaviour {
 					if (effectList[i].Turn == 0)
 					{
 						effectList.Remove(effectList[i]);
-						isRegenAdded = false;
+                        if (onRegenRemove != null)
+                        {
+                            onRegenRemove();
+                        }
+                        isRegenAdded = false;
 					}
 
 				}
@@ -235,7 +248,11 @@ public class EffectManager : MonoBehaviour {
 					if (effectList[i].Turn == 0)
 					{
 						effectList.Remove(effectList[i]);
-						isEvadeAdded = false;
+                        if (onEvadeRemove != null)
+                        {
+                            onEvadeRemove();
+                        }
+                        isEvadeAdded = false;
 					}
 				}
 			}
@@ -262,7 +279,11 @@ public class EffectManager : MonoBehaviour {
 					{
 						questionManagerScript.SetPoisonEffectOff();
 						effectList.Remove(effectList[i]);
-						isPoisonAdded = false;
+                        if (onPoisonRemove != null)
+                        {
+                            onPoisonRemove();
+                        }
+                        isPoisonAdded = false;
 					}
 					
 				}
@@ -291,14 +312,230 @@ public class EffectManager : MonoBehaviour {
 					if (effectList[i].Turn == 0)
 					{
 						effectList.Remove(effectList[i]);
-						isAtkBuffAdded = false;
+                        if (onAtkBuffRemove != null)
+                        {
+                            onAtkBuffRemove();
+                        }
+                        isAtkBuffAdded = false;
 					}
 				}
 			}
 		}
 	}
-	
-	void Start(){
+
+    public void ApplyEffect()
+    {
+        
+        
+        for (int i = 0; i < effectList.Count; i++)
+        {
+            if (effectList[i].Type == "regen" && effectList[i].Apply == "me")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onRegenEnd != null)
+                    {
+                        onRegenEnd(effectList[i].Turn.ToString());
+                    }
+                    playerHealthBarScript.Heal(effectList[i].Value);
+                }
+
+                if (effectList[i].Turn == 0)
+                {
+                    effectList.Remove(effectList[i]);
+                    if (onRegenRemove != null)
+                    {
+                        onRegenRemove();
+                    }
+                    isRegenAdded = false;
+                }
+
+            }
+
+            if (effectList[i].Type == "regen" && effectList[i].Apply == "enemy")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onRegenEnd != null)
+                    {
+                        onRegenEnd(effectList[i].Turn.ToString());
+                    }
+                    playerHealthBarScript.Heal(effectList[i].Value);
+                }
+
+                if (effectList[i].Turn == 0)
+                {
+                    effectList.Remove(effectList[i]);
+                    if (onRegenRemove != null)
+                    {
+                        onRegenRemove();
+                    }
+                    isRegenAdded = false;
+                }
+
+            }
+
+            if (effectList[i].Type == "evade" && effectList[i].Apply == "me")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onEvadeEnd != null)
+                    {
+                        onEvadeEnd(effectList[i].Turn.ToString());
+                    }
+                }
+                if (effectList[i].Turn == 0)
+                {
+                    effectList.Remove(effectList[i]);
+                    if (onEvadeRemove != null)
+                    {
+                        onEvadeRemove();
+                    }
+                    isEvadeAdded = false;
+                }
+            }
+
+            if (effectList[i].Type == "evade" && effectList[i].Apply == "enemy")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onEvadeEnd != null)
+                    {
+                        onEvadeEnd(effectList[i].Turn.ToString());
+                    }
+                }
+                if (effectList[i].Turn == 0)
+                {
+                    effectList.Remove(effectList[i]);
+                    if (onEvadeRemove != null)
+                    {
+                        onEvadeRemove();
+                    }
+                    isEvadeAdded = false;
+                }
+            }
+
+            if (effectList[i].Type == "poison" && effectList[i].Apply == "me")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onPoisonEnd != null)
+                    {
+                        onPoisonEnd(effectList[i].Turn.ToString());
+                    }
+                    enemyHealthBarScript.Damage(effectList[i].Value);
+                    Debug.Log("TRU MAU QUAI NE");
+                }
+
+                if (effectList[i].Turn == 0)
+                {
+                    questionManagerScript.SetPoisonEffectOff();
+                    effectList.Remove(effectList[i]);
+                    if (onPoisonRemove != null)
+                    {
+                        onPoisonRemove();
+                    }
+                    isPoisonAdded = false;
+                }
+
+            }
+
+            if (effectList[i].Type == "poison" && effectList[i].Apply == "enemy")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onPoisonEnd != null)
+                    {
+                        onPoisonEnd(effectList[i].Turn.ToString());
+                    }
+                    enemyHealthBarScript.Damage(effectList[i].Value);
+                    Debug.Log("TRU MAU QUAI NE");
+                }
+
+                if (effectList[i].Turn == 0)
+                {
+                    questionManagerScript.SetPoisonEffectOff();
+                    effectList.Remove(effectList[i]);
+                    if (onPoisonRemove != null)
+                    {
+                        onPoisonRemove();
+                    }
+                    isPoisonAdded = false;
+                }
+
+            }
+
+            if (effectList[i].Type == "atkBuff" && effectList[i].Apply == "me")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onAtkBuffStart != null)
+                    {
+                        onAtkBuffStart(effectList[i].Value);
+                    }
+
+                    if (onAtkBuffEnd != null)
+                    {
+                        onAtkBuffEnd(effectList[i].Turn.ToString());
+                    }
+                }
+                if (effectList[i].Turn == 0)
+                {
+                    effectList.Remove(effectList[i]);
+                    if (onAtkBuffRemove != null)
+                    {
+                        onAtkBuffRemove();
+                    }
+                    isAtkBuffAdded = false;
+                }
+            }
+
+            if (effectList[i].Type == "atkBuff" && effectList[i].Apply == "enemy")
+            {
+                if (effectList[i].Turn > 0)
+                {
+                    effectList[i].Turn--;
+
+                    if (onAtkBuffStart != null)
+                    {
+                        onAtkBuffStart(effectList[i].Value);
+                    }
+
+                    if (onAtkBuffEnd != null)
+                    {
+                        onAtkBuffEnd(effectList[i].Turn.ToString());
+                    }
+                }
+                if (effectList[i].Turn == 0)
+                {
+                    effectList.Remove(effectList[i]);
+                    if (onAtkBuffRemove != null)
+                    {
+                        onAtkBuffRemove();
+                    }
+                    isAtkBuffAdded = false;
+                }
+            }
+        }
+        
+    
+    }
+
+    void Start(){
 		effectList = new List<Effect>();
         effectListMonster = new List<Effect>();
 		playerHealthBarScript = playerHealthBarGO.GetComponent<PlayerHealthBar>();
