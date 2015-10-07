@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class VisualEffectInform : MonoBehaviour {
 	public Sprite regenIcon;
-	public Sprite stunIcon;
+	public Sprite evadeIcon;
 	public Sprite atkBuffIcon;
 	public Sprite poisonIcon;
     public GameObject answerButtonsPanel;
@@ -44,8 +44,8 @@ public class VisualEffectInform : MonoBehaviour {
 			case "regen":
 				regen.sprite = regenIcon;
 				break;
-			case "stun":
-				regen.sprite = stunIcon;
+			case "evade":
+				regen.sprite = evadeIcon;
 				break;
 			case "poison":
 				regen.sprite = poisonIcon;

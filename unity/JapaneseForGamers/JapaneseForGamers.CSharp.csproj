@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1566E491-3927-F30C-73B6-0B5BA1421D87}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>Android:13</UnityBuildTarget>
+    <UnityVersion>5.2.1f1</UnityVersion>
+    <RootNamespace></RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_2_1;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_2_1;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>Library\UnityAssemblies\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="LitJSON">
+      <HintPath>Assets\LitJSON.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="JapaneseForGamers.CSharp.Plugins.csproj">
+      <Project>{17A64D8F-1B5E-8ACB-4FB0-B457A4D5FA0E}</Project>
+      <Name>JapaneseForGamers.CSharp.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\AutoTileSet\Source\AutoTile.cs" />
+    <Compile Include="Assets\AutoTileSet\Source\AutoTileSetManager.cs" />
+    <Compile Include="Assets\AutoTileSet\Source\AutoTileSetManagerEditor.cs" />
+    <Compile Include="Assets\AutoTileSet\Source\AutoTileSetQuad.cs" />
+    <Compile Include="Assets\AutoTileSet\Source\AutoTileSetSprite.cs" />
+    <Compile Include="Assets\CanvasWord.cs" />
+    <Compile Include="Assets\Cloner.cs" />
+    <Compile Include="Assets\CustomFont\BitmapFontImporter.cs" />
+    <Compile Include="Assets\DestroyMagic.cs" />
+    <Compile Include="Assets\DeviceManager.cs" />
+    <Compile Include="Assets\DontGoThroughThings.cs" />
+    <Compile Include="Assets\FairyFly.cs" />
+    <Compile Include="Assets\FileBrowser\Script\FileBrowser.cs" />
+    <Compile Include="Assets\FileBrowser\Script\testFileBrowser.cs" />
+    <Compile Include="Assets\Floating.cs" />
+    <Compile Include="Assets\Gizmos2.cs" />
+    <Compile Include="Assets\KanjiManager.cs" />
+    <Compile Include="Assets\KanjiWord.cs" />
+    <Compile Include="Assets\LevelCreator.cs" />
+    <Compile Include="Assets\MapController.cs" />
+    <Compile Include="Assets\PaddleManager.cs" />
+    <Compile Include="Assets\Powerup.cs" />
+    <Compile Include="Assets\SceneManager.cs" />
+    <Compile Include="Assets\Scripts\BasketBall\Basket.cs" />
+    <Compile Include="Assets\Scripts\BasketBall\Shoot.cs" />
+    <Compile Include="Assets\Scripts\Buoyancy.cs" />
+    <Compile Include="Assets\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\Scripts\Cube.cs" />
+    <Compile Include="Assets\Scripts\DoNoThing.cs" />
+    <Compile Include="Assets\Scripts\Drawing\Prefab.cs" />
+    <Compile Include="Assets\Scripts\EyesBlink.cs" />
+    <Compile Include="Assets\Scripts\FlappyBird\BGLooper.cs" />
+    <Compile Include="Assets\Scripts\FlappyBird\BirdMovement.cs" />
+    <Compile Include="Assets\Scripts\FlappyBird\CameraTracksPlayer.cs" />
+    <Compile Include="Assets\Scripts\FlappyBird\GroundMover.cs" />
+    <Compile Include="Assets\Scripts\Grammar\AnswerPanel.cs" />
+    <Compile Include="Assets\Scripts\Grammar\DragHandler.cs" />
+    <Compile Include="Assets\Scripts\Grammar\Grammar.cs" />
+    <Compile Include="Assets\Scripts\Grammar\Slot.cs" />
+    <Compile Include="Assets\Scripts\Listening\ListeningManager.cs" />
+    <Compile Include="Assets\Scripts\MemoryMatching\Card.cs" />
+    <Compile Include="Assets\Scripts\MemoryMatching\FlipCard.cs" />
+    <Compile Include="Assets\Scripts\MemoryMatching\MemoryMatching.cs" />
+    <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
+    <Compile Include="Assets\Scripts\PlayerCharacter1.cs" />
+    <Compile Include="Assets\Scripts\Puzzle.cs" />
+    <Compile Include="Assets\Scripts\Quiz\AtkBuffScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\AttackedEffect.cs" />
+    <Compile Include="Assets\Scripts\Quiz\EffectManager.cs" />
+    <Compile Include="Assets\Scripts\Quiz\EffectScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\EnemyHealthBar.cs" />
+    <Compile Include="Assets\Scripts\Quiz\EvadeScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\FadeAwayVisualDamage.cs" />
+    <Compile Include="Assets\Scripts\Quiz\KanjiBean.cs" />
+    <Compile Include="Assets\Scripts\Quiz\MonsterBean.cs" />
+    <Compile Include="Assets\Scripts\Quiz\MonsterEquip.cs" />
+    <Compile Include="Assets\Scripts\Quiz\MonsterFadeScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\MonsterManager.cs" />
+    <Compile Include="Assets\Scripts\Quiz\PlayerData.cs" />
+    <Compile Include="Assets\Scripts\Quiz\PlayerHealthBar.cs" />
+    <Compile Include="Assets\Scripts\Quiz\PoisonScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\QuestionFadeScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\QuestionManager.cs" />
+    <Compile Include="Assets\Scripts\Quiz\RegenScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\StatusDialogScript.cs" />
+    <Compile Include="Assets\Scripts\Quiz\TimeBar.cs" />
+    <Compile Include="Assets\Scripts\Quiz\VisualEffectInform.cs" />
+    <Compile Include="Assets\Scripts\Rope.cs" />
+    <Compile Include="Assets\Scripts\SelfDestroy.cs" />
+    <Compile Include="Assets\Scripts\Test.cs" />
+    <Compile Include="Assets\Scripts\ThreeCups\Cup.cs" />
+    <Compile Include="Assets\Scripts\ThreeCups\ThreeCups.cs" />
+    <Compile Include="Assets\Scripts\TipPoint.cs" />
+    <Compile Include="Assets\Scripts\WordBreaker\BallScript.cs" />
+    <Compile Include="Assets\Scripts\WordBreaker\PaddleScript.cs" />
+    <Compile Include="Assets\Scripts\WordMaze\CharacterMovement.cs" />
+    <Compile Include="Assets\Scripts\WordMaze\CheckCollision.cs" />
+    <Compile Include="Assets\Scripts\WordMaze\Flood.cs" />
+    <Compile Include="Assets\Scripts\WordMaze\GetF.cs" />
+    <Compile Include="Assets\Scripts\WordMaze\MovementEnergy.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\ButtonController.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\InventoryCellView.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\InventoryCellView2.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\InventoryData.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\InventoryData2.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableData.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableList.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableListItem.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\MonsterInventory.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\MonsterInventory2.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScroller.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScrollerCellView.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Plugins\IEnhancedScrollerDelegate.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Plugins\SmallList.cs" />
+    <Compile Include="Assets\SelectTeamPopup\TeamCellView.cs" />
+    <Compile Include="Assets\SelectTeamPopup\TeamData.cs" />
+    <Compile Include="Assets\SelectTeamPopup\TeamSelect.cs" />
+    <Compile Include="Assets\Tnt.cs" />
+    <Compile Include="Assets\WordKeeper.cs" />
+    <Compile Include="Assets\iTweenExamples\AccurateLob\Scripts\AccurateLob.cs" />
+    <Compile Include="Assets\iTweenExamples\AccurateLob\Scripts\Bomb.cs" />
+    <Compile Include="Assets\iTweenExamples\AnimatingGUITextures\Scripts\PresentationScreen.cs" />
+    <Compile Include="Assets\iTweenExamples\AnimatingGUITextures\Scripts\TitleScreen.cs" />
+    <Compile Include="Assets\iTweenExamples\AnimatingUnityGUI\Scripts\AnimatingUnityGUI.cs" />
+    <Compile Include="Assets\iTweenExamples\CallbacksExample\Scripts\CallbacksExample.cs" />
+    <Compile Include="Assets\iTweenExamples\CameraFadeExample\Scripts\AmbientMovement.cs" />
+    <Compile Include="Assets\iTweenExamples\CameraFadeExample\Scripts\CameraFadeExample.cs" />
+    <Compile Include="Assets\iTweenExamples\Flythrough\Scripts\FlythroughCameraController.cs" />
+    <Compile Include="Assets\iTweenExamples\Flythrough\Scripts\LookPoint.cs" />
+    <Compile Include="Assets\iTweenExamples\Flythrough\Scripts\LookTarget.cs" />
+    <Compile Include="Assets\iTweenExamples\Flythrough\Scripts\MovePoint.cs" />
+    <Compile Include="Assets\iTweenExamples\GridMovement\Scripts\GameBoardCSharp.cs" />
+    <Compile Include="Assets\iTweenExamples\GridMovement\Scripts\GamePieceCSharp.cs" />
+    <Compile Include="Assets\iTweenExamples\MemoryGame\Scripts\BoardControl.cs" />
+    <Compile Include="Assets\iTweenExamples\MemoryGame\Scripts\BoxControl.cs" />
+    <Compile Include="Assets\iTweenExamples\OrbitExample\Scripts\Path1.cs" />
+    <Compile Include="Assets\iTweenExamples\OrbitExample\Scripts\Point.cs" />
+    <Compile Include="Assets\iTweenExamples\PathControlledCharacter\Scripts\Controller.cs" />
+    <Compile Include="Assets\iTweenExamples\PathControlledCharacter\Scripts\PathPoint.cs" />
+    <Compile Include="Assets\iTweenExamples\PathExample\Scripts\PathCameraController.cs" />
+    <Compile Include="Assets\iTweenExamples\PathExample\Scripts\PathExample.cs" />
+    <Compile Include="Assets\iTweenExamples\Platforms\Scripts\CameraController.cs" />
+    <Compile Include="Assets\iTweenExamples\Platforms\Scripts\CharController.cs" />
+    <Compile Include="Assets\iTweenExamples\Platforms\Scripts\DeathZone.cs" />
+    <Compile Include="Assets\iTweenExamples\Platforms\Scripts\InfiniteBackground.cs" />
+    <Compile Include="Assets\iTweenExamples\Platforms\Scripts\LightController.cs" />
+    <Compile Include="Assets\iTweenExamples\Platforms\Scripts\Platform.cs" />
+    <Compile Include="Assets\iTweenExamples\PunchAndStab\Scripts\Bolt.cs" />
+    <Compile Include="Assets\iTweenExamples\PunchAndStab\Scripts\Ticker.cs" />
+    <Compile Include="Assets\iTweenExamples\PutOnPathExample\Scripts\Gizmo.cs" />
+    <Compile Include="Assets\iTweenExamples\PutOnPathExample\Scripts\PutOnPathExample.cs" />
+    <Compile Include="Assets\iTweenExamples\RandomPathGeneration\Scripts\CameraFollow.cs" />
+    <Compile Include="Assets\iTweenExamples\RandomPathGeneration\Scripts\PathGenerator.cs" />
+    <Compile Include="Assets\iTweenExamples\RotatingUnityGUI\Scripts\RotatingUnityGUI.cs" />
+    <Compile Include="Assets\iTweenExamples\ScalingButton\Scripts\ScalingButton.cs" />
+    <Compile Include="Assets\iTweenExamples\SlidingMenu\Scripts\SlidingMenu.cs" />
+    <Compile Include="Assets\iTweenExamples\TurretExample\Scripts\Bound.cs" />
+    <Compile Include="Assets\iTweenExamples\TurretExample\Scripts\Crosshair.cs" />
+    <Compile Include="Assets\iTweenExamples\TurretExample\Scripts\Turret.cs" />
+    <Compile Include="Assets\iTweenExamples\UnevenTerrain\Scripts\Puppeteer.cs" />
+    <Compile Include="Assets\iTweenExamples\ValueToExample\Scripts\ValueToExample.cs" />
+    <Compile Include="Assets\iTweenExamples\WaypointUsage\Scripts\Waypoint.cs" />
+    <Compile Include="Assets\iTweenExamples\WaypointUsage\Scripts\WaypointExample.cs" />
+    <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\Bat.cs" />
+    <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\Brick.cs" />
+    <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\SimpleCameraFade.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\AutoTileSet\README.txt" />
+    <None Include="Assets\CustomFont\customfont.xml" />
+    <None Include="Assets\FileBrowser\readme.txt" />
+    <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
+    <None Include="Assets\Resources\data.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+</Project>

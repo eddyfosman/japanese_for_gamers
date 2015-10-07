@@ -65,12 +65,13 @@ public class QuestionManager : MonoBehaviour
 	private MonsterBean monster;
 	private int monsterExp;
 		
-	private ParticleSystem atkBuffParticle;
-	private ParticleSystem poisonParticle;
-	private ParticleSystem regenParticle;
-	private ParticleSystem chargeParticle;
-	private ParticleSystem thunderParticle;
-	private ParticleSystem particle;
+	public ParticleSystem atkBuffParticle;
+    public ParticleSystem poisonParticle;
+    public ParticleSystem regenParticle;
+    public ParticleSystem chargeParticle;
+    public ParticleSystem thunderParticle;
+    public ParticleSystem particle;
+
 	private string textClickedButton;
 	private Vector3 thunderParticlePos;
 	private ParticleSystem deadParticle;
@@ -180,7 +181,7 @@ public class QuestionManager : MonoBehaviour
 
 		}
 		
-	private void SetParticleGO (GameObject particleGO, bool val)
+	public void SetParticleGO (GameObject particleGO, bool val)
 		{
 				particleGO.SetActive (val);
 		}
@@ -686,62 +687,75 @@ public class QuestionManager : MonoBehaviour
 		ShowOnlyRightAnswerButton ();
 		if (answerA.text == qb.rightAnswer) {
 			audioSource.Play ();
-
-			if (monsterEquip.EffectProperty.Type == "poison")
-			{
-                if (!effectManagerScript.IsPoisonAdded)
+            if (isPlayerPhase)
+            {
+                if (monsterEquip.EffectProperty.Type == "poison")
                 {
-                    ShowVisualEffect(monsterEquip, "poison");
+                    if (!effectManagerScript.IsPoisonAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "poison", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowPoisonEffect();
+
                 }
-				effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowPoisonEffect();
 
-			}
-
-			if (monsterEquip.EffectProperty.Type == "atkBuff")
-			{
-                if (!effectManagerScript.IsAtkBuffAdded)
+                if (monsterEquip.EffectProperty.Type == "atkBuff")
                 {
-                    ShowVisualEffect(monsterEquip, "atkBuff");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowAtkBuffEffect();
-				
-			}
+                    if (!effectManagerScript.IsAtkBuffAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "atkBuff", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowAtkBuffEffect();
 
-			if (monsterEquip.EffectProperty.Type == "regen")
-			{
-                if (!effectManagerScript.IsRegenAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "regen")
                 {
-                    ShowVisualEffect(monsterEquip, "regen");
+                    if (!effectManagerScript.IsRegenAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "regen", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
 
-			if (monsterEquip.EffectProperty.Type == "evade")
-			{
-                if (!effectManagerScript.IsEvadeAdded)
+                if (monsterEquip.EffectProperty.Type == "evade")
                 {
-                    ShowVisualEffect(monsterEquip, "evade");
+                    if (!effectManagerScript.IsEvadeAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "evade", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
 
 
-			if (effectManagerScript.IsEvadeAdded) {
-				effectManagerScript.ApplyEffect ("evade");
-				visualEffectInformScript.SetSprite ("evade");
-				visualEffectInformScript.FadeInVisualEffect ();
-				Invoke ("FadeOutVisualEffect", 1f);
-			}
-			else 
-			{
-				StartCoroutine (AudioCoolDown (monsterEquip));
+                if (effectManagerScript.IsEnemyEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "enemy");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    StartCoroutine(AudioCoolDown(monsterEquip));
 
-			}
+                }
+                
+            }
+            else
+            {
+                Invoke("SetChargeParticleFalse", particle.duration);
+                Invoke("SetParticleFalse", particle.duration);
+                Invoke("ResetTimeBar", particle.duration);
+                Invoke("ShowAllAnswerButton", particle.duration);
+                Invoke("ShowQuestion", particle.duration);
+            }
+
+
             monsterManagerScript.LoadMonster(answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite.name);
-
-
             questionFadeScript.SetButtonInteractiableFalse ();
 		
 		} 
@@ -754,37 +768,9 @@ public class QuestionManager : MonoBehaviour
 			}
 			else
 			{
-                string effect = CalculateHideEffect();
-                Effect enemyMonsterEffect = new Effect();
-                switch (effect)
-                {
-                    case "evade":
-                        enemyMonsterEffect.Type = "evade";
-                        enemyMonsterEffect.Turn = 1;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 0;
-                        break;
-                    case "poison":
-                        enemyMonsterEffect.Type = "poison";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 30;
-                        break;
-                    case "atkBuff":
-                        enemyMonsterEffect.Type = "atkBuff";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 20;
-                        break;
-                    case "regen":
-                        enemyMonsterEffect.Type = "regen";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 2000;
-                        break;
 
-                }
-                effectManagerScript.AddEffectIntoList(enemyMonsterEffect);
+                Effect enemyEffect = CreateEnemyEffect();
+                WhichEffectCreated(enemyEffect);
                 //if (CalculateHideEffect())
                 //{
                 //	if (monsterEquip.EffectProperty.Type == "evade")
@@ -794,9 +780,20 @@ public class QuestionManager : MonoBehaviour
                 //	}
                 //}
                 questionFadeScript.SetButtonInteractiableFalse ();
-				playerHealthBarScript.Damage ();
-				ShowWrongAnswerParticle ();
-			}
+                if (effectManagerScript.IsEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "me");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    playerHealthBarScript.Damage();
+                    ShowWrongAnswerParticle();
+                }
+            }
 
 		
 		}
@@ -813,61 +810,73 @@ public class QuestionManager : MonoBehaviour
 			monsterManagerScript.LoadMonster (answerB.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
 
 
-			if (monsterEquip.EffectProperty.Type == "poison")
-			{
-                if (!effectManagerScript.IsPoisonAdded)
+            if (isPlayerPhase)
+            {
+                if (monsterEquip.EffectProperty.Type == "poison")
                 {
-                    ShowVisualEffect(monsterEquip, "poison");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowPoisonEffect();
-				
-			}
+                    if (!effectManagerScript.IsPoisonAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "poison", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowPoisonEffect();
 
-			if (monsterEquip.EffectProperty.Type == "atkBuff")
-			{
-                if (!effectManagerScript.IsAtkBuffAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "atkBuff")
                 {
-                    ShowVisualEffect(monsterEquip, "atkBuff");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowAtkBuffEffect();
-				
-			}
+                    if (!effectManagerScript.IsAtkBuffAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "atkBuff", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowAtkBuffEffect();
 
-			if (monsterEquip.EffectProperty.Type == "regen")
-			{
-                if (!effectManagerScript.IsRegenAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "regen")
                 {
-                    ShowVisualEffect(monsterEquip, "regen");
+                    if (!effectManagerScript.IsRegenAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "regen", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
 
-			if (monsterEquip.EffectProperty.Type == "evade")
-			{
-                if (!effectManagerScript.IsEvadeAdded)
+                if (monsterEquip.EffectProperty.Type == "evade")
                 {
-                    ShowVisualEffect(monsterEquip, "evade");
+                    if (!effectManagerScript.IsEvadeAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "evade", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
 
 
+                if (effectManagerScript.IsEnemyEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "enemy");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    StartCoroutine(AudioCoolDown(monsterEquip));
 
-			if (effectManagerScript.IsEvadeAdded) 
-			{
-				effectManagerScript.ApplyEffect ("evade");
-				visualEffectInformScript.SetSprite ("evade");
-				visualEffectInformScript.FadeInVisualEffect ();
-				Invoke ("FadeOutVisualEffect", 1f);
-			} 
-			else 
-			{
-				StartCoroutine (AudioCoolDown (monsterEquip));
-	
-			}
-		} 
+                }
+
+            }
+            else
+            {
+                Invoke("SetChargeParticleFalse", particle.duration);
+                Invoke("SetParticleFalse", particle.duration);
+                Invoke("ResetTimeBar", particle.duration);
+                Invoke("ShowAllAnswerButton", particle.duration);
+                Invoke("ShowQuestion", particle.duration);
+            }
+        } 
 		else 
 		{
 			if (isPlayerPhase)
@@ -877,37 +886,9 @@ public class QuestionManager : MonoBehaviour
 			}
 			else
 			{
-                string effect = CalculateHideEffect();
-                Effect enemyMonsterEffect = new Effect();
-                switch (effect)
-                {
-                    case "evade":
-                        enemyMonsterEffect.Type = "evade";
-                        enemyMonsterEffect.Turn = 1;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 0;
-                        break;
-                    case "poison":
-                        enemyMonsterEffect.Type = "poison";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 30;
-                        break;
-                    case "atkBuff":
-                        enemyMonsterEffect.Type = "atkBuff";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 20;
-                        break;
-                    case "regen":
-                        enemyMonsterEffect.Type = "regen";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 2000;
-                        break;
 
-                }
-                effectManagerScript.AddEffectIntoList(enemyMonsterEffect);
+                Effect enemyEffect = CreateEnemyEffect();
+                WhichEffectCreated(enemyEffect);
                 //if (CalculateHideEffect())
                 //{
                 //	if (monsterEquip.EffectProperty.Type == "evade")
@@ -917,75 +898,119 @@ public class QuestionManager : MonoBehaviour
                 //	}
                 //}
                 questionFadeScript.SetButtonInteractiableFalse ();
-				playerHealthBarScript.Damage ();
-				ShowWrongAnswerParticle ();
-			}
+                if (effectManagerScript.IsEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "me");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    playerHealthBarScript.Damage();
+                    ShowWrongAnswerParticle();
+                }
+            }
 
 				
 				
 		}
 	}
-		
+	
+    private Effect CloneEffect(MonsterEquip mq)
+    {
+        Effect effect = new Effect();
+        if (mq != null)
+        {
+            effect.Apply = mq.EffectProperty.Apply;
+            effect.Turn = mq.EffectProperty.Turn;
+            effect.Value = mq.EffectProperty.Value;
+            effect.Type = mq.EffectProperty.Type;
+        }
+        return effect;
+    }
+    	
 	public void CheckAnswerC ()
 	{
 		MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
 		textClickedButton = answerC.text;
 		ShowOnlyRightAnswerButton ();
-		if (answerC.text == qb.rightAnswer) {
+		if (answerC.text == qb.rightAnswer)
+        {
 			audioSource.Play ();
 			questionFadeScript.SetButtonInteractiableFalse ();
 			monsterManagerScript.LoadMonster (answerC.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
 
-			if (monsterEquip.EffectProperty.Type == "poison")
-			{
-                if (!effectManagerScript.IsPoisonAdded)
+            if (isPlayerPhase)
+            {
+                if (monsterEquip.EffectProperty.Type == "poison")
                 {
-                    ShowVisualEffect(monsterEquip, "poison");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowPoisonEffect();
-				
-			}
+                    if (!effectManagerScript.IsPoisonAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "poison", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowPoisonEffect();
 
-			if (monsterEquip.EffectProperty.Type == "regen")
-			{
-                if (!effectManagerScript.IsRegenAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "atkBuff")
                 {
-                    ShowVisualEffect(monsterEquip, "regen");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
+                    if (!effectManagerScript.IsAtkBuffAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "atkBuff", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowAtkBuffEffect();
 
-			if (monsterEquip.EffectProperty.Type == "atkBuff")
-			{
-                if (!effectManagerScript.IsAtkBuffAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "regen")
                 {
-                    ShowVisualEffect(monsterEquip, "atkBuff");
+                    if (!effectManagerScript.IsRegenAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "regen", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowAtkBuffEffect();
-				
-			}
 
-			if (monsterEquip.EffectProperty.Type == "evade")
-			{
-                if (!effectManagerScript.IsEvadeAdded)
+                if (monsterEquip.EffectProperty.Type == "evade")
                 {
-                    ShowVisualEffect(monsterEquip, "evade");
+                    if (!effectManagerScript.IsEvadeAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "evade", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
 
-			if (effectManagerScript.IsEvadeAdded) {
-				effectManagerScript.ApplyEffect ("evade");
-				visualEffectInformScript.SetSprite ("evade");
-				visualEffectInformScript.FadeInVisualEffect ();
-				Invoke ("FadeOutVisualEffect", 1f);
-			} else {
-				StartCoroutine (AudioCoolDown (monsterEquip));
-	
-			}
-		} else {
+
+                if (effectManagerScript.IsEnemyEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "enemy");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    StartCoroutine(AudioCoolDown(monsterEquip));
+
+                }
+
+            }
+            else
+            {
+                Invoke("SetChargeParticleFalse", particle.duration);
+                Invoke("SetParticleFalse", particle.duration);
+                Invoke("ResetTimeBar", particle.duration);
+                Invoke("ShowAllAnswerButton", particle.duration);
+                Invoke("ShowQuestion", particle.duration);
+            }
+        }
+        else
+        {
 			if (isPlayerPhase)
 			{
 				questionFadeScript.SetButtonInteractiableFalse ();
@@ -993,37 +1018,9 @@ public class QuestionManager : MonoBehaviour
 			}
 			else
 			{
-                string effect = CalculateHideEffect();
-                Effect enemyMonsterEffect = new Effect();
-                switch (effect)
-                {
-                    case "evade":
-                        enemyMonsterEffect.Type = "evade";
-                        enemyMonsterEffect.Turn = 1;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 0;
-                        break;
-                    case "poison":
-                        enemyMonsterEffect.Type = "poison";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 30;
-                        break;
-                    case "atkBuff":
-                        enemyMonsterEffect.Type = "atkBuff";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 20;
-                        break;
-                    case "regen":
-                        enemyMonsterEffect.Type = "regen";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 2000;
-                        break;
 
-                }
-                effectManagerScript.AddEffectIntoList(enemyMonsterEffect);
+                Effect enemyEffect = CreateEnemyEffect();
+                WhichEffectCreated(enemyEffect);
                 //if (CalculateHideEffect())
                 //{
                 //	if (monsterEquip.EffectProperty.Type == "evade")
@@ -1033,9 +1030,20 @@ public class QuestionManager : MonoBehaviour
                 //	}
                 //}
                 questionFadeScript.SetButtonInteractiableFalse ();
-				playerHealthBarScript.Damage ();
-				ShowWrongAnswerParticle ();
-			}
+                if (effectManagerScript.IsEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "me");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    playerHealthBarScript.Damage();
+                    ShowWrongAnswerParticle();
+                }
+            }
 
 				
 				
@@ -1053,57 +1061,73 @@ public class QuestionManager : MonoBehaviour
 			monsterManagerScript.LoadMonster (answerD.transform.parent.FindChild ("Image").GetComponent<Image> ().sprite.name);
 
 
-			if (monsterEquip.EffectProperty.Type == "poison")
-			{
-                if (!effectManagerScript.IsPoisonAdded)
+            if (isPlayerPhase)
+            {
+                if (monsterEquip.EffectProperty.Type == "poison")
                 {
-                    ShowVisualEffect(monsterEquip, "poison");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowPoisonEffect();
-				
-			}
+                    if (!effectManagerScript.IsPoisonAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "poison", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowPoisonEffect();
 
-			if (monsterEquip.EffectProperty.Type == "atkBuff")
-			{
-                if (!effectManagerScript.IsAtkBuffAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "atkBuff")
                 {
-                    ShowVisualEffect(monsterEquip, "atkBuff");
-                }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				ShowAtkBuffEffect();
-				
-			}
+                    if (!effectManagerScript.IsAtkBuffAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "atkBuff", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
+                    ShowAtkBuffEffect();
 
-			if (monsterEquip.EffectProperty.Type == "regen")
-			{
-                if (!effectManagerScript.IsRegenAdded)
+                }
+
+                if (monsterEquip.EffectProperty.Type == "regen")
                 {
-                    ShowVisualEffect(monsterEquip, "regen");
+                    if (!effectManagerScript.IsRegenAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "regen", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-			}
 
-			if (monsterEquip.EffectProperty.Type == "evade")
-			{
-                if (!effectManagerScript.IsEvadeAdded)
+                if (monsterEquip.EffectProperty.Type == "evade")
                 {
-                    ShowVisualEffect(monsterEquip, "evade");
+                    if (!effectManagerScript.IsEvadeAdded)
+                    {
+                        ShowVisualEffect(monsterEquip, "evade", "me");
+                    }
+                    effectManagerScript.AddEffectIntoList(CloneEffect(monsterEquip));
                 }
-                effectManagerScript.AddEffectIntoList (monsterEquip.EffectProperty);
-				effectManagerScript.ExecuteOnEvadeEvent (monsterEquip.EffectProperty);
-			}
 
-			if (effectManagerScript.IsEvadeAdded) {
-				effectManagerScript.ApplyEffect ("evade");
-				visualEffectInformScript.SetSprite ("evade");
-				visualEffectInformScript.FadeInVisualEffect ();
-				Invoke ("FadeOutVisualEffect", 1f);
-			} else {
-				StartCoroutine (AudioCoolDown (monsterEquip));
-	
-			}
-		} 
+
+                if (effectManagerScript.IsEnemyEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "enemy");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    StartCoroutine(AudioCoolDown(monsterEquip));
+
+                }
+
+            }
+            else
+            {
+                Invoke("SetChargeParticleFalse", particle.duration);
+                Invoke("SetParticleFalse", particle.duration);
+                Invoke("ResetTimeBar", particle.duration);
+                Invoke("ShowAllAnswerButton", particle.duration);
+                Invoke("ShowQuestion", particle.duration);
+            }
+        } 
 		else 
 		{
 			if (isPlayerPhase)
@@ -1113,37 +1137,9 @@ public class QuestionManager : MonoBehaviour
 			}
 			else
 			{
-                string effect = CalculateHideEffect();
-                Effect enemyMonsterEffect = new Effect();
-                switch (effect)
-                {
-                    case "evade":
-                        enemyMonsterEffect.Type = "evade";
-                        enemyMonsterEffect.Turn = 1;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 0;
-                        break;
-                    case "poison":
-                        enemyMonsterEffect.Type = "poison";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 30;
-                        break;
-                    case "atkBuff":
-                        enemyMonsterEffect.Type = "atkBuff";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 20;
-                        break;
-                    case "regen":
-                        enemyMonsterEffect.Type = "regen";
-                        enemyMonsterEffect.Turn = 3;
-                        enemyMonsterEffect.Apply = "enemy";
-                        enemyMonsterEffect.Value = 2000;
-                        break;
+                Effect enemyEffect = CreateEnemyEffect();
 
-                }
-                effectManagerScript.AddEffectIntoList(enemyMonsterEffect);
+                WhichEffectCreated(enemyEffect);
                 //if (CalculateHideEffect())
                 //{
                 //	if (monsterEquip.EffectProperty.Type == "evade")
@@ -1154,17 +1150,120 @@ public class QuestionManager : MonoBehaviour
 
                 //}
                 questionFadeScript.SetButtonInteractiableFalse();
-                playerHealthBarScript.Damage();
-                ShowWrongAnswerParticle();
+                if (effectManagerScript.IsEvadeAdded)
+                {
+                    //effectManagerScript.ApplyEffect("evade", "me");
+                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    visualEffectInformScript.SetSprite("evade");
+                    visualEffectInformScript.FadeInVisualEffect();
+                    Invoke("FadeOutVisualEffect", 1f);
+                }
+                else
+                {
+                    playerHealthBarScript.Damage();
+                    ShowWrongAnswerParticle();
+                }
+                
+                
             }
 		}
 	}
+
+    private void WhichEffectCreated(Effect effect)
+    {
+        switch (effect.Type)
+        {
+            case "evade":
+                if (!effectManagerScript.IsEnemyEvadeAdded)
+                {
+                    ShowVisualEffect(effect, effect.Type, effect.Apply);
+                    effectManagerScript.AddEffectIntoList(effect);
+                }
+                break;
+            case "regen":
+                if (!effectManagerScript.IsEnemyRegenAdded)
+                {
+                    ShowVisualEffect(effect, effect.Type, effect.Apply);
+                    effectManagerScript.AddEffectIntoList(effect);
+                }
+                break;
+            case "poison":
+                if (!effectManagerScript.IsEnemyPoisonAdded)
+                {
+                    ShowVisualEffect(effect, effect.Type, effect.Apply);
+                    effectManagerScript.AddEffectIntoList(effect);
+                }
+                break;
+            case "atkBuff":
+                if (!effectManagerScript.IsEnemyAtkBuffAdded)
+                {
+                    ShowVisualEffect(effect, effect.Type, effect.Apply);
+                    effectManagerScript.AddEffectIntoList(effect);
+                }
+                break;
+        }
+    }
+
+    private Effect CreateEnemyEffect()
+    {
+        string effect = CalculateHideEffect();
+        Effect enemyMonsterEffect = new Effect();
+        switch (effect)
+        {
+            case "evade":
+                enemyMonsterEffect.Type = "evade";
+                enemyMonsterEffect.Turn = 1;
+                enemyMonsterEffect.Apply = "enemy";
+                enemyMonsterEffect.Value = 0;
+                break;
+            case "poison":
+                enemyMonsterEffect.Type = "poison";
+                enemyMonsterEffect.Turn = 3;
+                enemyMonsterEffect.Apply = "enemy";
+                enemyMonsterEffect.Value = 30;
+                break;
+            case "atkBuff":
+                enemyMonsterEffect.Type = "atkBuff";
+                enemyMonsterEffect.Turn = 3;
+                enemyMonsterEffect.Apply = "enemy";
+                enemyMonsterEffect.Value = 20;
+                break;
+            case "regen":
+                enemyMonsterEffect.Type = "regen";
+                enemyMonsterEffect.Turn = 3;
+                enemyMonsterEffect.Apply = "enemy";
+                enemyMonsterEffect.Value = 2000;
+                break;
+
+        }
+        return enemyMonsterEffect;
+    }
 
     private void ShowVisualEffect(MonsterEquip monsterEquip, string effectType)
     {
         effectGO = Instantiate(effectPrefab) as GameObject;
 
         effectGO.GetComponent<EffectScript>().SetEffectType(effectType);
+        if (monsterEquip.EffectProperty.Apply == "me")
+        {
+            foreach (Transform child in visualEffectContainer.transform)
+            {
+                if (child.transform.childCount == 0)
+                {
+                    effectGO.transform.SetParent(child.transform);
+                    RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                    effectGORect.localPosition = Vector3.zero;
+                    effectGORect.localScale = Vector3.one;
+                }
+            }
+        }
+    }
+
+    private void ShowVisualEffect(MonsterEquip monsterEquip, string effectType, string source)
+    {
+        effectGO = Instantiate(effectPrefab) as GameObject;
+
+        effectGO.GetComponent<EffectScript>().SetEffectType(effectType, source);
         if (monsterEquip.EffectProperty.Apply == "me")
         {
             foreach (Transform child in visualEffectContainer.transform)
@@ -1197,6 +1296,41 @@ public class QuestionManager : MonoBehaviour
                     effectGORect.localScale = Vector3.one;
                 }
             }
+        }
+    }
+
+    private void ShowVisualEffect(Effect effect, string effectType, string source)
+    {
+        effectGO = Instantiate(effectPrefab) as GameObject;
+
+        effectGO.GetComponent<EffectScript>().SetEffectType(effectType, source);
+        if (effect.Apply == "enemy")
+        {
+            foreach (Transform child in visualEffectMonsterContainer.transform)
+            {
+                if (child.transform.childCount == 0)
+                {
+                    effectGO.transform.SetParent(child.transform);
+                    RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                    effectGORect.localPosition = Vector3.zero;
+                    effectGORect.localScale = Vector3.one;
+                }
+            }
+        }
+        else
+        {
+            
+            foreach (Transform child in visualEffectContainer.transform)
+            {
+                if (child.transform.childCount == 0)
+                {
+                    effectGO.transform.SetParent(child.transform);
+                    RectTransform effectGORect = effectGO.GetComponent<RectTransform>();
+                    effectGORect.localPosition = Vector3.zero;
+                    effectGORect.localScale = Vector3.one;
+                }
+            }
+            
         }
     }
 
@@ -1233,19 +1367,21 @@ public class QuestionManager : MonoBehaviour
 	private void ResetTimeBar ()
 	{
 		timeBarScript.ResetTimeBar ();
-		if (effectManagerScript.IsRegenAdded) {
-			Debug.Log ("CONG MAU NE!!!");
-			effectManagerScript.ApplyEffect ("regen");
-			visualEffectInformScript.SetSprite ("regen");
-			visualEffectInformScript.FadeInVisualEffect ();
-			SetParticleGO (regenGO, true);
-			Invoke ("SetRegenParticleFalse", regenParticle.duration);
-		}
+        //effectManagerScript.ApplyEffect(IsPlayerPhase);
+        StartCoroutine(effectManagerScript.DelayApplyEffect(isPlayerPhase));
+		//if (effectManagerScript.IsRegenAdded) {
+		//	Debug.Log ("CONG MAU NE!!!");
+		//	effectManagerScript.ApplyEffect ("regen");
+		//	visualEffectInformScript.SetSprite ("regen");
+		//	visualEffectInformScript.FadeInVisualEffect ();
+		//	SetParticleGO (regenGO, true);
+		//	Invoke ("SetRegenParticleFalse", regenParticle.duration);
+		//}
 
-		if (effectManagerScript.IsPoisonAdded) {
-			Debug.Log("CHAY DONG NAY MAY LAN THE HA CAC BAN !!!");
-			effectManagerScript.ApplyEffect ("poison");
-		}
+		//if (effectManagerScript.IsPoisonAdded) {
+		//	Debug.Log("CHAY DONG NAY MAY LAN THE HA CAC BAN !!!");
+		//	effectManagerScript.ApplyEffect ("poison");
+		//}
 	}
 
 	private void SetParticleFalse ()

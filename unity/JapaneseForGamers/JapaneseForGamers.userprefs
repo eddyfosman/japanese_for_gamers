@@ -1,17 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Quiz\QuestionManager.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Quiz\EffectManager.cs">
     <Files>
       <File FileName="Assets\Scripts\Quiz\QuestionManager.cs" Line="1041" Column="4" />
-      <File FileName="Assets\Scripts\Quiz\EffectManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Quiz\TimeBar.cs" Line="86" Column="27" />
+      <File FileName="Assets\Scripts\Quiz\EffectManager.cs" Line="852" Column="25" />
+      <File FileName="Assets\Scripts\Quiz\TimeBar.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\QuestionManager.cs" line="633" />
-      <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\QuestionManager.cs" line="1016" />
       <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\QuestionManager.cs" line="668" />
+      <Breakpoint file="D:\project\japanese_for_gamers\unity\JapaneseForGamers\Assets\Scripts\Quiz\EffectManager.cs" line="852" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

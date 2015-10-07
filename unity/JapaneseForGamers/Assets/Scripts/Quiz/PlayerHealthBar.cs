@@ -114,9 +114,7 @@ public class PlayerHealthBar : MonoBehaviour {
 
 	public void Heal(int healValue){
 		CurrentHealth = ((currentHealth + (long)healValue) > maxHealth ? maxHealth : CurrentHealth + (long)healValue);
-//		if(CurrentHealth > maxHealth){
-//			CurrentHealth = maxHealth;
-//		}
+
 	}
 
 	// Use this for initialization

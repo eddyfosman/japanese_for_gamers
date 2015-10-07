@@ -89,7 +89,13 @@ public class EnemyHealthBar : MonoBehaviour {
 		
 	}
 
-	public void Damage(int damageValue)
+    public void Heal(int healValue)
+    {
+        CurrentHealth = ((currentHealth + (long)healValue) > maxHealth ? maxHealth : CurrentHealth + (long)healValue);
+
+    }
+
+    public void Damage(int damageValue)
 	{
 		CurrentHealth = ((currentHealth - (long)damageValue) < 0 ? 0 : CurrentHealth - (long)damageValue);
 	}
