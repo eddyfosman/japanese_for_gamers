@@ -1,0 +1,11 @@
+4e00#12#1#4#3#3#一#yi1#[one] [1] [single] [a (article)] [as soon as] [entire] [whole] [all] [throughout]
+4e01#21#2#6#4#3#丁#ding1#[fourth of 10 heavenly stems 十天干] [fourth in order] [letter ´D´ or roman ´IV´ in list ´A, B, C´, or ´I, II, III´ etc] [butyl] [surname Ding] [cubes (of food)]
+4e0a#25#3#5#5#3#上#shang4#[on] [on top] [upon] [first (of multiple parts)] [previous] [last] [upper] [higher] [above] [to climb] [to go into] [to go up] [to attend (class or university)] [third tone of putonghua]
+4e0b#25#3#5#5#3#下#xia4#[down] [downwards] [below] [lower] [later] [next (week etc)] [second (of two parts)] [to decline] [to go down]
+4e0c#29#3#6#5#3#丌#ji1#[surname Ji]
+4e0d#29#4#6#5#3#不#bu4#[(negative prefix)] [not] [no]
+4e0e#35#4#7#5#1#与#yu4#[take part in]
+4e1a#34#5#7#5#1#业#ye4#[business] [occupation] [study] [estate] [property]
+4e1b#32#5#7#5#1#丛#cong2#[cluster] [collection] [collection of books] [thicket]
+4e1c#39#5#7#6#1#东#dong1#[east] [host (i.e. sitting on east side of guest)] [landlord] [surname Dong]
+

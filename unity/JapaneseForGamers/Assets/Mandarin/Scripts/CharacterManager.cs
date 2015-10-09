@@ -1,0 +1,591 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.IO;
+using System.Collections.Generic;
+
+public class CharacterManager : MonoBehaviour {
+
+    public enum EventType {
+		StartAnimation, FinishAnimation, TextureLoaded
+	}
+
+    public class EventInfo {
+		public EventType eventType;
+		public CharacterManager sender;
+	}
+
+    public string Character;
+    public float FramesPerSecond = 10f;
+    public bool AutoStart = false;
+    public bool LoopAnimation = false;
+    public float waitOnEnd = 0.3f;
+
+    public delegate void CallbackEventHandler(EventInfo eventInfo);
+    public CallbackEventHandler CallBackFunction;
+
+    public Texture textureChar;
+
+    private CharacterDatabase.Character cs=null;
+    private Material chrMat;
+    private Texture chrText;
+    private int Columns=1;
+    private int Rows=1;
+    private int NumImages;
+    private bool started = false;
+    private bool haltAnimation = false;
+    private bool breakUpdateTiling = false;
+    private bool reverseUpdateTilingOne = false;
+    private bool updateTilingOne = false;
+    private bool breakOriUpdateTiling = false;
+    private bool breakReverseUpdateTiling = false;
+
+
+    private List<Vector2> displayedStroke = new List<Vector2>();
+    private Dictionary<Vector2, Vector3> displayedStrokeVsValue = new Dictionary<Vector2, Vector3>();
+
+    private int cachedRow;
+    public int CachedRow
+    {
+        get { return cachedRow; }
+        set { cachedRow = value; }
+    }
+
+    private int cachedColumn;
+    public int CachedColumn
+    {
+        get { return cachedColumn; }
+        set { cachedColumn = value; }
+    }
+
+    private int cachedTotal;
+    public int CachedTotal
+    {
+        get { return cachedTotal; }
+        set { cachedTotal = value; }
+    }
+
+    //If you are compiling for Web set USE_WEB to true and put the apropriate web path
+    //If you are compiling for descktop or mobile ser web to false
+    //Remember to copy all textures to the Textures directory and pinyin sounds to the PinyinSounds directory
+    //These two directories must be located in the correspondent webPath or hdPath 
+    //The hdPath must start where the App is located
+    public static readonly bool USE_WEB = false;
+    public static readonly string webPath = "put_you_server/and_path_here/";
+    public static readonly string hdPath = "ChineseCharacters/";
+    string pathTexture;
+
+    
+
+	// Use this for initialization
+	void Start () {
+        chrMat = new Material(Shader.Find("Transparent/Diffuse"));
+        GetComponent<Renderer>().sharedMaterial = chrMat;
+        GetComponent<Renderer>().material.mainTexture = (Texture2D)Resources.Load("trans", typeof(Texture2D));
+        //PrepareTexture();
+        if (AutoStart)
+        {
+            StartAnimation();
+        }
+	}
+
+    public void StartAnimation()
+    {
+        if (started)
+            return;
+        if (CallBackFunction != null)
+        {
+            EventInfo einfo = new EventInfo();
+            einfo.sender = this;
+            einfo.eventType = EventType.StartAnimation;
+            CallBackFunction(einfo);
+        }
+        started = true;
+        StartCoroutine(UpdateTiling());
+    }
+
+    public void StopAnimation() {
+        started = false;
+        StopAllCoroutines();
+    }
+	
+	public void SetCharacter(string chr, Texture2D text)
+    {
+        cs = CharacterDatabase.instance.FindCharacter(chr);
+        if (cs == null)
+        {
+            Debug.Log("Character "+chr+" not found in database!");
+            return;
+        }
+        Character = chr;
+        textureChar = text;
+        PrepareTexture();
+    }
+
+
+    //Overloaded method, will load the char dynamically
+    public void SetCharacter(string chr)
+    {
+        cs = CharacterDatabase.instance.FindCharacter(chr);
+        if (cs == null)
+        {
+            Debug.Log("Character " + chr + " not found in database!");
+            return;
+        }
+        Character = chr;
+        LoadTextureFromFile(cs.Unicode);
+    }
+
+    public void LoadTextureFromFile(string unicode)
+    {
+        if (USE_WEB)
+        {
+            pathTexture = "http://" + webPath + "Textures/" + cs.Unicode + ".png";
+            StartCoroutine(LoadTextureCoroutine());
+        }
+        else
+        {
+            DirectoryInfo info = new DirectoryInfo("./");
+            pathTexture = "file://" + info.FullName.Replace("\\", "/") + hdPath + "Textures/" + cs.Unicode + ".png";
+            StartCoroutine(LoadTextureCoroutine());
+        }
+    }
+
+    public void SetFalseReverseUpdateTiling()
+    {
+        
+        if (reverseUpdateTilingOne)
+        {
+            breakReverseUpdateTiling = true;
+        }
+
+        if (!updateTilingOne)
+        {
+            
+            breakOriUpdateTiling = true;
+            
+            StartCoroutine(UpdateTiling(cachedRow, cachedColumn, cachedTotal));
+            updateTilingOne = true;
+            Debug.Log("SetFalseReverseUpdateTiling!IF TRUE");
+        }
+        else
+        {
+            haltAnimation = false;
+            Debug.Log("SetFalseReverseUpdateTiling!IF FALSE");
+        }
+        
+    }
+
+    public void SetFalseUpdateTiling()
+    {
+        if (updateTilingOne)
+        {
+            breakUpdateTiling = true;
+        }
+
+        if (!reverseUpdateTilingOne)
+        {
+            
+            
+            StartCoroutine(ReverseUpdateTiling(cachedRow, cachedColumn, cachedTotal));
+            reverseUpdateTilingOne = true;
+            Debug.Log("SetFalseUpdateTiling!IF TRUE");
+        }
+        else
+        {
+            haltAnimation = false;
+            Debug.Log("SetFalseUpdateTiling!IF FALSE");
+        }
+    }
+
+    IEnumerator LoadTextureCoroutine()
+    {
+        WWW www = new WWW(pathTexture);
+        yield return www;
+
+        textureChar = www.texture;
+        PrepareTexture();
+        if (CallBackFunction != null)
+        {
+            EventInfo einfo = new EventInfo();
+            einfo.sender = this;
+            einfo.eventType = EventType.TextureLoaded;
+            CallBackFunction(einfo);
+        }
+    }
+
+
+    public void PrepareTexture() {
+        if (cs == null)
+            return;
+        chrText = textureChar;
+        Columns = cs.Width;
+        Rows = cs.Height;
+        NumImages = cs.Images;
+        Vector2 size = new Vector2(1f / Columns, 1f / Rows);
+        GetComponent<Renderer>().material.mainTexture = chrText;
+        GetComponent<Renderer>().sharedMaterial.SetTextureScale("_MainTex", size);
+        Vector2 offset = Vector2.zero;
+        offset.Set(0, (float)(Rows - 1) / (float)Rows);
+        GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
+    }
+
+    public void ContinueUpdateTiling()
+    {
+        StartCoroutine(UpdateTiling(cachedRow, cachedColumn, cachedTotal));
+    }
+
+    public void SetHaltAnimation()
+    {
+        haltAnimation = false;
+        Debug.Log("CO VAO DAY KHONG");
+    }
+
+    public void StartReverseUpdateTiling()
+    {
+        breakUpdateTiling = true;
+    }
+
+    private IEnumerator UpdateTiling()
+    {
+        float x = 0f;
+        float y = 0f;
+        Vector2 offset = Vector2.zero;
+        reverseUpdateTilingOne = false;
+        while (true)
+        {
+            int total = 0;
+            for (int i = Rows - 1; i >= 0; i--) // y
+            {
+
+
+
+                y = (float)i / (float)Rows;
+
+                for (int j = 0; j <= Columns - 1; j++) // x
+                {
+                    total++;
+                    Debug.Log("SO COT : " + j + " SO HANG: " + i + " TONG SO : " + total);
+                    if (total > NumImages)
+                        break;
+                    x = (float)j / (float)Columns;
+
+                    offset.Set(x, y);
+                    if (!displayedStrokeVsValue.ContainsKey(new Vector2(x, y)))
+                    {
+                        displayedStrokeVsValue.Add(new Vector2(x, y), new Vector3(j, i, total));
+                    }
+                    CachedTotal = total;
+                    CachedColumn = j;
+                    CachedRow = i;
+                    Debug.Log("CACHED ROW LA : " + CachedRow);
+                    GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
+
+
+                    haltAnimation = true;
+                    //haltAnimation = false;
+                    //Invoke("SetHaltAnimation", 10f);
+                    if (!haltAnimation)
+                    {
+                        Debug.Log("DA VAO DAY ROI NHE");
+                    }
+                    else if (haltAnimation)
+                    {
+                        Debug.Log("STOP");
+                        while (haltAnimation)
+                        {
+                            if (breakOriUpdateTiling)
+                            {
+                                breakOriUpdateTiling = false;
+                                Debug.Log("TRUOC KHI BREAK NE");
+                                yield break;
+                            }
+                            Debug.Log("NGAY SAU KHI KHI BREAK NE");
+                            yield return new WaitForSeconds(1f / FramesPerSecond);
+                        }
+                        //haltAnimation = false;
+                        //yield break;
+                    }
+                    Debug.Log("NGAY SAU KHI KHI BREAK NE");
+                    yield return new WaitForSeconds(1f / FramesPerSecond);
+                }
+            }
+
+            if (!LoopAnimation)
+            {
+                if (CallBackFunction != null)
+                {
+                    EventInfo einfo = new EventInfo();
+                    einfo.sender = this;
+                    einfo.eventType = EventType.FinishAnimation;
+                    CallBackFunction(einfo);
+                }
+                started = false;
+                yield break;
+            }
+            yield return new WaitForSeconds(waitOnEnd);
+        }
+    }
+
+    private IEnumerator UpdateTiling(int cachedRow, int cachedColumn, int cachedTotal)
+    {
+        float x = 0f;
+        float y = 0f;
+        Vector2 offset = Vector2.zero;
+        reverseUpdateTilingOne = false;
+        bool isFirstTime = false;
+        while (true)
+        {
+            int total = cachedTotal - 1;
+            for (int i = cachedRow; i >= 0; i--) // y
+            {
+
+
+                
+                y = (float)i / (float)Rows;
+                if (!isFirstTime)
+                {
+                    for (int j = cachedColumn; j <= Columns - 1; j++) // x
+                    {
+                        total++;
+                        Debug.Log("SO COT : " + j + " SO HANG: " + i + " TONG SO : " + total);
+                        if (total > NumImages)
+                            break;
+                        x = (float)j / (float)Columns;
+
+                        offset.Set(x, y);
+                        if (!displayedStrokeVsValue.ContainsKey(new Vector2(x, y)))
+                        {
+                            displayedStrokeVsValue.Add(new Vector2(x, y), new Vector3(j, i, total));
+                        }
+                        CachedTotal = total;
+                        CachedColumn = j;
+                        CachedRow = i;
+                        Debug.Log("CACHED ROW TRONG OVERLOADED LA : " + CachedRow);
+                        GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
+
+
+                        haltAnimation = true;
+                        //haltAnimation = false;
+                        //Invoke("SetHaltAnimation", 10f);
+                        if (!haltAnimation)
+                        {
+                            Debug.Log("DA VAO DAY ROI NHE");
+                        }
+                        else if (haltAnimation)
+                        {
+                            Debug.Log("STOP");
+                            while (haltAnimation)
+                            {
+                                if (breakUpdateTiling)
+                                {
+                                    breakUpdateTiling = false;
+                                    yield break;
+                                }
+                                yield return new WaitForSeconds(1f / FramesPerSecond);
+                            }
+                            //haltAnimation = false;
+                            //yield break;
+                        }
+                        yield return new WaitForSeconds(1f / FramesPerSecond);
+                    }
+                    isFirstTime = true;
+                }
+                else
+                {
+                    for (int j = 0; j <= Columns - 1; j++) // x
+                    {
+                        total++;
+                        Debug.Log("SO COT : " + j + " SO HANG: " + i + " TONG SO : " + total);
+                        if (total > NumImages)
+                            break;
+                        x = (float)j / (float)Columns;
+
+                        offset.Set(x, y);
+                        if (!displayedStrokeVsValue.ContainsKey(new Vector2(x, y)))
+                        {
+                            displayedStrokeVsValue.Add(new Vector2(x, y), new Vector3(j, i, total));
+                        }
+                        CachedTotal = total;
+                        CachedColumn = j;
+                        CachedRow = i;
+                        Debug.Log("CACHED ROW TRONG OVERLOADED LA : " + CachedRow);
+                        GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
+
+
+                        haltAnimation = true;
+                        //haltAnimation = false;
+                        //Invoke("SetHaltAnimation", 10f);
+                        if (!haltAnimation)
+                        {
+                            Debug.Log("DA VAO DAY ROI NHE");
+                        }
+                        else if (haltAnimation)
+                        {
+                            Debug.Log("STOP");
+                            while (haltAnimation)
+                            {
+                                if (breakUpdateTiling)
+                                {
+                                    breakUpdateTiling = false;
+                                    yield break;
+                                }
+                                yield return new WaitForSeconds(1f / FramesPerSecond);
+                            }
+                            //haltAnimation = false;
+                            //yield break;
+                        }
+                        yield return new WaitForSeconds(1f / FramesPerSecond);
+                    }
+                }
+                
+            }
+
+            if (!LoopAnimation)
+            {
+                if (CallBackFunction != null)
+                {
+                    EventInfo einfo = new EventInfo();
+                    einfo.sender = this;
+                    einfo.eventType = EventType.FinishAnimation;
+                    CallBackFunction(einfo);
+                }
+                started = false;
+                yield break;
+            }
+            yield return new WaitForSeconds(waitOnEnd);
+        }
+    }
+
+    private IEnumerator ReverseUpdateTiling(int cachedRow, int cachedColumn, int cachedTotal)
+    {
+        float x = 0f;
+        float y = 0f;
+        Vector2 offset = Vector2.zero;
+        updateTilingOne = false;
+        bool isFirstTime = false;
+        while (true)
+        {
+            int total = cachedTotal;
+            for (int i = cachedRow; i <= Rows - 1; i++) // y
+            {
+
+
+
+                y = (float)i / (float)Rows;
+                if (!isFirstTime)
+                {
+                    for (int j = cachedColumn - 1; j >= 0; j--) // x
+                    {
+                        total--;
+                        Debug.Log("SO COT : " + j + " SO HANG: " + i + " TONG SO : " + total);
+                        if (total < 0)
+                            break;
+                        x = (float)j / (float)Columns;
+
+                        offset.Set(x, y);
+                        if (!displayedStrokeVsValue.ContainsKey(new Vector2(x, y)))
+                        {
+                            displayedStrokeVsValue.Add(new Vector2(x, y), new Vector3(j, i, total));
+                        }
+                        CachedTotal = total;
+                        CachedColumn = j;
+                        CachedRow = i;
+                        Debug.Log("CACHED ROW TRONG OVERLOADED REVERSE LA : " + CachedRow);
+                        GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
+
+
+                        haltAnimation = true;
+                        //haltAnimation = false;
+                        //Invoke("SetHaltAnimation", 10f);
+                        if (!haltAnimation)
+                        {
+                            Debug.Log("DA VAO DAY ROI NHE");
+                        }
+                        else if (haltAnimation)
+                        {
+                            Debug.Log("STOP");
+                            while (haltAnimation)
+                            {
+
+                                if (breakReverseUpdateTiling)
+                                {
+                                    breakReverseUpdateTiling = false;
+                                    yield break;
+                                }
+                                yield return new WaitForSeconds(1f / FramesPerSecond);
+                            }
+                            //haltAnimation = false;
+                            //yield break;
+                        }
+                        yield return new WaitForSeconds(1f / FramesPerSecond);
+                    }
+                    isFirstTime = true;
+                }
+                else
+                {
+                    for (int j = Columns - 1; j >= 0; j--) // x
+                    {
+                        total--;
+                        Debug.Log("SO COT : " + j + " SO HANG: " + i + " TONG SO : " + total);
+                        if (total > NumImages)
+                            break;
+                        x = (float)j / (float)Columns;
+
+                        offset.Set(x, y);
+                        if (!displayedStrokeVsValue.ContainsKey(new Vector2(x, y)))
+                        {
+                            displayedStrokeVsValue.Add(new Vector2(x, y), new Vector3(j, i, total));
+                        }
+                        CachedTotal = total;
+                        CachedColumn = j;
+                        CachedRow = i;
+                        Debug.Log("CACHED ROW TRONG OVERLOADED REVERSE LA : " + CachedRow);
+                        GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offset);
+
+
+                        haltAnimation = true;
+                        //haltAnimation = false;
+                        //Invoke("SetHaltAnimation", 10f);
+                        if (!haltAnimation)
+                        {
+                            Debug.Log("DA VAO DAY ROI NHE");
+                        }
+                        else if (haltAnimation)
+                        {
+                            Debug.Log("STOP");
+                            while (haltAnimation)
+                            {
+
+                                if (breakReverseUpdateTiling)
+                                {
+                                    breakReverseUpdateTiling = false;
+                                    yield break;
+                                }
+                                yield return new WaitForSeconds(1f / FramesPerSecond);
+                            }
+                            //haltAnimation = false;
+                            //yield break;
+                        }
+                        yield return new WaitForSeconds(1f / FramesPerSecond);
+                    }
+                }
+
+            }
+
+            if (!LoopAnimation)
+            {
+                if (CallBackFunction != null)
+                {
+                    EventInfo einfo = new EventInfo();
+                    einfo.sender = this;
+                    einfo.eventType = EventType.FinishAnimation;
+                    CallBackFunction(einfo);
+                }
+                started = false;
+                yield break;
+            }
+            yield return new WaitForSeconds(waitOnEnd);
+        }
+    }
+
+}

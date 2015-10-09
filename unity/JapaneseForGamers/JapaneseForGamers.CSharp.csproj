@@ -15,7 +15,7 @@
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
-    <UnityBuildTarget>Android:13</UnityBuildTarget>
+    <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.2.1f1</UnityVersion>
     <RootNamespace></RootNamespace>
   </PropertyGroup>
@@ -26,7 +26,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_2_1;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_2_1;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -36,7 +36,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_2_1;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_2_1;UNITY_5_2;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_REFLECTION_BUFFERS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_LOG_MIXED_STACKTRACE;ENABLE_UNITYWEBREQUEST;ENABLE_EVENT_QUEUE;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -96,9 +96,35 @@
     <Compile Include="Assets\KanjiManager.cs" />
     <Compile Include="Assets\KanjiWord.cs" />
     <Compile Include="Assets\LevelCreator.cs" />
+    <Compile Include="Assets\Mandarin\Scripts\CharacterDatabase.cs" />
+    <Compile Include="Assets\Mandarin\Scripts\CharacterManager.cs" />
+    <Compile Include="Assets\Mandarin\Scripts\LoadChineseTexture.cs" />
+    <Compile Include="Assets\Mandarin\Scripts\Main.cs" />
+    <Compile Include="Assets\Mandarin\Scripts\PinyinManager.cs" />
     <Compile Include="Assets\MapController.cs" />
     <Compile Include="Assets\PaddleManager.cs" />
     <Compile Include="Assets\Powerup.cs" />
+    <Compile Include="Assets\Quiz\Scripts\AtkBuffScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\AttackedEffect.cs" />
+    <Compile Include="Assets\Quiz\Scripts\EffectManager.cs" />
+    <Compile Include="Assets\Quiz\Scripts\EffectScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\EnemyHealthBar.cs" />
+    <Compile Include="Assets\Quiz\Scripts\EvadeScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\FadeAwayVisualDamage.cs" />
+    <Compile Include="Assets\Quiz\Scripts\KanjiBean.cs" />
+    <Compile Include="Assets\Quiz\Scripts\MonsterBean.cs" />
+    <Compile Include="Assets\Quiz\Scripts\MonsterEquip.cs" />
+    <Compile Include="Assets\Quiz\Scripts\MonsterFadeScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\MonsterManager.cs" />
+    <Compile Include="Assets\Quiz\Scripts\PlayerData.cs" />
+    <Compile Include="Assets\Quiz\Scripts\PlayerHealthBar.cs" />
+    <Compile Include="Assets\Quiz\Scripts\PoisonScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\QuestionFadeScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\QuestionManager.cs" />
+    <Compile Include="Assets\Quiz\Scripts\RegenScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\StatusDialogScript.cs" />
+    <Compile Include="Assets\Quiz\Scripts\TimeBar.cs" />
+    <Compile Include="Assets\Quiz\Scripts\VisualEffectInform.cs" />
     <Compile Include="Assets\SceneManager.cs" />
     <Compile Include="Assets\Scripts\BasketBall\Basket.cs" />
     <Compile Include="Assets\Scripts\BasketBall\Shoot.cs" />
@@ -123,27 +149,6 @@
     <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
     <Compile Include="Assets\Scripts\PlayerCharacter1.cs" />
     <Compile Include="Assets\Scripts\Puzzle.cs" />
-    <Compile Include="Assets\Scripts\Quiz\AtkBuffScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\AttackedEffect.cs" />
-    <Compile Include="Assets\Scripts\Quiz\EffectManager.cs" />
-    <Compile Include="Assets\Scripts\Quiz\EffectScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\EnemyHealthBar.cs" />
-    <Compile Include="Assets\Scripts\Quiz\EvadeScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\FadeAwayVisualDamage.cs" />
-    <Compile Include="Assets\Scripts\Quiz\KanjiBean.cs" />
-    <Compile Include="Assets\Scripts\Quiz\MonsterBean.cs" />
-    <Compile Include="Assets\Scripts\Quiz\MonsterEquip.cs" />
-    <Compile Include="Assets\Scripts\Quiz\MonsterFadeScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\MonsterManager.cs" />
-    <Compile Include="Assets\Scripts\Quiz\PlayerData.cs" />
-    <Compile Include="Assets\Scripts\Quiz\PlayerHealthBar.cs" />
-    <Compile Include="Assets\Scripts\Quiz\PoisonScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\QuestionFadeScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\QuestionManager.cs" />
-    <Compile Include="Assets\Scripts\Quiz\RegenScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\StatusDialogScript.cs" />
-    <Compile Include="Assets\Scripts\Quiz\TimeBar.cs" />
-    <Compile Include="Assets\Scripts\Quiz\VisualEffectInform.cs" />
     <Compile Include="Assets\Scripts\Rope.cs" />
     <Compile Include="Assets\Scripts\SelfDestroy.cs" />
     <Compile Include="Assets\Scripts\Test.cs" />
@@ -157,23 +162,23 @@
     <Compile Include="Assets\Scripts\WordMaze\Flood.cs" />
     <Compile Include="Assets\Scripts\WordMaze\GetF.cs" />
     <Compile Include="Assets\Scripts\WordMaze\MovementEnergy.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\ButtonController.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\InventoryCellView.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\InventoryCellView2.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\InventoryData.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\InventoryData2.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableData.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableList.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\MonsterEquippableListItem.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\MonsterInventory.cs" />
-    <Compile Include="Assets\SelectMonsterPopup\MonsterInventory2.cs" />
     <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScroller.cs" />
     <Compile Include="Assets\SelectMonsterPopup\Plugins\EnhancedScrollerCellView.cs" />
     <Compile Include="Assets\SelectMonsterPopup\Plugins\IEnhancedScrollerDelegate.cs" />
     <Compile Include="Assets\SelectMonsterPopup\Plugins\SmallList.cs" />
-    <Compile Include="Assets\SelectTeamPopup\TeamCellView.cs" />
-    <Compile Include="Assets\SelectTeamPopup\TeamData.cs" />
-    <Compile Include="Assets\SelectTeamPopup\TeamSelect.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\ButtonController.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\InventoryCellView.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\InventoryCellView2.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\InventoryData.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\InventoryData2.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\MonsterEquippableData.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\MonsterEquippableList.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\MonsterEquippableListItem.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\MonsterInventory.cs" />
+    <Compile Include="Assets\SelectMonsterPopup\Scripts\MonsterInventory2.cs" />
+    <Compile Include="Assets\SelectTeamPopup\Scripts\TeamCellView.cs" />
+    <Compile Include="Assets\SelectTeamPopup\Scripts\TeamData.cs" />
+    <Compile Include="Assets\SelectTeamPopup\Scripts\TeamSelect.cs" />
     <Compile Include="Assets\Tnt.cs" />
     <Compile Include="Assets\WordKeeper.cs" />
     <Compile Include="Assets\iTweenExamples\AccurateLob\Scripts\AccurateLob.cs" />
@@ -229,6 +234,9 @@
     <None Include="Assets\CustomFont\customfont.xml" />
     <None Include="Assets\FileBrowser\readme.txt" />
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
+    <None Include="Assets\Resources\Mandarin\characters.txt" />
+    <None Include="Assets\Resources\Mandarin\json-one.txt" />
+    <None Include="Assets\Resources\Mandarin\json-one1.txt" />
     <None Include="Assets\Resources\data.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
