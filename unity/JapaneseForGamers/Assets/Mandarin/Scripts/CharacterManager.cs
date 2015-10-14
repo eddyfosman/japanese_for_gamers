@@ -43,6 +43,14 @@ public class CharacterManager : MonoBehaviour {
     private List<Vector2> displayedStroke = new List<Vector2>();
     private Dictionary<Vector2, Vector3> displayedStrokeVsValue = new Dictionary<Vector2, Vector3>();
 
+    public void AddPosIntoList(Vector2 v2)
+    { 
+        if (v2 != null)
+        {
+            displayedStroke.Add(v2);
+        }
+    }
+
     private int cachedRow;
     public int CachedRow
     {
@@ -121,6 +129,58 @@ public class CharacterManager : MonoBehaviour {
         PrepareTexture();
     }
 
+    public void SaveAllPos()
+    {
+        string str = cs.Unicode + "#";
+        //if (!File.Exists(Application.persistentDataPath + "/" + "pos.txt"))
+        //{
+        //    File.Create(Application.persistentDataPath + "/" + "pos.txt");
+        //}
+        //else if ()
+        //{
+
+        //}
+        StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/" + cs.Unicode + ".dat"); 
+        for (int i = 0; i < displayedStroke.Count; i++)
+        {
+            if (i == displayedStroke.Count - 1)
+            {
+                str = str + displayedStroke[i].x + ":" + displayedStroke[i].y;
+                
+            }
+            else
+            {
+                str = str + displayedStroke[i].x + ":" + displayedStroke[i].y + "#";
+
+            }
+        }
+        //File.WriteAllText(Application.persistentDataPath + "/" + "pos.txt", str);
+        sw.WriteLine(str);
+        sw.Close();
+        sw = null;
+        foreach (Transform t in transform)
+        {
+            if (t != null)
+            {
+                Destroy(t.gameObject);
+            }
+        }
+    }
+
+    public int NumChild()
+    {
+        return transform.childCount;
+    }
+
+    public void ClearList()
+    {
+        if (transform.childCount > 0)
+        {
+            return;
+        }
+        displayedStroke.Clear();
+        
+    }
 
     //Overloaded method, will load the char dynamically
     public void SetCharacter(string chr)
@@ -160,9 +220,8 @@ public class CharacterManager : MonoBehaviour {
 
         if (!updateTilingOne)
         {
-            
+            breakUpdateTiling = false;
             breakOriUpdateTiling = true;
-            
             StartCoroutine(UpdateTiling(cachedRow, cachedColumn, cachedTotal));
             updateTilingOne = true;
             Debug.Log("SetFalseReverseUpdateTiling!IF TRUE");
@@ -170,6 +229,8 @@ public class CharacterManager : MonoBehaviour {
         else
         {
             haltAnimation = false;
+            reverseUpdateTilingOne = false;
+
             Debug.Log("SetFalseReverseUpdateTiling!IF FALSE");
         }
         
@@ -184,8 +245,8 @@ public class CharacterManager : MonoBehaviour {
 
         if (!reverseUpdateTilingOne)
         {
-            
-            
+            breakReverseUpdateTiling = false;
+
             StartCoroutine(ReverseUpdateTiling(cachedRow, cachedColumn, cachedTotal));
             reverseUpdateTilingOne = true;
             Debug.Log("SetFalseUpdateTiling!IF TRUE");
@@ -193,6 +254,8 @@ public class CharacterManager : MonoBehaviour {
         else
         {
             haltAnimation = false;
+            updateTilingOne = false;
+
             Debug.Log("SetFalseUpdateTiling!IF FALSE");
         }
     }
@@ -213,6 +276,11 @@ public class CharacterManager : MonoBehaviour {
         }
     }
 
+    private void DeleteCube()
+    {
+        Destroy(transform.GetChild(transform.childCount - 1).gameObject);
+        displayedStroke.Remove(displayedStroke[displayedStroke.Count - 1]);
+    }
 
     public void PrepareTexture() {
         if (cs == null)
@@ -250,7 +318,7 @@ public class CharacterManager : MonoBehaviour {
         float x = 0f;
         float y = 0f;
         Vector2 offset = Vector2.zero;
-        reverseUpdateTilingOne = false;
+        
         while (true)
         {
             int total = 0;
@@ -331,7 +399,7 @@ public class CharacterManager : MonoBehaviour {
         float x = 0f;
         float y = 0f;
         Vector2 offset = Vector2.zero;
-        reverseUpdateTilingOne = false;
+        //reverseUpdateTilingOne = false;
         bool isFirstTime = false;
         while (true)
         {
@@ -461,7 +529,7 @@ public class CharacterManager : MonoBehaviour {
         float x = 0f;
         float y = 0f;
         Vector2 offset = Vector2.zero;
-        updateTilingOne = false;
+        //updateTilingOne = false;
         bool isFirstTime = false;
         while (true)
         {
@@ -585,6 +653,23 @@ public class CharacterManager : MonoBehaviour {
                 yield break;
             }
             yield return new WaitForSeconds(waitOnEnd);
+        }
+    }
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            SetFalseUpdateTiling();
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            SetFalseReverseUpdateTiling();
+        }
+        else if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            DeleteCube();
         }
     }
 

@@ -89,6 +89,18 @@ public class CharacterDatabase : MonoBehaviour {
         
     }
 
+    public object[] FindUnicode2(string Unicode)
+    {
+        object[] obj = new object[2];
+        obj[0] = CharactersDB.Find(x => x.Unicode == Unicode);
+        if (obj[0] == null)
+        {
+            return null;
+        }
+        obj[1] = CharactersDB.FindIndex(x => x.Unicode == Unicode);
+        return obj;
+    }
+
     public Character FindCharacter(string Ideogram)
     {
         return CharactersDB.Find(x => x.Ideogram == Ideogram);

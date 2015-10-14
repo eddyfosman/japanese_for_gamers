@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using UnityEngine.UI;
 
 public class LoadChineseTexture : MonoBehaviour {
 
@@ -20,7 +21,10 @@ public class LoadChineseTexture : MonoBehaviour {
     private CharacterDatabase.Character cs = null;
     string pathSound, pathTexture;
 
-    
+
+    public Text inputText;
+    public Text inputUnicode;
+
 
 	// Use this for initialization
 	void Start () {
@@ -118,12 +122,69 @@ public class LoadChineseTexture : MonoBehaviour {
 
     public void SetCurrentChar(int numChar)
     {
+        
+
         current = numChar;
         cs = CharacterDatabase.instance.GetChatAtPos(current);
         transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().StopAnimation();
         transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().SetCharacter(cs.Ideogram);
 
         GetComponent<PinyinManager>().PlayPinyin(cs.pinyin, Camera.main.GetComponent<AudioSource>());
+    }
+
+    public void SetCurrentChar()
+    {
+        if (transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().NumChild() > 0)
+        {
+            return;
+        }
+        int numChar;
+        if (inputText.text != null && int.TryParse(inputText.text, out numChar))
+        {
+            current = numChar - 1;
+        }
+        else
+        {
+            return;
+        }
+
+        
+        cs = CharacterDatabase.instance.GetChatAtPos(current);
+        transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().ClearList();
+        transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().StopAnimation();
+        transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().SetCharacter(cs.Ideogram);
+
+        GetComponent<PinyinManager>().PlayPinyin(cs.pinyin, Camera.main.GetComponent<AudioSource>());
+    }
+
+    public void SetCurrentCharByUnicode()
+    {
+        if (transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().NumChild() > 0)
+        {
+            return;
+        }
+        if (inputUnicode.text != null && inputUnicode.text != "")
+        {
+            object[] objArr = CharacterDatabase.instance.FindUnicode2(inputUnicode.text);
+            if (objArr != null)
+            {
+                cs = (CharacterDatabase.Character)objArr[0];
+                current = (int)objArr[1];
+            }
+            else
+            {
+                return;
+            }
+            transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().ClearList();
+            transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().StopAnimation();
+            transform.Find("Canvas01/Front").gameObject.GetComponent<CharacterManager>().SetCharacter(cs.Ideogram);
+
+            GetComponent<PinyinManager>().PlayPinyin(cs.pinyin, Camera.main.GetComponent<AudioSource>());
+        }
+        else
+        {
+            return;
+        }
     }
 
     //Receives the events from CharacterManager (start and end animation)
