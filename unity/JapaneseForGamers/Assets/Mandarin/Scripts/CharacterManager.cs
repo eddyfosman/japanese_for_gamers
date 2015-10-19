@@ -2,6 +2,8 @@
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
+using System;
+
 
 public class CharacterManager : MonoBehaviour {
 
@@ -19,6 +21,8 @@ public class CharacterManager : MonoBehaviour {
     public bool AutoStart = false;
     public bool LoopAnimation = false;
     public float waitOnEnd = 0.3f;
+    public GameObject prefabCube;
+    private GameObject prefabGO;
 
     public delegate void CallbackEventHandler(EventInfo eventInfo);
     public CallbackEventHandler CallBackFunction;
@@ -38,8 +42,11 @@ public class CharacterManager : MonoBehaviour {
     private bool updateTilingOne = false;
     private bool breakOriUpdateTiling = false;
     private bool breakReverseUpdateTiling = false;
+    private int currentStroke = 0;
 
-
+    private List<Transform> linesList = new List<Transform>();
+    private List<Vector2> posList = new List<Vector2>();
+    private List<Vector2> offsetList = new List<Vector2>();
     private List<Vector2> displayedStroke = new List<Vector2>();
     private Dictionary<Vector2, Vector3> displayedStrokeVsValue = new Dictionary<Vector2, Vector3>();
 
@@ -96,6 +103,24 @@ public class CharacterManager : MonoBehaviour {
         }
 	}
 
+    //public void StartAnimation()
+    //{
+    //    if (started)
+    //        return;
+    //    if (CallBackFunction != null)
+    //    {
+    //        EventInfo einfo = new EventInfo();
+    //        einfo.sender = this;
+    //        einfo.eventType = EventType.StartAnimation;
+    //        CallBackFunction(einfo);
+    //    }
+    //    started = true;
+    //    Debug.Log("CO VAO DAY KHONG??");
+    //    StartCoroutine(UpdateTiling());
+    //    LoadPositionCoroutine();
+    //    SetFalseReverseUpdateTiling();
+    //}
+
     public void StartAnimation()
     {
         if (started)
@@ -108,7 +133,41 @@ public class CharacterManager : MonoBehaviour {
             CallBackFunction(einfo);
         }
         started = true;
-        StartCoroutine(UpdateTiling());
+        Debug.Log("CO VAO DAY KHONG??");
+        //StartCoroutine(UpdateTiling());
+        offsetList.Clear();
+        LoadAllOffsetValue();
+        LoadPositionCoroutine();
+        GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offsetList[1]);
+        //SetFalseReverseUpdateTiling();
+
+    }
+
+    private void LoadAllOffsetValue()
+    {
+        float x = 0f;
+        float y = 0f;
+        Vector2 offset = Vector2.zero;
+        int total = 0;
+        for (int i = Rows - 1; i >= 0; i--)
+        {
+            y = (float)i / (float)Rows;
+
+           
+            for (int j = 0; j <= Columns - 1; j++)
+            {
+                total++;
+                if (total > NumImages)
+                    break;
+                Debug.Log("TONG SO TOTAL LA: " + total);
+                x = (float)j / (float)Columns;
+                offset.Set(x, y);
+                offsetList.Add(offset);
+            }
+            
+
+        }
+
     }
 
     public void StopAnimation() {
@@ -127,6 +186,80 @@ public class CharacterManager : MonoBehaviour {
         Character = chr;
         textureChar = text;
         PrepareTexture();
+    }
+
+    public void ShowNextStroke()
+    {
+        //SetFalseReverseUpdateTiling();
+        linesList[currentStroke].gameObject.SetActive(false);
+        currentStroke++;
+        if (currentStroke < linesList.Count)
+        {
+            linesList[currentStroke].gameObject.SetActive(true);
+            if (linesList.Count - 1 != currentStroke)
+                GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offsetList[currentStroke + 1]);
+            else
+                GetComponent<Renderer>().sharedMaterial.SetTextureOffset("_MainTex", offsetList[currentStroke + 2]);
+
+            Debug.Log("SO PHAN TU TRONG OFFSET LIST: " + offsetList.Count);
+            Debug.Log("SO PHAN TU TRONG LINE LIST: " + linesList.Count);
+            Debug.Log("CURRENT STROKE LA:  " + currentStroke);
+        }
+    }
+
+    private void LoadPositionCoroutine()
+    {
+       
+        currentStroke = 0;
+        linesList.Clear();
+        foreach (Transform t in transform)
+        {
+            if (t != null)
+            {
+                Destroy(t.gameObject);
+            }
+        }
+        
+        TextReader tr = new StreamReader(Application.persistentDataPath + "/" + cs.Unicode + ".dat");
+        List<string> strList = new List<string>();
+        string strA;
+        strA = tr.ReadLine();
+        while (strA != null)
+        {
+            Debug.Log(strA);
+            strList.Add(strA);
+            strA = tr.ReadLine();
+        }
+        Debug.Log(tr.ReadToEnd());
+        char[] lineDelim = new char[] { '#' };
+        Debug.Log(lineDelim[0]);
+        char[] posDelim = new char[] { ':' };
+        string str = tr.ReadToEnd();
+        string[] strArr = str.Split(new[] { "#" }, StringSplitOptions.RemoveEmptyEntries);
+        if (strArr == null)
+        {
+            Debug.Log("NULL MAT ROI KO BIET LAM SAO");
+        }
+        Debug.Log(strArr.Length);
+        for (int i = 1; i < strList.Count; i++)
+        {
+            string[] strPosArr = strList[i].Split(posDelim, StringSplitOptions.RemoveEmptyEntries);
+            Debug.Log(strPosArr[0]);
+            Vector2 v2 = new Vector2(float.Parse(strPosArr[0]), float.Parse(strPosArr[1]));
+            posList.Add(v2);
+            prefabGO = Instantiate(prefabCube) as GameObject;
+            prefabGO.GetComponent<Renderer>().enabled = false;
+            Vector3 cachedScale = prefabGO.transform.localScale;
+            prefabGO.transform.SetParent(transform);
+            linesList.Add(prefabGO.transform);
+            prefabGO.transform.localScale = cachedScale;
+            prefabGO.transform.localPosition = new Vector3(-v2.x / (10f / 1.69f), -v2.y / (10f / 1.69f), 0f);
+            if (1 != i)
+            {
+                prefabGO.SetActive(false) ;
+            }
+        }
+        tr.Close();
     }
 
     public void SaveAllPos()

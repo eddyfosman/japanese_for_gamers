@@ -14,7 +14,7 @@ public class Main : MonoBehaviour {
     public GameObject frameParPar;
     public GameObject frameParParPar;
     public GameObject characterManagerGO;
-    public CharacterManager characterManagerScript;
+    private CharacterManager characterManagerScript;
 
     private bool isRecording = false;
 
@@ -22,7 +22,7 @@ public class Main : MonoBehaviour {
 	void Start ()
     {
         posText = Resources.Load("Mandarin/json-one") as TextAsset;
-        //characterManagerScript = characterManagerGO.GetComponent<CharacterManager>();
+        characterManagerScript = characterManagerGO.GetComponent<CharacterManager>();
         Debug.Log(posText.text);
         posJson = JsonMapper.ToObject(posText.text);
         //ShowAllPos();
@@ -62,6 +62,23 @@ public class Main : MonoBehaviour {
             
         }
 
+    }
+
+    private void CheckMousePosition()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.SphereCast(ray, 1f, out hit))
+        {
+            if (Input.GetMouseButton(0))
+            {
+                if (hit.collider.name == "Cube(Clone)")
+                {
+                    characterManagerScript.ShowNextStroke();
+                }
+            }
+        }
     }
 
     public void TurnOnOffRecord(Button button)
@@ -115,6 +132,7 @@ public class Main : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //ShowMousePosition();
-        CheckPosition();
+        //CheckPosition();
+        CheckMousePosition();
     }
 }

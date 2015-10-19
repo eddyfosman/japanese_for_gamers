@@ -9,6 +9,9 @@ using LitJson;
 public class QuestionManager : MonoBehaviour
 {
 
+    public SimpleSQL.SimpleSQLManager dbManager;
+
+
 	public Text visualDamage;
 	public Button buttonA;
 	public Button buttonB;
@@ -352,6 +355,19 @@ public class QuestionManager : MonoBehaviour
 			LoadQuestionIntoText(kanjiList, textToReadPlayer, true);
 
 			LoadQuestionIntoText(kanjiListMonster, textToReadMonster, false);
+
+
+            string sql = "SELECT * FROM Monsters";
+
+            
+            List<MonsterBean> tempMonster = dbManager.Query<MonsterBean>(sql);
+            Debug.Log("SO LUONG QUAI VAT GOI RA DUOC LA: " + tempMonster.Count);
+            foreach (MonsterBean m in tempMonster)
+            {
+                Debug.Log("ID CUA QUAI VAT LA: ____" + m.ID);
+                Debug.Log("IMAGE CUA QUAI VAT LA: ____" + m.Image);
+                Debug.Log("Hp CUA QUAI VAT LA: ____" + m.Hp);
+            }
 
 		}
 
