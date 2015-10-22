@@ -25,6 +25,7 @@ public class QuestionManager : MonoBehaviour
 	public Text answerB;
 	public Text answerC;
 	public Text answerD;
+    public GameObject mageObject;
     public GameObject effectPrefab;
     public GameObject visualEffectContainer;
     public GameObject visualEffectMonsterContainer;
@@ -46,6 +47,7 @@ public class QuestionManager : MonoBehaviour
 	public GameObject effectManagerGO;
 	public GameObject visualEffectInform;
 
+    private Animation mageAni;
     private GameObject effectGO;
 	private GameObject[] answerText;
 	private Selectable buttonASelectable;
@@ -111,6 +113,7 @@ public class QuestionManager : MonoBehaviour
 
 	void Start ()
 	{
+        //mageAni = mageObject.GetComponent<Animation>();
 		visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform> ();
 		effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
 		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
@@ -227,7 +230,34 @@ public class QuestionManager : MonoBehaviour
 		}
 	}
 
-	private void LoadQuestionIntoText(List<KanjiBean> list, List<QuestionBean> list2, bool val){
+    private List<MonsterBean> LoadMonsterData()
+    {
+
+        string sql = "SELECT * FROM Monsters";
+        List<MonsterBean> monsterList;
+        monsterList = dbManager.Query<MonsterBean>(sql);
+        return monsterList;
+
+
+    }
+
+    private List<KanjiBean> LoadKanjiData()
+    {
+        string sql = "SELECT * FROM Kanjis WHERE ID < 11";
+        List<KanjiBean> kanjiList;
+        kanjiList = dbManager.Query<KanjiBean>(sql);
+        return kanjiList;
+    }
+
+    private List<KanjiBean> LoadKanjiMonsterData()
+    {
+        string sql = "SELECT * FROM Kanjis WHERE ID > 10 AND ID < 21";
+        List<KanjiBean> kanjiList;
+        kanjiList = dbManager.Query<KanjiBean>(sql);
+        return kanjiList;
+    }
+
+    private void LoadQuestionIntoText(List<KanjiBean> list, List<QuestionBean> list2, bool val){
 		for (int i = 0; i < list.Count; i++) {
 			QuestionBean qb = new QuestionBean ();
 			qb.question = list [i].Writing;
@@ -283,7 +313,7 @@ public class QuestionManager : MonoBehaviour
 
 			kanjiListMonster = new List<KanjiBean>();
 			kanjiList = new List<KanjiBean> ();
-			monsterList = new List<MonsterBean> ();
+			//monsterList = new List<MonsterBean> ();
 
 			player = new PlayerData ();
 			Debug.Log ("Cai nay chay truoc hay sau656756765!");
@@ -297,13 +327,17 @@ public class QuestionManager : MonoBehaviour
 			player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
 			player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
-			
 
-			LoadMonsterData(jsonMonster, monsterList);
-			
-			LoadAllKanji(jsonKanjis, kanjiList);
 
-			LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
+            //LoadMonsterData(jsonMonster, monsterList);
+
+            monsterList = LoadMonsterData();
+
+            kanjiList = LoadKanjiData();
+            //LoadAllKanji(jsonKanjis, kanjiList);
+
+            kanjiListMonster = LoadKanjiMonsterData();
+            //LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
 
 			LoadQuestionIntoText(kanjiList, textToReadPlayer, true);
 
@@ -343,31 +377,31 @@ public class QuestionManager : MonoBehaviour
 			kanjiListMonster = new List<KanjiBean>();
 
 			kanjiList = new List<KanjiBean> ();
-			monsterList = new List<MonsterBean> ();
+            //monsterList = new List<MonsterBean> ();
 
 
-			LoadMonsterData(jsonMonster, monsterList);
+            //LoadMonsterData(jsonMonster, monsterList);
 
-			LoadAllKanji(jsonKanjis, kanjiList);
+            //LoadMonsterData(monsterList);
 
-			LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
+            //string sql = "SELECT * FROM Monsters";
+            //monsterList = dbManager.Query<MonsterBean>(sql);
+
+
+            monsterList = LoadMonsterData();
+
+            kanjiList = LoadKanjiData();
+            //LoadAllKanji(jsonKanjis, kanjiList);
+
+            kanjiListMonster = LoadKanjiMonsterData();
+			//LoadAllKanji(jsonMonsterKanjis, kanjiListMonster);
 
 			LoadQuestionIntoText(kanjiList, textToReadPlayer, true);
 
 			LoadQuestionIntoText(kanjiListMonster, textToReadMonster, false);
 
 
-            string sql = "SELECT * FROM Monsters";
-
             
-            List<MonsterBean> tempMonster = dbManager.Query<MonsterBean>(sql);
-            Debug.Log("SO LUONG QUAI VAT GOI RA DUOC LA: " + tempMonster.Count);
-            foreach (MonsterBean m in tempMonster)
-            {
-                Debug.Log("ID CUA QUAI VAT LA: ____" + m.ID);
-                Debug.Log("IMAGE CUA QUAI VAT LA: ____" + m.Image);
-                Debug.Log("Hp CUA QUAI VAT LA: ____" + m.Hp);
-            }
 
 		}
 

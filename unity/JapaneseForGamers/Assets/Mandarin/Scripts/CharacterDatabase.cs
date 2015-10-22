@@ -37,6 +37,9 @@ public class CharacterDatabase : MonoBehaviour {
     }
 
     public List<Character> CharactersDB = new List<Character>();
+    int simplified = 0;
+    int traditional = 0;
+    int both = 0;
 
     void Awake()
     {
@@ -55,7 +58,10 @@ public class CharacterDatabase : MonoBehaviour {
         }
 
         LoadDatabase();
-	}
+        Debug.Log("SO LUONG SIMPLIFIED: " + simplified);
+        Debug.Log("SO LUONG TRADITIONAL: " + traditional);
+        Debug.Log("SO LUONG BOTH: " + both);
+    }
 
     //Load the character database into a sorted list of characters
     void LoadDatabase()
@@ -76,6 +82,18 @@ public class CharacterDatabase : MonoBehaviour {
             Int32.TryParse(fields[3], out record.Width);
             Int32.TryParse(fields[4], out record.Height);
             Int32.TryParse(fields[5], out record.Type);
+            switch (record.Type)
+            {
+                case 1:
+                    simplified++;
+                    break;
+                case 2:
+                    traditional++;
+                    break;
+                case 3:
+                    both++;
+                    break;
+            }
             record.Ideogram = fields[6];
             record.pinyin = fields[7];
             record.english = fields[8];
