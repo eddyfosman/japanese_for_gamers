@@ -253,7 +253,7 @@ public class CharacterManager : MonoBehaviour {
             prefabGO.transform.SetParent(transform);
             linesList.Add(prefabGO.transform);
             prefabGO.transform.localScale = cachedScale;
-            prefabGO.transform.localPosition = new Vector3(-v2.x / (10f / 1.69f), -v2.y / (10f / 1.69f), 0f);
+            prefabGO.transform.localPosition = new Vector3(-v2.x / (10f / 1.69f), -v2.y / (10f / 1.69f), -0.33f);
             if (1 != i)
             {
                 prefabGO.SetActive(false) ;

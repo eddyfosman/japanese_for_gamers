@@ -63,18 +63,20 @@ public class Main : MonoBehaviour {
         }
 
     }
-
+    
     private void CheckMousePosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
-        if (Physics.SphereCast(ray, 1f, out hit))
+        if (Physics.SphereCast(ray, 0.08f, out hit))
         {
+            Debug.Log("DANG CLICK CHUOT NE1111");
             if (Input.GetMouseButton(0))
             {
+                Debug.Log("DANG CLICK CHUOT NE");
                 if (hit.collider.name == "Cube(Clone)")
                 {
+                    Debug.Log("DANG CLICK CHUOTTRUNG NEE");
                     characterManagerScript.ShowNextStroke();
                 }
             }

@@ -26,6 +26,7 @@ public class QuestionManager : MonoBehaviour
 	public Text answerC;
 	public Text answerD;
     public GameObject mageObject;
+    public GameObject ninjaObject;
     public GameObject effectPrefab;
     public GameObject visualEffectContainer;
     public GameObject visualEffectMonsterContainer;
@@ -48,6 +49,7 @@ public class QuestionManager : MonoBehaviour
 	public GameObject visualEffectInform;
 
     private Animation mageAni;
+    private Animation ninjaAni;
     private GameObject effectGO;
 	private GameObject[] answerText;
 	private Selectable buttonASelectable;
@@ -92,8 +94,9 @@ public class QuestionManager : MonoBehaviour
 	private EffectManager effectManagerScript;
 	private VisualEffectInform visualEffectInformScript;
 	public bool isPause = false;
+    private List<PlayerData> playerList;
 
-	private bool isPlayerPhase = false;
+    private bool isPlayerPhase = false;
 	public bool IsPlayerPhase
 	{
 		set { isPlayerPhase = value; }
@@ -113,8 +116,9 @@ public class QuestionManager : MonoBehaviour
 
 	void Start ()
 	{
-        //mageAni = mageObject.GetComponent<Animation>();
-		visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform> ();
+        mageAni = mageObject.GetComponent<Animation>();
+        ninjaAni = ninjaObject.GetComponent<Animation>();
+        visualEffectInformScript = visualEffectInform.GetComponent<VisualEffectInform> ();
 		effectManagerScript = effectManagerGO.GetComponent<EffectManager> ();
 		monsterManagerScript = monsterManager.GetComponent<MonsterManager> ();
 		fadeAwayVisualDamageScript = visualDamage.GetComponent<FadeAwayVisualDamage> ();
@@ -290,20 +294,32 @@ public class QuestionManager : MonoBehaviour
 		
 		if (Application.platform == RuntimePlatform.Android) 
 		{
-			string jsonPlayerDataFile = "";
-			Debug.Log ("DANG O TRONG ANDROID NE");
-			while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
-				Debug.Log ("File khong ton tai!");
-				string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":500,\n\t\t\t\"def\":100,\n\t\t\t\"agi\":100,\n\t\t\t\"luk\":100,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
-				Debug.Log (str);
+			//string jsonPlayerDataFile = "";
+			//Debug.Log ("DANG O TRONG ANDROID NE");
+			//while (!File.Exists(Application.persistentDataPath + "/" + "PlayerData.json")) {
+			//	Debug.Log ("File khong ton tai!");
+			//	string str = "{\n\t\"player\":[\n\t\t{\n\t\t\t\"level\":1,\n\t\t\t\"hp\":100,\n\t\t\t\"atk\":500,\n\t\t\t\"def\":100,\n\t\t\t\"agi\":100,\n\t\t\t\"luk\":100,\n\t\t\t\"exp\":0,\n\t\t\t\"nextLevelExp\":100,\n\t\t\t\"bonusPoint\":0\n\t\t}\n\t]\n}";
+			//	Debug.Log (str);
 
-				File.WriteAllText (Application.persistentDataPath + "/" + "PlayerData.json", str);
+			//	File.WriteAllText (Application.persistentDataPath + "/" + "PlayerData.json", str);
 
 					
-			}
-			jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
-			JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile);
-			GetMonsterDataFromFile();
+			//}
+
+            string sql = "SELECT * FROM PlayerData";
+            playerList = dbManager.Query<PlayerData>(sql);
+            while (playerList.Count == 0)
+            {
+                string sqlInsert = "INSERT INTO PlayerData " +
+                                    "(Hp, Level, Atk, Def, Agi, Luk, CurrentExp, NextLevelExp, BonusPoint) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                dbManager.Execute(sqlInsert, 100, 1, 500, 100, 100, 100, 0, 100, 0);
+                playerList = dbManager.Query<PlayerData>(sql);
+            }
+
+            //jsonPlayerDataFile = File.ReadAllText (Application.persistentDataPath + "/" + "PlayerData.json");
+            //JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile);
+            GetMonsterDataFromFile();
 	//						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
 			TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
 			JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
@@ -315,19 +331,20 @@ public class QuestionManager : MonoBehaviour
 			kanjiList = new List<KanjiBean> ();
 			//monsterList = new List<MonsterBean> ();
 
-			player = new PlayerData ();
-			Debug.Log ("Cai nay chay truoc hay sau656756765!");
-			player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
-			player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
-			player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
-			player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
-			player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
-			player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
-			player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
-			player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
-			player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
+			//player = new PlayerData ();
+			//Debug.Log ("Cai nay chay truoc hay sau656756765!");
+			//player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
+			//player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
+			//player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
+			//player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
+			//player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
+			//player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
+			//player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
+			//player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
+			//player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
-
+            player = playerList[0];
+            
 
             //LoadMonsterData(jsonMonster, monsterList);
 
@@ -353,28 +370,38 @@ public class QuestionManager : MonoBehaviour
 			GetMonsterDataFromFile();
 //						TextAsset jsonFile = Resources.Load ("data2") as TextAsset;
 			TextAsset jsonMonsterFile = Resources.Load ("monster") as TextAsset;
-			TextAsset jsonPlayerDataFile = Resources.Load ("PlayerData") as TextAsset;
+			//TextAsset jsonPlayerDataFile = Resources.Load ("PlayerData") as TextAsset;
 
 			JsonData jsonMonsterKanjis = JsonMapper.ToObject(jsonFileMonsterKanji.text);
 
 			JsonData jsonKanjis = JsonMapper.ToObject (jsonFile.text);
 			JsonData jsonMonster = JsonMapper.ToObject (jsonMonsterFile.text);
-			JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile.text);
+            //JsonData jsonPlayerData = JsonMapper.ToObject (jsonPlayerDataFile.text);
+            string sql = "SELECT * FROM PlayerData";
+            playerList = dbManager.Query<PlayerData>(sql);
+            while (playerList.Count == 0)
+            {
+                string sqlInsert = "INSERT INTO PlayerData " +
+                                    "(Hp, Level, Atk, Def, Agi, Luk, CurrentExp, NextLevelExp, BonusPoint) " +
+                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                dbManager.Execute(sqlInsert, 100, 1, 500, 100, 100, 100, 0, 100, 0);
+                playerList = dbManager.Query<PlayerData>(sql);
+            }
+            
+            player = playerList[0];
 
+            //player = new PlayerData ();
+            //player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
+            //player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
+            //player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
+            //player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
+            //player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
+            //player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
+            //player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
+            //player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
+            //player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
 
-
-			player = new PlayerData ();
-			player.Hp = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["hp"].ToString ());
-			player.Level = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["level"].ToString ());
-			player.Atk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["atk"].ToString ());
-			player.Def = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["def"].ToString ());
-			player.Agi = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["agi"].ToString ());
-			player.Luk = System.Convert.ToInt64 (jsonPlayerData ["player"] [0] ["luk"].ToString ());
-			player.CurrentExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["exp"].ToString ());
-			player.NextLevelExp = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["nextLevelExp"].ToString ());
-			player.BonusPoint = System.Convert.ToInt16 (jsonPlayerData ["player"] [0] ["bonusPoint"].ToString ());
-
-			kanjiListMonster = new List<KanjiBean>();
+            kanjiListMonster = new List<KanjiBean>();
 
 			kanjiList = new List<KanjiBean> ();
             //monsterList = new List<MonsterBean> ();
@@ -559,10 +586,10 @@ public class QuestionManager : MonoBehaviour
 		audioSource.clip = Resources.Load (qb.onSound) as AudioClip;
 		Shuffle (list);
 	
-		answerA.text = list [0];
-		answerB.text = list [1];
-		answerC.text = list [2];
-		answerD.text = list [3];
+		answerA.text = list [3];
+		answerB.text = list [2];
+		answerC.text = list [1];
+		answerD.text = list [0];
 		Debug.Log ("THIET LAP CAU HOI MOI NGAY LAP TUC NE !!!");
 		if (effectManagerScript.IsAtkBuffAdded)
 		{
@@ -584,7 +611,20 @@ public class QuestionManager : MonoBehaviour
 			
 	}
 
-	private IEnumerator MovingMonsterCoolDown ()
+
+    private IEnumerator AudioCoolDown(MonsterEquip mq, Vector2 spriteSize)
+    {
+        while (audioSource.isPlaying)
+        {
+            yield return null;
+        }
+        monsterManagerScript.MoveMonsterIn(mq, spriteSize);
+        isMonsterMoveOut = false;
+        StartCoroutine(MovingMonsterCoolDown());
+
+    }
+
+    private IEnumerator MovingMonsterCoolDown ()
 	{
 		while (!isMonsterMoveOut) 
 		{
@@ -733,7 +773,10 @@ public class QuestionManager : MonoBehaviour
 	public void CheckAnswerA ()
 	{
 		MonsterEquip monsterEquip = answerA.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-		textClickedButton = answerA.text;
+        Sprite monsterSprite = answerA.transform.parent.FindChild("Image").GetComponent<Image>().sprite;
+        Debug.Log("WIDTH CUA ANH LA: __________ " + monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit);
+        Vector2 spriteSize = new Vector2(monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit, monsterSprite.bounds.size.y * monsterSprite.pixelsPerUnit);
+        textClickedButton = answerA.text;
 		ShowOnlyRightAnswerButton ();
 		if (answerA.text == qb.rightAnswer) {
 			audioSource.Play ();
@@ -782,15 +825,15 @@ public class QuestionManager : MonoBehaviour
 
                 if (effectManagerScript.IsEnemyEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "enemy");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    effectManagerScript.ApplyEffect("evade", "enemy");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
                 }
                 else
                 {
-                    StartCoroutine(AudioCoolDown(monsterEquip));
+                    StartCoroutine(AudioCoolDown(monsterEquip, spriteSize));
 
                 }
                 
@@ -832,8 +875,8 @@ public class QuestionManager : MonoBehaviour
                 questionFadeScript.SetButtonInteractiableFalse ();
                 if (effectManagerScript.IsEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "me");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    effectManagerScript.ApplyEffect("evade", "me");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
@@ -852,7 +895,10 @@ public class QuestionManager : MonoBehaviour
 	public void CheckAnswerB ()
 	{
 		MonsterEquip monsterEquip = answerB.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-		textClickedButton = answerB.text;
+        Sprite monsterSprite = answerB.transform.parent.FindChild("Image").GetComponent<Image>().sprite;
+        Debug.Log("WIDTH CUA ANH LA: __________ " + monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit);
+        Vector2 spriteSize = new Vector2(monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit, monsterSprite.bounds.size.y * monsterSprite.pixelsPerUnit);
+        textClickedButton = answerB.text;
 		ShowOnlyRightAnswerButton ();
 		if (answerB.text == qb.rightAnswer) {
 			audioSource.Play ();
@@ -905,15 +951,15 @@ public class QuestionManager : MonoBehaviour
 
                 if (effectManagerScript.IsEnemyEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "enemy");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    effectManagerScript.ApplyEffect("evade", "enemy");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
                 }
                 else
                 {
-                    StartCoroutine(AudioCoolDown(monsterEquip));
+                    StartCoroutine(AudioCoolDown(monsterEquip, spriteSize));
 
                 }
 
@@ -950,8 +996,8 @@ public class QuestionManager : MonoBehaviour
                 questionFadeScript.SetButtonInteractiableFalse ();
                 if (effectManagerScript.IsEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "me");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    effectManagerScript.ApplyEffect("evade", "me");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
@@ -984,7 +1030,10 @@ public class QuestionManager : MonoBehaviour
 	public void CheckAnswerC ()
 	{
 		MonsterEquip monsterEquip = answerC.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-		textClickedButton = answerC.text;
+        Sprite monsterSprite = answerC.transform.parent.FindChild("Image").GetComponent<Image>().sprite;
+        Debug.Log("WIDTH CUA ANH LA: __________ " + monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit);
+        Vector2 spriteSize = new Vector2(monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit, monsterSprite.bounds.size.y * monsterSprite.pixelsPerUnit);
+        textClickedButton = answerC.text;
 		ShowOnlyRightAnswerButton ();
 		if (answerC.text == qb.rightAnswer)
         {
@@ -1037,15 +1086,15 @@ public class QuestionManager : MonoBehaviour
 
                 if (effectManagerScript.IsEnemyEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "enemy");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    effectManagerScript.ApplyEffect("evade", "enemy");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
                 }
                 else
                 {
-                    StartCoroutine(AudioCoolDown(monsterEquip));
+                    StartCoroutine(AudioCoolDown(monsterEquip, spriteSize));
 
                 }
 
@@ -1082,8 +1131,8 @@ public class QuestionManager : MonoBehaviour
                 questionFadeScript.SetButtonInteractiableFalse ();
                 if (effectManagerScript.IsEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "me");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    effectManagerScript.ApplyEffect("evade", "me");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
@@ -1103,7 +1152,10 @@ public class QuestionManager : MonoBehaviour
 	public void CheckAnswerD ()
 	{
 		MonsterEquip monsterEquip = answerD.transform.parent.FindChild ("Image").GetComponent<MonsterEquip> ();
-		textClickedButton = answerD.text;
+        Sprite monsterSprite = answerD.transform.parent.FindChild("Image").GetComponent<Image>().sprite;
+        Debug.Log("WIDTH CUA ANH LA: __________ " + monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit);
+        Vector2 spriteSize = new Vector2(monsterSprite.bounds.size.x * monsterSprite.pixelsPerUnit, monsterSprite.bounds.size.y * monsterSprite.pixelsPerUnit);
+        textClickedButton = answerD.text;
 		ShowOnlyRightAnswerButton ();
 		if (answerD.text == qb.rightAnswer) {
 			audioSource.Play ();
@@ -1156,15 +1208,15 @@ public class QuestionManager : MonoBehaviour
 
                 if (effectManagerScript.IsEnemyEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "enemy");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
+                    effectManagerScript.ApplyEffect("evade", "enemy");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "enemy"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
                 }
                 else
                 {
-                    StartCoroutine(AudioCoolDown(monsterEquip));
+                    StartCoroutine(AudioCoolDown(monsterEquip, spriteSize));
 
                 }
 
@@ -1202,8 +1254,8 @@ public class QuestionManager : MonoBehaviour
                 questionFadeScript.SetButtonInteractiableFalse();
                 if (effectManagerScript.IsEvadeAdded)
                 {
-                    //effectManagerScript.ApplyEffect("evade", "me");
-                    StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
+                    effectManagerScript.ApplyEffect("evade", "me");
+                    //StartCoroutine(effectManagerScript.DelayApplyEffect("evade", "me"));
                     visualEffectInformScript.SetSprite("evade");
                     visualEffectInformScript.FadeInVisualEffect();
                     Invoke("FadeOutVisualEffect", 1f);
@@ -1417,8 +1469,8 @@ public class QuestionManager : MonoBehaviour
 	private void ResetTimeBar ()
 	{
 		timeBarScript.ResetTimeBar ();
-        //effectManagerScript.ApplyEffect(IsPlayerPhase);
-        StartCoroutine(effectManagerScript.DelayApplyEffect(isPlayerPhase));
+        effectManagerScript.ApplyEffect(IsPlayerPhase);
+        //StartCoroutine(effectManagerScript.DelayApplyEffect(isPlayerPhase));
 		//if (effectManagerScript.IsRegenAdded) {
 		//	Debug.Log ("CONG MAU NE!!!");
 		//	effectManagerScript.ApplyEffect ("regen");
@@ -1443,13 +1495,18 @@ public class QuestionManager : MonoBehaviour
 	{
 		for (int i = 0; i < answerText.Length; i++) {
 			if (textClickedButton == answerText [i].GetComponent<Text> ().text) {
-				thunderParticlePos = answerText [i].transform.parent.transform.position;
-				thunderParticle.transform.position = thunderParticlePos;
-			}
+                //vi tri cua hieu ung set theo nut tra loi
+                //thunderParticlePos = answerText [i].transform.parent.transform.position;
+
+                thunderParticlePos = ninjaObject.transform.position;
+                thunderParticle.transform.position = thunderParticlePos;
+            }
 
 		}
 		thunderGO.SetActive (true);
-		Invoke ("ShowQuestion", CompareParticleDuration ());
+        //mageAni.CrossFade("pc_damage");
+        ninjaAni.CrossFade("Damage");
+        Invoke ("ShowQuestion", CompareParticleDuration ());
 		Invoke ("ResetTimeBar", CompareParticleDuration ());
 		Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
 		Invoke ("SetThunderParticleFalse", CompareParticleDuration ());
@@ -1461,13 +1518,20 @@ public class QuestionManager : MonoBehaviour
 	{
 		for (int i = 0; i < answerText.Length; i++) {
 			if (qb.rightAnswer == answerText [i].GetComponent<Text> ().text) {
-				thunderParticlePos = answerText [i].transform.parent.transform.position;
-				particleGO.transform.position = thunderParticlePos;
-			}
+				
+                //vi tri cua hieu ung set theo nut tra loi
+                //thunderParticlePos = answerText [i].transform.parent.transform.position;
+
+                thunderParticlePos = ninjaObject.transform.position;
+                particleGO.transform.position = thunderParticlePos;
+
+            }
 			
 		}
 		particleGO.SetActive (true);
-		Invoke("SetDeadParticleFalse", CompareParticleDuration());
+        //mageAni.CrossFade("pc_skill_buff");
+        ninjaAni.CrossFade("Attack02");
+        Invoke("SetDeadParticleFalse", CompareParticleDuration());
 		Invoke ("ShowQuestion", CompareParticleDuration ());
 		Invoke ("ShowAllAnswerButton", CompareParticleDuration ());
 	}
@@ -1481,7 +1545,10 @@ public class QuestionManager : MonoBehaviour
 	{
 		for (int i = 0; i < answerText.Length; i++) {
 			if (qb.rightAnswer == answerText [i].GetComponent<Text> ().text) {
-				thunderParticlePos = answerText [i].transform.parent.transform.position;
+                //vi tri cua hieu ung set theo nut tra loi
+                //thunderParticlePos = answerText [i].transform.parent.transform.position;
+
+                thunderParticlePos = ninjaObject.transform.position;
 				particleGO.transform.position = thunderParticlePos;
 			}
 	

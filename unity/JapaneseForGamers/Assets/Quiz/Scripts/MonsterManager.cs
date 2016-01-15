@@ -19,6 +19,7 @@ public class MonsterManager : MonoBehaviour {
 	Sprite imageA;
 	public GameObject questionManager;
 	QuestionManager questionMangerScript;
+    float offSetY;
 	
 	// Use this for initialization
 	void Start () {
@@ -52,9 +53,19 @@ public class MonsterManager : MonoBehaviour {
 		visualMonster.transform.position = new Vector3 (initPos.x, initPos.y - mq.PosY/100, initPos.z);
 		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",0f,"y",0f,"z",initPos.z,"time",2f,"oncomplete","MoveMonsterOut","oncompletetarget",gameObject));
 	}
-	
-	public void MoveMonsterOut(){
-		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",-initPos.x,"y",initPos.y,"z",initPos.z,"time",1f,"oncomplete","InformQuestionManager","oncompletetarget",gameObject));
+
+    public void MoveMonsterIn(MonsterEquip mq, Vector2 spriteSize)
+    {
+        behindMonsterPanel.gameObject.SetActive(true);
+        float offsetX = mq.PosX - spriteSize.x / 2;
+        float offsetY = mq.PosY - spriteSize.y / 2;
+        visualMonster.transform.position = new Vector3(initPos.x + offsetX / 100, initPos.y + offsetY / 100, initPos.z);
+        offSetY = initPos.y + offsetY / 100;
+        iTween.MoveTo(visualMonster.gameObject, iTween.Hash("x", 0f, "y", initPos.y + offsetY / 100, "z", initPos.z, "time", 2f, "oncomplete", "MoveMonsterOut", "oncompletetarget", gameObject));
+    }
+
+    public void MoveMonsterOut(){
+		iTween.MoveTo (visualMonster.gameObject,iTween.Hash("x",-initPos.x,"y",offSetY,"z",initPos.z,"time",1f,"oncomplete","InformQuestionManager","oncompletetarget",gameObject));
 	}
 	
 	void InformQuestionManager(){
@@ -66,7 +77,7 @@ public class MonsterManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		monsterA.gameObject.transform.position = new Vector3 (startPos.x, startPos.y - 0.45f, startPos.z);
+		//monsterA.gameObject.transform.position = new Vector3 (startPos.x, startPos.y - 0.45f, startPos.z);
 
 	}
 }

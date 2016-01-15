@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 namespace EnhancedUI.EnhancedScroller
 {
@@ -20,6 +21,14 @@ namespace EnhancedUI.EnhancedScroller
     /// <param name="val">The scroll value of the scroll rect</param>
     /// <param name="scrollPosition">The scroll position in pixels from the start of the scroller</param>
     public delegate void ScrollerScrolledDelegate(EnhancedScroller scroller, Vector2 val, float scrollPosition);
+
+    /// <summary>
+    /// This delegate handles the snapping of the scroller.
+    /// </summary>
+    /// <param name="scroller">The scroller that called the delegate</param>
+    /// <param name="cellIndex">The index of the cell view snapped on (this may be different than the data index in case of looping)</param>
+    /// <param name="dataIndex">The index of the data the view snapped on</param>
+    public delegate void ScrollerSnappedDelegate(EnhancedScroller scroller, int cellIndex, int dataIndex);
 
     /// <summary>
     /// The EnhancedScroller allows you to easily set up a dynamic scroller that will recycle views for you. This means
@@ -91,6 +100,73 @@ namespace EnhancedUI.EnhancedScroller
         private ScrollbarVisibilityEnum scrollbarVisibility;
 
         /// <summary>
+        /// Whether snapping is turned on
+        /// </summary>
+        public bool snapping;
+
+        /// <summary>
+        /// This is the speed that will initiate the snap. When the
+        /// scroller slows down to this speed it will snap to the location
+        /// specified.
+        /// </summary>
+        public float snapVelocityThreshold;
+
+        /// <summary>
+        /// The snap offset to watch for. When the snap occurs, this
+        /// location in the scroller will be how which cell to snap to 
+        /// is determined.
+        /// Typically, the offset is in the range 0..1, with 0 being
+        /// the top / left of the scroller and 1 being the bottom / right.
+        /// In most situations the watch offset and the jump offset 
+        /// will be the same, they are just separated in case you need
+        /// that added functionality.
+        /// </summary>
+        public float snapWatchOffset;
+
+        /// <summary>
+        /// The snap location to move the cell to. When the snap occurs,
+        /// this location in the scroller will be where the snapped cell
+        /// is moved to.
+        /// Typically, the offset is in the range 0..1, with 0 being
+        /// the top / left of the scroller and 1 being the bottom / right.
+        /// In most situations the watch offset and the jump offset 
+        /// will be the same, they are just separated in case you need
+        /// that added functionality.
+        /// </summary>
+        public float snapJumpToOffset;
+
+        /// <summary>
+        /// Once the cell has been snapped to the scroller location, this
+        /// value will determine how the cell is centered on that scroller
+        /// location. 
+        /// Typically, the offset is in the range 0..1, with 0 being
+        /// the top / left of the cell and 1 being the bottom / right.
+        /// </summary>
+        public float snapCellCenterOffset;
+
+        /// <summary>
+        /// Whether to include the spacing between cells when determining the
+        /// cell offset centering.
+        /// </summary>
+        public bool snapUseCellSpacing;
+
+        /// <summary>
+        /// What function to use when interpolating between the current 
+        /// scroll position and the snap location. This is also known as easing. 
+        /// If you want to go immediately to the snap location you can either 
+        /// set the snapTweenType to immediate or set the snapTweenTime to zero.
+        /// </summary>
+        public TweenType snapTweenType;
+
+        /// <summary>
+        /// The time it takes to interpolate between the current scroll 
+        /// position and the snap location.
+        /// If you want to go immediately to the snap location you can either 
+        /// set the snapTweenType to immediate or set the snapTweenTime to zero.
+        /// </summary>
+        public float snapTweenTime;
+
+        /// <summary>
         /// This delegate is called when a cell view is hidden or shown
         /// </summary>
         public CellViewVisibilityChangedDelegate cellViewVisibilityChanged;
@@ -99,6 +175,11 @@ namespace EnhancedUI.EnhancedScroller
         /// This delegate is called when the scroll rect scrolls
         /// </summary>
         public ScrollerScrolledDelegate scrollerScrolled;
+
+        /// <summary>
+        /// This delegate is called when the scroller has snapped to a position
+        /// </summary>
+        public ScrollerSnappedDelegate scrollerSnapped;
 
         /// <summary>
         /// The Delegate is what the scroller will call when it needs to know information about
@@ -118,7 +199,7 @@ namespace EnhancedUI.EnhancedScroller
             set
             {
                 // make sure the position is in the bounds of the current set of views
-                value = Mathf.Clamp(value, 0, _GetScrollPositionForCell(_cellViewSizeArray.Count - 1, CellViewPositionEnum.Before));
+                value = Mathf.Clamp(value, 0, GetScrollPositionForCellViewIndex(_cellViewSizeArray.Count - 1, CellViewPositionEnum.Before));
 
                 // only if the value has changed
                 if (_scrollPosition != value)
@@ -205,7 +286,7 @@ namespace EnhancedUI.EnhancedScroller
                     // make sure we actually have some cell views
                     if (_cellViewOffsetArray != null && _cellViewOffsetArray.Count > 0)
                     {
-                        if (_cellViewOffsetArray.Last() < _ScrollRectSize || loop)
+                        if (_cellViewOffsetArray.Last() < ScrollRectSize || loop)
                         {
                             // if the size of the scrollable area is smaller than the scroller
                             // or if we have looping on, hide the scrollbar unless the visibility
@@ -232,6 +313,115 @@ namespace EnhancedUI.EnhancedScroller
             get
             {
                 return _scrollRect.velocity;
+            }
+            set
+            {
+                _scrollRect.velocity = value;
+            }
+        }
+
+        /// <summary>
+        /// The linear velocity is the velocity on one axis.
+        /// The scroller should only be moving one one axix.
+        /// </summary>
+        public float LinearVelocity
+        {
+            get
+            {
+                // return the velocity component depending on which direction this is scrolling
+                return (scrollDirection == ScrollDirectionEnum.Vertical ? _scrollRect.velocity.y : _scrollRect.velocity.x);
+            }
+            set
+            {
+                // set the appropriate component of the velocity
+                if (scrollDirection == ScrollDirectionEnum.Vertical)
+                {
+                    _scrollRect.velocity = new Vector2(0, value);
+                }
+                else
+                {
+                    _scrollRect.velocity = new Vector2(value, 0);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This is the first cell view index showing in the scroller's visible area
+        /// </summary>
+        public int StartCellViewIndex
+        {
+            get
+            {
+                return _activeCellViewsStartIndex;
+            }
+        }
+
+        /// <summary>
+        /// This is the last cell view index showing in the scroller's visible area
+        /// </summary>
+        public int EndCellViewIndex
+        {
+            get
+            {
+                return _activeCellViewsEndIndex;
+            }
+        }
+
+        /// <summary>
+        /// This is the first data index showing in the scroller's visible area
+        /// </summary>
+        public int StartDataIndex
+        {
+            get
+            {
+                return _activeCellViewsStartIndex % NumberOfCells;
+            }
+        }
+        
+        /// <summary>
+        /// This is the last data index showing in the scroller's visible area
+        /// </summary>
+        public int EndDataIndex
+        {
+            get
+            {
+                return _activeCellViewsEndIndex % NumberOfCells;
+            }
+        }
+
+        /// <summary>
+        /// This is the number of cells in the scroller
+        /// </summary>
+        public int NumberOfCells
+        {
+            get
+            {
+                return (_delegate != null ? _delegate.GetNumberOfCells(this) : 0);
+            }
+        }
+
+        /// <summary>
+        /// This is a convenience link to the scroller's scroll rect
+        /// </summary>
+        public ScrollRect ScrollRect
+        {
+            get
+            {
+                return _scrollRect;
+            }
+        }
+
+        /// <summary>
+        /// The size of the visible portion of the scroller
+        /// </summary>
+        public float ScrollRectSize
+        {
+            get
+            {
+                if (scrollDirection == ScrollDirectionEnum.Vertical)
+                    return _scrollRectTransform.rect.height;
+                else
+                    return _scrollRectTransform.rect.width;
             }
         }
 
@@ -286,16 +476,125 @@ namespace EnhancedUI.EnhancedScroller
         }
 
         /// <summary>
+        /// Jump to a position in the scroller based on a dataIndex. This overload allows you
+        /// to specify a specific offset within a cell as well.
+        /// </summary>
+        /// <param name="dataIndex">he data index to jump to</param>
+        /// <param name="scrollerOffset">The offset from the start (top / left) of the scroller in the range 0..1.
+        /// Outside this range will jump to the location before or after the scroller's viewable area</param>
+        /// <param name="cellOffset">The offset from the start (top / left) of the cell in the range 0..1</param>
+        /// <param name="useSpacing">Whether to calculate in the spacing of the scroller in the jump</param>
+        /// <param name="tweenType">What easing to use for the jump</param>
+        /// <param name="tweenTime">How long to interpolate to the jump point</param>
+        /// <param name="jumpComplete">This delegate is fired when the jump completes</param>
+        public void JumpToDataIndex(int dataIndex,
+            float scrollerOffset = 0,
+            float cellOffset = 0,
+            bool useSpacing = true,
+            TweenType tweenType = TweenType.immediate,
+            float tweenTime = 0f,
+            Action jumpComplete = null
+            )
+        {
+            var cellOffsetPosition = 0f;
+
+            if (cellOffset != 0)
+            {
+                // calculate the cell offset position
+
+                // get the cell's size
+                var cellSize = (_delegate != null ? _delegate.GetCellViewSize(this, dataIndex) : 0);
+
+                if (useSpacing)
+                {
+                    // if using spacing add spacing from one side
+                    cellSize += spacing;
+
+                    // if this is not a bounday cell, then add spacing from the other side
+                    if (dataIndex > 0 && dataIndex < (NumberOfCells - 1)) cellSize += spacing;
+                }
+
+                // calculate the position based on the size of the cell and the offset within that cell
+                cellOffsetPosition = cellSize * cellOffset;
+            }
+
+            var newScrollPosition = 0f;
+
+            // cache the offset for quicker calculation
+            var offset = -(scrollerOffset * ScrollRectSize) + cellOffsetPosition;
+
+            if (loop)
+            {
+                // if looping, then we need to determine the closest jump position.
+                // we do that by checking all three sets of data locations, and returning the closest one
+
+                // get the scroll positions for each data set.
+                // Note: we are calculating the position based on the cell view index, not the data index here
+                var set1Position = GetScrollPositionForCellViewIndex(dataIndex, CellViewPositionEnum.Before) + offset;
+                var set2Position = GetScrollPositionForCellViewIndex(dataIndex + NumberOfCells, CellViewPositionEnum.Before) + offset;
+                var set3Position = GetScrollPositionForCellViewIndex(dataIndex + (NumberOfCells * 2), CellViewPositionEnum.Before) + offset;
+
+                // get the offsets of each scroll position from the current scroll position
+                var set1Diff = (Mathf.Abs(_scrollPosition - set1Position));
+                var set2Diff = (Mathf.Abs(_scrollPosition - set2Position));
+                var set3Diff = (Mathf.Abs(_scrollPosition - set3Position));
+
+                // choose the smallest offset from the current position (the closest position)
+                if (set1Diff < set2Diff)
+                {
+                    if (set1Diff < set3Diff)
+                    {
+                        newScrollPosition = set1Position;
+                    }
+                    else
+                    {
+                        newScrollPosition = set3Position;
+                    }
+                }
+                else
+                {
+                    if (set2Diff < set3Diff)
+                    {
+                        newScrollPosition = set2Position;
+                    }
+                    else
+                    {
+                        newScrollPosition = set3Position;
+                    }
+                }
+            }
+            else
+            {
+                // not looping, so just get the scroll position from the dataIndex
+                newScrollPosition = GetScrollPositionForDataIndex(dataIndex, CellViewPositionEnum.Before) + offset;
+            }
+
+            // clamp the scroll position to a valid location
+            newScrollPosition = Mathf.Clamp(newScrollPosition, 0, GetScrollPositionForCellViewIndex(_cellViewSizeArray.Count - 1, CellViewPositionEnum.Before));
+
+            // if spacing is used, adjust the final position
+            if (useSpacing)
+            {
+                // move back by the spacing if necessary
+                newScrollPosition = Mathf.Clamp(newScrollPosition - spacing, 0, GetScrollPositionForCellViewIndex(_cellViewSizeArray.Count - 1, CellViewPositionEnum.Before));
+            }
+
+            // start tweening
+            StartCoroutine(TweenPosition(tweenType, tweenTime, ScrollPosition, newScrollPosition, jumpComplete));
+        }
+
+        /// <summary>
         /// Jump to a position in the scroller based on a dataIndex.
         /// </summary>
         /// <param name="dataIndex">The data index to jump to</param>
         /// <param name="position">Whether you should jump before or after the cell view</param>
+        [System.Obsolete("This is an obsolete method, please use the version of this function with a cell offset.")]
         public void JumpToDataIndex(int dataIndex,
             CellViewPositionEnum position = CellViewPositionEnum.Before,
             bool useSpacing = true)
         {
             // if looping is on, we need to jump to the middle set of data, otherwise just use the dataIndex for the cellIndex
-            ScrollPosition = _GetScrollPositionForCell(loop ? _delegate.GetNumberOfCells(this) + dataIndex : dataIndex, position);
+            ScrollPosition = GetScrollPositionForDataIndex(dataIndex, position);
 
             // if spacing is used, adjust the final position
             if (useSpacing)
@@ -305,6 +604,67 @@ namespace EnhancedUI.EnhancedScroller
                 else
                     ScrollPosition = _scrollPosition + spacing;
             }
+        }
+
+        /// <summary>
+        /// Gets the scroll position in pixels from the start of the scroller based on the cellViewIndex
+        /// </summary>
+        /// <param name="cellViewIndex">The cell index to look for. This is used instead of dataIndex in case of looping</param>
+        /// <param name="insertPosition">Do we want the start or end of the cell view's position</param>
+        /// <returns></returns>
+        public float GetScrollPositionForCellViewIndex(int cellViewIndex, CellViewPositionEnum insertPosition)
+        {
+            if (NumberOfCells == 0) return 0;
+
+            if (cellViewIndex == 0 && insertPosition == CellViewPositionEnum.Before)
+            {
+                return 0;
+            }
+            else
+            {
+                if (cellViewIndex < _cellViewOffsetArray.Count)
+                {
+                    // the index is in the range of cell view offsets
+
+                    if (insertPosition == CellViewPositionEnum.Before)
+                    {
+                        // return the previous cell view's offset + the spacing between cell views
+                        return _cellViewOffsetArray[cellViewIndex - 1] + spacing + (scrollDirection == ScrollDirectionEnum.Vertical ? padding.top : padding.left);
+                    }
+                    else
+                    {
+                        // return the offset of the cell view (offset is after the cell)
+                        return _cellViewOffsetArray[cellViewIndex] + (scrollDirection == ScrollDirectionEnum.Vertical ? padding.top : padding.left);
+                    }
+                }
+                else
+                {
+                    // get the start position of the last cell (the offset of the second to last cell)
+                    return _cellViewOffsetArray[_cellViewOffsetArray.Count - 2];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the scroll position in pixels from the start of the scroller based on the dataIndex
+        /// </summary>
+        /// <param name="dataIndex">The data index to look for</param>
+        /// <param name="insertPosition">Do we want the start or end of the cell view's position</param>
+        /// <returns></returns>
+        public float GetScrollPositionForDataIndex(int dataIndex, CellViewPositionEnum insertPosition)
+        {
+            return GetScrollPositionForCellViewIndex(loop ? _delegate.GetNumberOfCells(this) + dataIndex : dataIndex, insertPosition);
+        }
+
+        /// <summary>
+        /// Gets the index of a cell view at a given position
+        /// </summary>
+        /// <param name="position">The pixel offset from the start of the scroller</param>
+        /// <returns></returns>
+        public int GetCellViewIndexAtPosition(float position)
+        {
+            // call the overrloaded method on the entire range of the list
+            return _GetCellIndexAtPosition(position, 0, _cellViewOffsetArray.Count - 1);
         }
 
         #endregion
@@ -454,6 +814,28 @@ namespace EnhancedUI.EnhancedScroller
         private bool _lastLoop;
 
         /// <summary>
+        /// The cell view index we are snapping to
+        /// </summary>
+        private int _snapCellViewIndex;
+
+        /// <summary>
+        /// The data index we are snapping to
+        /// </summary>
+        private int _snapDataIndex;
+
+        /// <summary>
+        /// Whether we are currently jumping due to a snap
+        /// </summary>
+        private bool _snapJumping;
+
+        /// <summary>
+        /// What the previous inertia setting was before the snap jump.
+        /// We cache it here because we need to turn off inertia while
+        /// manually tweeing.
+        /// </summary>
+        private bool _snapInertia;
+
+        /// <summary>
         /// The cached value of the last scrollbar visibility setting. This is checked every
         /// frame to see if the scrollbar visibility needs to be changed.
         /// </summary>
@@ -484,20 +866,6 @@ namespace EnhancedUI.EnhancedScroller
         }
 
         /// <summary>
-        /// The size of the visible portion of the scroller
-        /// </summary>
-        private float _ScrollRectSize
-        {
-            get
-            {
-                if (scrollDirection == ScrollDirectionEnum.Vertical)
-                    return _scrollRectTransform.rect.height;
-                else
-                    return _scrollRectTransform.rect.width;
-            }
-        }
-
-        /// <summary>
         /// This function will create an internal list of sizes and offsets to be used in all calculations.
         /// It also sets up the loop triggers and positions and initializes the cell views.
         /// </summary>
@@ -516,9 +884,9 @@ namespace EnhancedUI.EnhancedScroller
             {
                 // if the cells don't entirely fill up the scroll area, 
                 // make some more size entries to fill it up
-                if (offset < _ScrollRectSize)
+                if (offset < ScrollRectSize)
                 {
-                    int additionalRounds = Mathf.CeilToInt(_ScrollRectSize / offset);
+                    int additionalRounds = Mathf.CeilToInt(ScrollRectSize / offset);
                     _DuplicateCellViewSizes(additionalRounds, _cellViewSizeArray.Count);
                 }
 
@@ -542,11 +910,11 @@ namespace EnhancedUI.EnhancedScroller
             // if looping, set up the loop positions and triggers
             if (loop)
             {
-                _loopFirstScrollPosition = _GetScrollPositionForCell(_loopFirstCellIndex, CellViewPositionEnum.Before) + (spacing * 0.5f);
-                _loopLastScrollPosition = _GetScrollPositionForCell(_loopLastCellIndex, CellViewPositionEnum.After) - _ScrollRectSize + (spacing * 0.5f);
+                _loopFirstScrollPosition = GetScrollPositionForCellViewIndex(_loopFirstCellIndex, CellViewPositionEnum.Before) + (spacing * 0.5f);
+                _loopLastScrollPosition = GetScrollPositionForCellViewIndex(_loopLastCellIndex, CellViewPositionEnum.After) - ScrollRectSize + (spacing * 0.5f);
 
-                _loopFirstJumpTrigger = _loopFirstScrollPosition - _ScrollRectSize;
-                _loopLastJumpTrigger = _loopLastScrollPosition + _ScrollRectSize;
+                _loopFirstJumpTrigger = _loopFirstScrollPosition - ScrollRectSize;
+                _loopLastJumpTrigger = _loopLastScrollPosition + ScrollRectSize;
             }
 
             // create the visibile cells
@@ -581,7 +949,7 @@ namespace EnhancedUI.EnhancedScroller
         {
             var offset = 0f;
             // add a size for each row in our data based on how many the delegate tells us to create
-            for (var i = 0; i < _delegate.GetNumberOfCells(this); i++)
+            for (var i = 0; i < NumberOfCells; i++)
             {
                 // add the size of this cell based on what the delegate tells us to use. Also add spacing if this cell isn't the first one
                 _cellViewSizeArray.Add(_delegate.GetCellViewSize(this, i) + (i == 0 ? 0 : _layoutGroup.spacing));
@@ -640,43 +1008,6 @@ namespace EnhancedUI.EnhancedScroller
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the scroll position in pixels from the start of the scroller based on the cellIndex
-        /// </summary>
-        /// <param name="cellIndex">The cell index to look for. This is used instead of dataIndex in case of looping</param>
-        /// <param name="insertPosition">Do we want the start or end of the cell view's position</param>
-        /// <returns></returns>
-        private float _GetScrollPositionForCell(int cellIndex, CellViewPositionEnum insertPosition)
-        {
-            if (cellIndex == 0 && insertPosition == CellViewPositionEnum.Before)
-            {
-                return 0;
-            }
-            else
-            {
-                if (cellIndex < _cellViewOffsetArray.Count)
-                {
-                    // the index is in the range of cell view offsets
-
-                    if (insertPosition == CellViewPositionEnum.Before)
-                    {
-                        // return the previous cell view's offset + the spacing between cell views
-                        return _cellViewOffsetArray[cellIndex - 1] + spacing + (scrollDirection == ScrollDirectionEnum.Vertical ? padding.top : padding.left);
-                    }
-                    else
-                    {
-                        // return the offset of the cell view (offset is after the cell)
-                        return _cellViewOffsetArray[cellIndex] + (scrollDirection == ScrollDirectionEnum.Vertical ? padding.top : padding.left);
-                    }
-                }
-                else
-                {
-                    // get the start position of the last cell (the offset of the second to last cell)
-                    return _cellViewOffsetArray[_cellViewOffsetArray.Count - 2];
-                }
-            }
         }
 
         /// <summary>
@@ -796,9 +1127,10 @@ namespace EnhancedUI.EnhancedScroller
         /// <param name="listPosition">Whether to add the cell to the beginning or the end</param>
         private void _AddCellView(int cellIndex, ListPositionEnum listPosition)
         {
-            // get the dataIndex. Modulus is used in case of looping so that the first set of cells are ignored
-            var dataIndex = cellIndex % _delegate.GetNumberOfCells(this);
+            if (NumberOfCells == 0) return;
 
+            // get the dataIndex. Modulus is used in case of looping so that the first set of cells are ignored
+            var dataIndex = cellIndex % NumberOfCells;
             // request a cell view from the delegate
             var cellView = _delegate.GetCellView(this, dataIndex, cellIndex);
 
@@ -843,6 +1175,8 @@ namespace EnhancedUI.EnhancedScroller
         /// </summary>
         private void _SetPadders()
         {
+            if (NumberOfCells == 0) return;
+
             // calculate the size of each padder
             var firstSize = _cellViewOffsetArray[_activeCellViewsStartIndex] - _cellViewSizeArray[_activeCellViewsStartIndex];
             var lastSize = _cellViewOffsetArray.Last() - _cellViewOffsetArray[_activeCellViewsEndIndex];
@@ -922,19 +1256,8 @@ namespace EnhancedUI.EnhancedScroller
             var endPosition = _scrollPosition + (scrollDirection == ScrollDirectionEnum.Vertical ? _scrollRectTransform.rect.height : _scrollRectTransform.rect.width);
 
             // calculate each index based on the positions
-            startIndex = _GetCellIndexAtPosition(startPosition);
-            endIndex = _GetCellIndexAtPosition(endPosition);
-        }
-
-        /// <summary>
-        /// Gets the index of a cell at a given position
-        /// </summary>
-        /// <param name="position">The pixel offset from the start of the scroller</param>
-        /// <returns></returns>
-        private int _GetCellIndexAtPosition(float position)
-        {
-            // call the overrloaded method on the entire range of the list
-            return _GetCellIndexAtPosition(position, 0, _cellViewOffsetArray.Count - 1);
+            startIndex = GetCellViewIndexAtPosition(startPosition);
+            endIndex = GetCellViewIndexAtPosition(endPosition);
         }
 
         /// <summary>
@@ -1046,7 +1369,7 @@ namespace EnhancedUI.EnhancedScroller
             _recycledCellViewContainer.gameObject.SetActive(false);
 
             // set up the last values for updates
-            _lastScrollRectSize = _ScrollRectSize;
+            _lastScrollRectSize = ScrollRectSize;
             _lastLoop = loop;
             _lastScrollbarVisibility = scrollbarVisibility;
         }
@@ -1062,13 +1385,13 @@ namespace EnhancedUI.EnhancedScroller
             // if the scroll rect size has changed and looping is on,
             // or the loop setting has changed, then we need to resize
             if (
-                    (loop && _lastScrollRectSize != _ScrollRectSize)
+                    (loop && _lastScrollRectSize != ScrollRectSize)
                     ||
                     (loop != _lastLoop)
                 )
             {
                 _Resize(true);
-                _lastScrollRectSize = _ScrollRectSize;
+                _lastScrollRectSize = ScrollRectSize;
 
                 _lastLoop = loop;
             }
@@ -1118,6 +1441,507 @@ namespace EnhancedUI.EnhancedScroller
 
             // call the handler if it exists
             if (scrollerScrolled != null) scrollerScrolled(this, val, _scrollPosition);
+
+            // if the snapping is turned on, handle it
+            if (snapping && !_snapJumping)
+            {
+                // if the speed has dropped below the threshhold velocity
+                if (Mathf.Abs(LinearVelocity) <= snapVelocityThreshold)
+                {
+                    // set snap jumping to true so other events won't process while tweening
+                    _snapJumping = true;
+
+                    // stop the scroller
+                    LinearVelocity = 0;
+
+                    // cache the current inertia state and turn off inertia
+                    _snapInertia = _scrollRect.inertia;
+                    _scrollRect.inertia = false;
+
+                    // calculate the snap position
+                    var snapPosition = ScrollPosition + (ScrollRectSize * Mathf.Clamp01(snapWatchOffset));
+
+                    // get the cell view index of cell at the watch location
+                    _snapCellViewIndex = GetCellViewIndexAtPosition(snapPosition);
+
+                    // get the data index of the cell at the watch location
+                    _snapDataIndex = _snapCellViewIndex % NumberOfCells;
+
+                    // jump the snapped cell to the jump offset location and center it on the cell offset
+                    JumpToDataIndex(_snapDataIndex, snapJumpToOffset, snapCellCenterOffset, snapUseCellSpacing, snapTweenType, snapTweenTime, SnapJumpComplete);
+                }
+            }
+
+            _RefreshActive();
+
+        }
+        
+        /// <summary>
+        /// This is fired by the tweener when the snap tween is completed
+        /// </summary>
+        private void SnapJumpComplete()
+        {
+            // reset the snap jump to false and restore the inertia state
+            _snapJumping = false;
+            _scrollRect.inertia = _snapInertia;
+
+            // fire the scroller snapped delegate
+            if (scrollerSnapped != null) scrollerSnapped(this, _snapCellViewIndex, _snapDataIndex);
+        }
+
+        #endregion
+
+        #region Tweening
+
+        /// <summary>
+        /// The easing type
+        /// </summary>
+        public enum TweenType
+        {
+            immediate,
+            linear,
+            spring,
+            easeInQuad,
+            easeOutQuad,
+            easeInOutQuad,
+            easeInCubic,
+            easeOutCubic,
+            easeInOutCubic,
+            easeInQuart,
+            easeOutQuart,
+            easeInOutQuart,
+            easeInQuint,
+            easeOutQuint,
+            easeInOutQuint,
+            easeInSine,
+            easeOutSine,
+            easeInOutSine,
+            easeInExpo,
+            easeOutExpo,
+            easeInOutExpo,
+            easeInCirc,
+            easeOutCirc,
+            easeInOutCirc,
+            easeInBounce,
+            easeOutBounce,
+            easeInOutBounce,
+            easeInBack,
+            easeOutBack,
+            easeInOutBack,
+            easeInElastic,
+            easeOutElastic,
+            easeInOutElastic
+        }
+
+        private float _tweenTimeLeft;
+
+        /// <summary>
+        /// Moves the scroll position over time between two points given an easing function. When the
+        /// tween is complete it will fire the jumpComplete delegate.
+        /// </summary>
+        /// <param name="tweenType">The type of easing to use</param>
+        /// <param name="time">The amount of time to interpolate</param>
+        /// <param name="start">The starting scroll position</param>
+        /// <param name="end">The ending scroll position</param>
+        /// <param name="jumpComplete">The action to fire when the tween is complete</param>
+        /// <returns></returns>
+        IEnumerator TweenPosition(TweenType tweenType, float time, float start, float end, Action tweenComplete)
+        {
+            if (tweenType == TweenType.immediate || time == 0)
+            {
+                // if the easing is immediate or the time is zero, just jump to the end position
+                ScrollPosition = end;
+            }
+            else
+            {
+                _tweenTimeLeft = 0;
+                var newPosition = 0f;
+
+                // while the tween has time left, use an easing function
+                while (_tweenTimeLeft < time)
+                {
+                    switch (tweenType)
+                    {
+                        case TweenType.linear: newPosition = linear(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.spring: newPosition = spring(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInQuad: newPosition = easeInQuad(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutQuad: newPosition = easeOutQuad(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutQuad: newPosition = easeInOutQuad(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInCubic: newPosition = easeInCubic(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutCubic: newPosition = easeOutCubic(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutCubic: newPosition = easeInOutCubic(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInQuart: newPosition = easeInQuart(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutQuart: newPosition = easeOutQuart(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutQuart: newPosition = easeInOutQuart(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInQuint: newPosition = easeInQuint(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutQuint: newPosition = easeOutQuint(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutQuint: newPosition = easeInOutQuint(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInSine: newPosition = easeInSine(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutSine: newPosition = easeOutSine(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutSine: newPosition = easeInOutSine(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInExpo: newPosition = easeInExpo(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutExpo: newPosition = easeOutExpo(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutExpo: newPosition = easeInOutExpo(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInCirc: newPosition = easeInCirc(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutCirc: newPosition = easeOutCirc(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutCirc: newPosition = easeInOutCirc(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInBounce: newPosition = easeInBounce(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutBounce: newPosition = easeOutBounce(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutBounce: newPosition = easeInOutBounce(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInBack: newPosition = easeInBack(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutBack: newPosition = easeOutBack(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutBack: newPosition = easeInOutBack(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInElastic: newPosition = easeInElastic(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeOutElastic: newPosition = easeOutElastic(start, end, (_tweenTimeLeft / time)); break;
+                        case TweenType.easeInOutElastic: newPosition = easeInOutElastic(start, end, (_tweenTimeLeft / time)); break;
+                    }
+
+                    if (loop)
+                    {
+                        // if we are looping, we need to make sure the new position isn't past the jump trigger.
+                        // if it is we need to reset back to the jump position on the other side of the area.
+
+                        if (end > start && newPosition > _loopLastJumpTrigger)
+                        {
+                            Debug.Log("name: " + name + " went past the last jump trigger, looping back around");
+                            newPosition = _loopFirstScrollPosition + (newPosition - _loopLastJumpTrigger);
+                        }
+                        else if (start > end && newPosition < _loopFirstJumpTrigger)
+                        {
+                            Debug.Log("name: " + name + " went past the first jump trigger, looping back around");
+                            newPosition = _loopLastScrollPosition - (_loopFirstJumpTrigger - newPosition);
+                        }
+                    }
+
+                    // set the scroll position to the tweened position
+                    ScrollPosition = newPosition;
+
+                    // increase the time elapsed
+                    _tweenTimeLeft += Time.deltaTime;
+
+                    yield return null;
+                }
+            }
+
+            // the tween jump is complete, so we fire the delegate
+            if (tweenComplete != null) tweenComplete();
+        }
+
+        private float linear(float start, float end, float val)
+        {
+            return Mathf.Lerp(start, end, val);
+        }
+
+        private static float spring(float start, float end, float val)
+        {
+            val = Mathf.Clamp01(val);
+            val = (Mathf.Sin(val * Mathf.PI * (0.2f + 2.5f * val * val * val)) * Mathf.Pow(1f - val, 2.2f) + val) * (1f + (1.2f * (1f - val)));
+            return start + (end - start) * val;
+        }
+
+        private static float easeInQuad(float start, float end, float val)
+        {
+            end -= start;
+            return end * val * val + start;
+        }
+
+        private static float easeOutQuad(float start, float end, float val)
+        {
+            end -= start;
+            return -end * val * (val - 2) + start;
+        }
+
+        private static float easeInOutQuad(float start, float end, float val)
+        {
+            val /= .5f;
+            end -= start;
+            if (val < 1) return end / 2 * val * val + start;
+            val--;
+            return -end / 2 * (val * (val - 2) - 1) + start;
+        }
+
+        private static float easeInCubic(float start, float end, float val)
+        {
+            end -= start;
+            return end * val * val * val + start;
+        }
+
+        private static float easeOutCubic(float start, float end, float val)
+        {
+            val--;
+            end -= start;
+            return end * (val * val * val + 1) + start;
+        }
+
+        private static float easeInOutCubic(float start, float end, float val)
+        {
+            val /= .5f;
+            end -= start;
+            if (val < 1) return end / 2 * val * val * val + start;
+            val -= 2;
+            return end / 2 * (val * val * val + 2) + start;
+        }
+
+        private static float easeInQuart(float start, float end, float val)
+        {
+            end -= start;
+            return end * val * val * val * val + start;
+        }
+
+        private static float easeOutQuart(float start, float end, float val)
+        {
+            val--;
+            end -= start;
+            return -end * (val * val * val * val - 1) + start;
+        }
+
+        private static float easeInOutQuart(float start, float end, float val)
+        {
+            val /= .5f;
+            end -= start;
+            if (val < 1) return end / 2 * val * val * val * val + start;
+            val -= 2;
+            return -end / 2 * (val * val * val * val - 2) + start;
+        }
+
+        private static float easeInQuint(float start, float end, float val)
+        {
+            end -= start;
+            return end * val * val * val * val * val + start;
+        }
+
+        private static float easeOutQuint(float start, float end, float val)
+        {
+            val--;
+            end -= start;
+            return end * (val * val * val * val * val + 1) + start;
+        }
+
+        private static float easeInOutQuint(float start, float end, float val)
+        {
+            val /= .5f;
+            end -= start;
+            if (val < 1) return end / 2 * val * val * val * val * val + start;
+            val -= 2;
+            return end / 2 * (val * val * val * val * val + 2) + start;
+        }
+
+        private static float easeInSine(float start, float end, float val)
+        {
+            end -= start;
+            return -end * Mathf.Cos(val / 1 * (Mathf.PI / 2)) + end + start;
+        }
+
+        private static float easeOutSine(float start, float end, float val)
+        {
+            end -= start;
+            return end * Mathf.Sin(val / 1 * (Mathf.PI / 2)) + start;
+        }
+
+        private static float easeInOutSine(float start, float end, float val)
+        {
+            end -= start;
+            return -end / 2 * (Mathf.Cos(Mathf.PI * val / 1) - 1) + start;
+        }
+
+        private static float easeInExpo(float start, float end, float val)
+        {
+            end -= start;
+            return end * Mathf.Pow(2, 10 * (val / 1 - 1)) + start;
+        }
+
+        private static float easeOutExpo(float start, float end, float val)
+        {
+            end -= start;
+            return end * (-Mathf.Pow(2, -10 * val / 1) + 1) + start;
+        }
+
+        private static float easeInOutExpo(float start, float end, float val)
+        {
+            val /= .5f;
+            end -= start;
+            if (val < 1) return end / 2 * Mathf.Pow(2, 10 * (val - 1)) + start;
+            val--;
+            return end / 2 * (-Mathf.Pow(2, -10 * val) + 2) + start;
+        }
+
+        private static float easeInCirc(float start, float end, float val)
+        {
+            end -= start;
+            return -end * (Mathf.Sqrt(1 - val * val) - 1) + start;
+        }
+
+        private static float easeOutCirc(float start, float end, float val)
+        {
+            val--;
+            end -= start;
+            return end * Mathf.Sqrt(1 - val * val) + start;
+        }
+
+        private static float easeInOutCirc(float start, float end, float val)
+        {
+            val /= .5f;
+            end -= start;
+            if (val < 1) return -end / 2 * (Mathf.Sqrt(1 - val * val) - 1) + start;
+            val -= 2;
+            return end / 2 * (Mathf.Sqrt(1 - val * val) + 1) + start;
+        }
+
+        private static float easeInBounce(float start, float end, float val)
+        {
+            end -= start;
+            float d = 1f;
+            return end - easeOutBounce(0, end, d - val) + start;
+        }
+
+        private static float easeOutBounce(float start, float end, float val)
+        {
+            val /= 1f;
+            end -= start;
+            if (val < (1 / 2.75f))
+            {
+                return end * (7.5625f * val * val) + start;
+            }
+            else if (val < (2 / 2.75f))
+            {
+                val -= (1.5f / 2.75f);
+                return end * (7.5625f * (val) * val + .75f) + start;
+            }
+            else if (val < (2.5 / 2.75))
+            {
+                val -= (2.25f / 2.75f);
+                return end * (7.5625f * (val) * val + .9375f) + start;
+            }
+            else
+            {
+                val -= (2.625f / 2.75f);
+                return end * (7.5625f * (val) * val + .984375f) + start;
+            }
+        }
+
+        private static float easeInOutBounce(float start, float end, float val)
+        {
+            end -= start;
+            float d = 1f;
+            if (val < d / 2) return easeInBounce(0, end, val * 2) * 0.5f + start;
+            else return easeOutBounce(0, end, val * 2 - d) * 0.5f + end * 0.5f + start;
+        }
+
+        private static float easeInBack(float start, float end, float val)
+        {
+            end -= start;
+            val /= 1;
+            float s = 1.70158f;
+            return end * (val) * val * ((s + 1) * val - s) + start;
+        }
+
+        private static float easeOutBack(float start, float end, float val)
+        {
+            float s = 1.70158f;
+            end -= start;
+            val = (val / 1) - 1;
+            return end * ((val) * val * ((s + 1) * val + s) + 1) + start;
+        }
+
+        private static float easeInOutBack(float start, float end, float val)
+        {
+            float s = 1.70158f;
+            end -= start;
+            val /= .5f;
+            if ((val) < 1)
+            {
+                s *= (1.525f);
+                return end / 2 * (val * val * (((s) + 1) * val - s)) + start;
+            }
+            val -= 2;
+            s *= (1.525f);
+            return end / 2 * ((val) * val * (((s) + 1) * val + s) + 2) + start;
+        }
+
+        private static float easeInElastic(float start, float end, float val)
+        {
+            end -= start;
+
+            float d = 1f;
+            float p = d * .3f;
+            float s = 0;
+            float a = 0;
+
+            if (val == 0) return start;
+            val = val / d;
+            if (val == 1) return start + end;
+
+            if (a == 0f || a < Mathf.Abs(end))
+            {
+                a = end;
+                s = p / 4;
+            }
+            else
+            {
+                s = p / (2 * Mathf.PI) * Mathf.Asin(end / a);
+            }
+            val = val - 1;
+            return -(a * Mathf.Pow(2, 10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p)) + start;
+        }
+
+        private static float easeOutElastic(float start, float end, float val)
+        {
+            end -= start;
+
+            float d = 1f;
+            float p = d * .3f;
+            float s = 0;
+            float a = 0;
+
+            if (val == 0) return start;
+
+            val = val / d;
+            if (val == 1) return start + end;
+
+            if (a == 0f || a < Mathf.Abs(end))
+            {
+                a = end;
+                s = p / 4;
+            }
+            else
+            {
+                s = p / (2 * Mathf.PI) * Mathf.Asin(end / a);
+            }
+
+            return (a * Mathf.Pow(2, -10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p) + end + start);
+        }
+
+        private static float easeInOutElastic(float start, float end, float val)
+        {
+            end -= start;
+
+            float d = 1f;
+            float p = d * .3f;
+            float s = 0;
+            float a = 0;
+
+            if (val == 0) return start;
+
+            val = val / (d / 2);
+            if (val == 2) return start + end;
+
+            if (a == 0f || a < Mathf.Abs(end))
+            {
+                a = end;
+                s = p / 4;
+            }
+            else
+            {
+                s = p / (2 * Mathf.PI) * Mathf.Asin(end / a);
+            }
+
+            if (val < 1)
+            {
+                val = val - 1;
+                return -0.5f * (a * Mathf.Pow(2, 10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p)) + start;
+            }
+            val = val - 1;
+            return a * Mathf.Pow(2, -10 * val) * Mathf.Sin((val * d - s) * (2 * Mathf.PI) / p) * 0.5f + end + start;
         }
 
         #endregion

@@ -96,8 +96,10 @@ public class LoadChineseTexture : MonoBehaviour {
 
         GUI.DrawTexture(new Rect(2 * padding, Screen.height / 4, Screen.width / 4, Screen.height / 2), scrollText);
         GUI.Label(new Rect((2 * padding) + 10, Screen.height / 4, (Screen.width / 4) - 20, Screen.height / 2), "Meaning\n\n" + cs.english, contentStyle);
-        
-        string typec="Simplified";
+        //GUI.DrawTexture(new Rect(2 * padding + (Screen.width * 2), Screen.height / 4, Screen.width / 4, Screen.height / 2), scrollText);
+        //GUI.Label(new Rect((2 * padding) + 10 + (Screen.width * 2), Screen.height / 4, (Screen.width / 4) - 20, Screen.height / 2), "Meaning\n\n" + cs.english, contentStyle);
+
+        string typec ="Simplified";
         switch(cs.Type) {
             case 1:
                 typec="Simplified";
@@ -111,6 +113,8 @@ public class LoadChineseTexture : MonoBehaviour {
         }
 
         string textdesc="Pinyin: "+cs.pinyin+"\nStrokes: "+cs.Strokes+"\n"+typec+"\nUnicode: "+cs.Unicode;
+        //GUI.DrawTexture(new Rect(Screen.width - ((2 * padding) + (Screen.width * 2)), Screen.height / 4, Screen.width / 4, Screen.height / 2), scrollText);
+        //GUI.Label(new Rect(10 + Screen.width - ((2 * padding) + (Screen.width * 2)), Screen.height / 4, (Screen.width / 4) - 20, Screen.height / 2), "Data\n\n" + textdesc, contentStyle);
         GUI.DrawTexture(new Rect(Screen.width - ((2 * padding) + (Screen.width / 4)), Screen.height / 4, Screen.width / 4, Screen.height / 2), scrollText);
         GUI.Label(new Rect(10 + Screen.width - ((2 * padding) + (Screen.width / 4)), Screen.height / 4, (Screen.width / 4) - 20, Screen.height / 2), "Data\n\n" + textdesc, contentStyle);
 
@@ -221,5 +225,6 @@ public class LoadChineseTexture : MonoBehaviour {
         position.y--;
         theStyle.normal.textColor = inColor;
         GUI.Label(position, text, theStyle);
+        
     }
 }

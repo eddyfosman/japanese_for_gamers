@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_5_1_1;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_ANDROID;UNITY_ANDROID_API;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_5_1_4;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -39,13 +39,90 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>D:/Program Files/Unity5.1.4f1/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>D:/Program Files/Unity5.1.4f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\MobileActionRPGKit\Prefab\ThirdPerson\TPSController.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Prefab\ThirdPerson\ThirdPersonCamera.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AIenemy.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AIfriend.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\ARPGcamera.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AbnormalStatAttack.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AddCash.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AddItem.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AttackTrigger.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\AutoLockon.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\BlackHole.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\BulletChildGetDamage.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\BulletSetParent.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\BulletShot.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\BulletStatus.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Button\AttackButton.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Button\MobileJoyStick.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Button\OpenGuiButton.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Button\SkillButton.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\CheckPoint.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\DamageArea.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\DamagePopup.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\DestroyObject.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Dialogue.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\DontDestroyOnload.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\DropItem.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Events\Gate.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Events\PickupKey.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Events\ShowMiddleScreenText.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\GainEXP.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\GameOver.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\HealingItem.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\HealingSkill.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\HealthBar.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\HireMercenary.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Inventory.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\ItemData.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\LockMouse.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\MinimapCamera.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\MinimapOnOff.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\MobileButtonGUI.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\MonsterSkill.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\MoveForward.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\PatrollingAi.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\PlayerAnimation.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\PlayerMecanimAnimation.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\QuestClient.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\QuestData.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\QuestProgressive.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\QuestStat.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\QuestTrigger.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\RescueQuest.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\QuestSystem\SpawnFromQuest.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\RespawnMonster.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\RotateObject.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\SaveLoad.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Shop.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\ShowEnemyHealth.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\ShowTip.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\SkillData.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\SkillWindow.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\SmoothFollow.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\SpawnPartner.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\SpawnPlayer.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\StageStart.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Status.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\StatusWindow.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Teleporter.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\Title.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\TopDownCamera.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\TopDownController.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\TopDownOrbitCamera.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\TrapShot.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Script\UpDownObject.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Standard Assets\Character Controllers\Sources\Scripts\FPSInputController.js" />
+     <Compile Include="Assets\MobileActionRPGKit\Standard Assets\Particles\Legacy Particles\TimedObjectDestructor.js" />
      <Compile Include="Assets\iTweenExamples\AccurateLob\Scripts\AccurateLob.js" />
      <Compile Include="Assets\iTweenExamples\AccurateLob\Scripts\Bomb.js" />
      <Compile Include="Assets\iTweenExamples\AnimatingGUITextures\Scripts\PresentationScreen.js" />
@@ -85,30 +162,147 @@
      <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\Bat.js" />
      <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\Brick.js" />
      <Compile Include="Assets\iTweenExamples\WorkingWithPhysics\Scripts\SimpleCameraFade.js" />
+     <Compile Include="Assets\mage\Script\Zoom_in.js" />
+     <Compile Include="Assets\mage\Script\cameraViewObject.js" />
+     <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Basic.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
+     <None Include="Assets\Standard Assets\Projectors\Sources\Shaders\Projector Multiply.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
+     <None Include="Assets\Anime Speed Lines\Readme.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
      <None Include="Assets\AutoTileSet\README.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
      <None Include="Assets\FileBrowser\readme.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
+     <None Include="Assets\archer\ReadMe_[ v 1.0 ].txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
      <None Include="Assets\CustomFont\customfont.xml" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\VignetteShader.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\Projectors\Guidelines.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBloom.shader" />
+     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\SSAA.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\RadialBlur.shader" />
+     <None Include="Assets\Tutorial Resources\Models\egg_entity.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ContrastComposite.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
+     <None Include="Assets\Plugins\SimpleSQL\readme.txt" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-BasicOutline.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
+     <None Include="Assets\Warrior\ReadMe_[ v 1.0 ].txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ConvertDepth.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
+     <None Include="Assets\Standard Assets\Projectors\Sources\Shaders\Projector Light.shader" />
+     <None Include="Assets\Resources\Mandarin\json-one.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\CreaseApply.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Environment\Water (Basic)\Shaders\FXWaterBasic.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ChromaticAberrationShader.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+     <None Include="Assets\mage\ReadMe_[ v 1.0 ].txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-LightedOutline.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
+     <None Include="Assets\Standard Assets\Toon Shading\Sources\Shaders\Toony-Lighted.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
+     <None Include="Assets\Sliced v2\Secondary Action Bars\choose.txt" />
      <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
+     <None Include="Assets\Resources\Mandarin\characters.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\DLAA.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
+     <None Include="Assets\Standard Assets\Skyboxes\skybox info.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\MotionBlurClear.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\GrayscaleEffect.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Adaptation.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\VignettingShader.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter.shader" />
+     <None Include="Assets\ORK Framework\README.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA2.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrection3DLut.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\Blend.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
+     <None Include="Assets\Resources\Mandarin\json-one1.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />
+     <None Include="Assets\MobileActionRPGKit\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
      <None Include="Assets\Resources\data.txt" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA3Console.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
+     <None Include="Assets\Handpainted Forest Environment\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
  <Reference Include="UnityEngine.UI">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>D:/Program Files/Unity5.1.4f1/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>D:/Program Files/Unity5.1.4f1/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>D:/Program Files/Unity5.1.4f1/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="LitJSON">
  <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/LitJSON.dll</HintPath>
  </Reference>
+ <Reference Include="ORKFramework">
+ <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/ORK Framework/DLL/ORKFramework.dll</HintPath>
+ </Reference>
+ <Reference Include="ORKFrameworkCore">
+ <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/ORK Framework/DLL/ORKFrameworkCore.dll</HintPath>
+ </Reference>
+ <Reference Include="SimpleSQL_Runtime">
+ <HintPath>D:/project/japanese_for_gamers/unity/JapaneseForGamers/Assets/Plugins/SimpleSQL/Plugins/SimpleSQL_Runtime.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>D:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ <HintPath>D:/Program Files/Unity5.1.4f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
       <Project>{B7492124-BB90-6248-FBC6-6AB3BBB24338}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
+      <Project>{62418FAE-9001-4EC6-38D4-8D9333EE3BF4}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
